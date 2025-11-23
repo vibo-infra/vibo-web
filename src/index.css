@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colors */
+    --color-primary: #FAB32D; /* Hover state / secondary shade of primary */
+    --color-primary-hover: #F8C61E; /* Main brand color used for CTAs, highlights */
+
+    /* Light Mode Backgrounds */
+    --color-background-primary-light: #F7F8FA; /* Main screen background */
+    --color-background-secondary-light: #FFFFFF; /* Cards, surfaces, navbars */
+    --color-background-tertiary-light: #EDEFF2; /* Section separators, subtle blocks */
+
+    /* Light Mode Text */
+    --color-text-light: #1A1D21; /* High contrast text */
+    --color-text-secondary-light: #4A5057; /* Less emphasis text */
+    --color-text-muted-light: #7E868F; /* Hints, placeholders */
+
+    /* Dark Mode Backgrounds */
+    --color-background-primary: #161B22; /* App main background */
+    --color-background-secondary: #1E242C; /* Cards, modals, surfaces */
+    --color-background-tertiary: #2A303A; /* Section separators */
+
+    /* Dark Mode Text */
+    --color-text: #FFFFFF; /* High contrast for dark surfaces */
+    --color-text-secondary: #BBC0C7; /* Secondary labels */
+    --color-text-muted: #8D939A; /* Minimal emphasis */
+
+    /* Status Colors */
+    --color-success: #4CAF50; /* Success messages and positive indicators */
+    --color-error: #F44336; /* Error messages, validation, alerts */
+    --color-warning: #FF9800; /* Warning indicators and caution areas */
+    --color-info: #2196F3; /* Info messages or neutral notifications */
+
+
+    /* Fonts */
+    --font-heading: "Nunito Sans", sans-serif; /* very readable, minimal */
+    --font-body: "Noto Sans", sans-serif; /* clean, modern, premium */
+    --font-general-sans: "General Sans", sans-serif; /* friendly modern UI */
+
+
+    /* Shadows */
+    --shadow-soft: 0 2px 4px rgba(0, 0, 0, 0.06),
+            0 4px 12px rgba(0, 0, 0, 0.04);
+
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.08),
+            0 8px 20px rgba(0, 0, 0, 0.06);
+
+    --shadow-strong: 0 8px 16px rgba(0, 0, 0, 0.10),
+            0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+
+
+html{
+    scroll-behavior: smooth;
+    font-size: 16px;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+}
+
+body{
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}

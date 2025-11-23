@@ -1,0 +1,22 @@
+@import './breakpoints.scss';
+
+.heroSectionContainer{
+    @include up('md'){
+        padding:3rem;
+    }
+}
+
+.heroHiddenImageSection{
+    width: 60%;
+    @include down('md'){
+        display:none;
+    }
+}
+
+.landingCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    justify-content: center;
+
+}
