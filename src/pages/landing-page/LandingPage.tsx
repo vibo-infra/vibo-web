@@ -3,17 +3,18 @@ import SearchEventComponent from '../../components/landing-page/SearchEventCompo
 import LandingPageCardComponent from '../../components/landing-page/LandingPageCardComponent';
 import styles from '../../styles/landing.module.scss';
 import OnlyPreviewCardComponent from '../../components/event-cards/OnlyPreviewCardComponent';
+import PageTitle from '../../components/ui/PageTitle';
 
 const HeroSection = () => {
   return (
     <div className={`${styles.heroSectionContainer} flex justify-center`}>
-      <div className='flex flex-col gap-4 p-5'>
-        <h1 className='font-heading text-5xl md:text-6xl font-bold'>Discover Events Around You <span className='text-primary'>Instantly</span></h1>
-        <p className='text-lg text-gray-600'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-          Quos rem explicabo
-        </p>
+      <PageTitle
+        title="Find Your Next"
+        highlightedText="Adventure"
+        description="Discover events happening around you and connect with like-minded individuals."
+      >
         <SearchEventComponent />
-      </div>
+      </PageTitle>
       <div className={`${styles.heroHiddenImageSection} bg-gray-200 ml-10 rounded-lg`}>
 
       </div>
