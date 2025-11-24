@@ -20,3 +20,24 @@
     justify-content: center;
 
 }
+
+.nearbyEventsSection{
+    padding:0 5rem ;
+
+    @include down('md'){
+        width: 100vw;
+        padding: 0 1rem;
+    }
+
+    .previewCardContainer{
+        display: flex;
+        gap: 3rem;
+        @include down('md'){
+            flex-direction: column;
+            overflow-x: scroll;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

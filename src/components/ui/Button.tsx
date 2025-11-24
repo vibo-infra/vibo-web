@@ -29,7 +29,6 @@ const Button: React.FC<ButtonProps> = ({
   const variantStyles: Record<ButtonVariant, string> = {
     primary: `
       bg-primary text-black 
-      hover:bg-primary-hover
     `,
     secondary: `
       bg-background-secondary text-text
