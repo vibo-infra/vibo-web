@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PageTitle from '../../components/ui/PageTitle';
 import ApplyEventCardComponent from '../../components/event-cards/ApplyEventCardComponent';
 import styles from '../../styles/explorePage.module.scss';
