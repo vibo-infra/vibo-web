@@ -23,14 +23,14 @@ const Input: React.FC<InputProps> = ({ label, className = "", secret, placeholde
         placeholder=" "
         className={`
           peer block w-full 
-          px-4 py-3
+          px-4 py-3 pt-5 pl-5
           bg-background-tertiary-light
           border border-text-secondary
           rounded-3xl
           focus:ring-2 focus:ring-[--color-primary]/20
           focus:outline-none
           transition-all duration-200 ease-out
-          text-xl
+          text-md
           ${className}
         `}
       />
@@ -52,7 +52,7 @@ const Input: React.FC<InputProps> = ({ label, className = "", secret, placeholde
         className={`
           absolute left-4 top-1/2 -translate-y-1/2 
           text-text-muted
-          text-base
+          text-md
           pointer-events-none 
           transition-all duration-300 ease-out
 

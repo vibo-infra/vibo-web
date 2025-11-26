@@ -15,18 +15,18 @@ const Login = () => {
 
   return (
     <div className={`${styles.loginWrapper} flex flex-col`}>
-      <div className={`${styles.loginHeader} mb-5 flex flex-col gap-2`}>
-        <h1 className='text-4xl font-body font-bold'>Sign In</h1>
-        <p className=''>Welcome back! Please enter your details.</p>
+      <div className={`${styles.loginHeader} mb-8 flex flex-col gap-2`}>
+        <h1 className='text-xxl font-body font-bold'>Sign In</h1>
+        <p className='text-sm'>Welcome back! Please enter your details.</p>
       </div>
-      <div className={`${styles.loginContainer} bg-background-primary-light flex flex-col rounded-t-4xl px-6 py-12 md:py-8`}>
+      <div className={`${styles.loginContainer} bg-background-primary-light flex flex-col rounded-t-[3.2rem] px-8 py-12`}>
         <form className={`flex flex-col gap-4 ${styles.loginForm}`} onSubmit={handleFormClick}>
-          <Input label="Email" type="email" name="email" className='h-16'/>
-          <Input label="Password" type="password" name="password" className='h-16' secret/>
+          <Input label="Email" type="email" name="email" className='h-20'/>
+          <Input label="Password" type="password" name="password" className='h-20' secret/>
           <div className='flex justify-end'>
-            <a href="#" className='text-sm text-text-secondary-light font-medium'>Forgot Password?</a>
+            <a href="#" className='text-xs text-text-secondary-light font-medium'>Forgot Password?</a>
           </div>
-          <Button variant='secondary' className='mt-4 h-16'>
+          <Button variant='secondary' className='mt-4 h-20 text-md flex items-center justify-center font-medium' type="submit">
             Sign In
           </Button>
         </form>

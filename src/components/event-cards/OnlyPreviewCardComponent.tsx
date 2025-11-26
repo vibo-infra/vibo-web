@@ -11,8 +11,8 @@ const OnlyPreviewCardComponent = () => {
             <span className='absolute top-4 right-4 bg-background-primary-light text-xs text-text-light rounded px-2'>Tech</span>
         </div>
       <div className="relative p-4 flex flex-col gap-2 rounded-3xl">
-        <h1 className="font-bold">Only Preview Card Component</h1>
-        <p className="text-sm text-gray-600"><SlLocationPin className='inline mr-0.5' /> Location</p>
+        <h1 className="font-bold text-md my-2">Only Preview Card Component</h1>
+        <p className="text-sm text-gray-600 mt-2"><SlLocationPin className='inline mr-0.5' /> Location</p>
         <p className="text-sm text-gray-600"><IoTimeOutline className='inline mr-0.5' /> June 2024</p>
         <p className='absolute bottom-4 right-4 text-sm text-gray-600'><FiUsers className='inline mr-0.5' /> 23 attendees</p>
       </div>

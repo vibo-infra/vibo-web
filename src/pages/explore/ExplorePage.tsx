@@ -61,7 +61,7 @@ const ExplorePage = () => {
             highlightedText="Events"
             description="Find the best events happening around you."
         />
-        <div className='sticky top-8 z-50 mt-2'>
+        <div className='sticky top-8 z-50 mt-8'>
             <FilterMenuBar 
                 selectedOption={selectedFilterMenuBarOption} 
                 onSelect={setSelectedFilterMenuBarOption}

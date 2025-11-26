@@ -18,10 +18,10 @@ const OAuth = () => {
     ];
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-6">
       {OAUTH_PROVIDERS.map((provider) => (
-        <div key={provider.name} className="flex items-center mb-4">
-            <Button variant="ghost" className="w-full flex items-center gap-5 md:gap-32 text-xl font-medium">
+        <div key={provider.name} className="flex items-center">
+            <Button variant="ghost" className="w-full h-20 text-md font-medium">
                 {provider.icon}
                 Sign in with {provider.name}
             </Button>

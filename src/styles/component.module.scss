@@ -1,13 +1,8 @@
 @use './breakpoints.scss' as *;
 
 .cardContainer {
-    width: 16rem;
-    height: 16rem;
-
-    @include down('md') {
-        width: 20rem;
-        height: 20rem;
-    }
+    width: 28rem;
+    height: 28rem;
 }
 
 .onlyPreviewWrapper {

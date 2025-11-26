@@ -15,9 +15,9 @@ const HeroSection = () => {
       >
         <SearchEventComponent />
       </PageTitle>
-      <div className={`${styles.heroHiddenImageSection} bg-gray-200 ml-10 rounded-lg`}>
+      {/* <div className={`${styles.heroHiddenImageSection} bg-gray-200 ml-10 rounded-lg`}>
 
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -25,8 +25,8 @@ const HeroSection = () => {
 const NearbyEventsSection = () => {
   return (
     <div className={`${styles.nearbyEventsSection} flex flex-col`}>
-      <h2 className='font-heading text-3xl font-medium mb-2'>Events <span className='text-primary'>Near You</span></h2>
-      <p className='text-gray-600 mb-10'>Explore events happening in your vicinity and connect with like-minded individuals.</p>
+      <h2 className='font-heading text-xxl font-semibold mb-5'>Events <span className='text-primary'>Near You</span></h2>
+      <p className='text-gray-600 text-sm mb-8'>Explore events happening in your vicinity and connect with like-minded individuals.</p>
       <div className={`${styles.previewCardContainer}`}>
         <OnlyPreviewCardComponent />
         <OnlyPreviewCardComponent />
@@ -78,12 +78,12 @@ const LandingPage = () => {
       <div className='bg-background-primary-light'>
         <HeroSection />
       </div>
-      <div className={` ${styles.landingCardContainer} py-10 bg-background-tertiary`}>
+      <div className={` ${styles.landingCardContainer} w-full py-15 bg-background-tertiary`}>
         {cards.map((card) => (
           <LandingPageCardComponent key={card.number} {...card} />
         ))}
       </div>
-      <div className='py-10 bg-background-primary-light mx-auto border border-green-500'>
+      <div className='py-18 bg-background-primary-light mx-auto border border-green-500'>
         <NearbyEventsSection />
       </div>
     </div>

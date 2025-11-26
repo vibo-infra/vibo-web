@@ -12,13 +12,13 @@ interface LandingPageCardComponentProps {
 const LandingPageCardComponent = ({ rotation, pinColor, bgGradient, number, title, description }: LandingPageCardComponentProps) => {
   return (
     <div 
-      className={`relative ${styles.cardContainer} w-full h-80 flex justify-center items-center`}
+      className={`relative ${styles.cardContainer} flex justify-center items-center`}
       style={{ transform: `rotate(${rotation}deg)` }}
     >
       {/* Pin */}
       <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
         <div 
-          className="w-8 h-8 rounded-full shadow-lg"
+          className="w-12 h-12 rounded-full shadow-lg"
           style={{ 
             backgroundColor: pinColor,
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
@@ -38,17 +38,17 @@ const LandingPageCardComponent = ({ rotation, pinColor, bgGradient, number, titl
         }}
       >
         {/* Number */}
-        <div className="text-4xl font-light text-gray-400 mb-4">
+        <div className="text-xxl font-light text-gray-400 mb-4">
           {number}
         </div>
 
         {/* Title */}
-        <h3 className="text-2xl font-bold text-gray-900 mb-3">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 mt-4">
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p className="text-md font-body text-gray-600 leading-relaxed mt-4">
           {description}
         </p>
       </div>

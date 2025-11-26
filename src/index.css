@@ -37,6 +37,21 @@
     --font-body: "Noto Sans", sans-serif; /* clean, modern, premium */
     --font-general-sans: "General Sans", sans-serif; /* friendly modern UI */
 
+    /* Headings */
+    --text-xxxl: 4.8rem;    /* ~48px  -->Heading*/
+    --text-xxl: 3.2rem;       /* ~32px  -->SubHeading*/
+    --text-xl: 2.4rem;       /* ~24px  -->Section Title*/
+
+    /* Body text */
+    --text-md: 1.6rem;    /* ~16px  -->Paragraph*/
+    --text-sm: 1.4rem;    /* ~14px */
+    --text-xs: 1.2rem;    /* ~12px */
+
+    /* UI-specific */
+    --text-button: 1.6rem;
+    --text-label: 1.3rem;
+    --text-input: 1.6rem;
+
 
     /* Shadows */
     --shadow-soft: 0 2px 4px rgba(0, 0, 0, 0.06),
@@ -53,14 +68,26 @@
 
 html{
     scroll-behavior: smooth;
-    font-size: 16px;
+    font-size: 62.5%;
     line-height: 1.5;
     transition: all 0.3s ease;
 }
 
 body{
-    font-family: 'Inter', sans-serif;
-    color: #333;
+    font-family: var(--font-body);
+    font-size: var(--font-md);
+    color: var(--color-text-light);
     margin: 0;
     padding: 0;
+    line-height: 1;
+}
+
+p{
+    line-height: 1.5;
+}
+
+/* Input label font size transitions */
+.peer:focus ~ label,
+.peer:not(:placeholder-shown) ~ label {
+    font-size: var(--font-xs) !important;
 }

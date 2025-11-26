@@ -11,7 +11,7 @@ const SearchEventComponent = () => {
   }
 
   return (
-    <div className='flex flex-col gap-4 bg-background-primary-light shadow-medium p-4 rounded-xl'>
+    <div className='flex flex-col gap-4 bg-background-primary-light shadow-medium p-4 rounded-xl mt-10'>
         <div className="flex items-center px-4 py-1">
             <SlLocationPin className="w-6 h-6" />
             <Input className="text-lg" label="Search events near you" placeholderBg="none" style={{borderRadius: '10px', backgroundColor: 'var(--background-secondary-light)', border: 'none'}}/>

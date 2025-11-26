@@ -47,9 +47,9 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const sizeStyles: Record<ButtonSize, string> = {
-    sm: "px-4 py-2 text-sm",
-    md: "px-5 py-2.5 text-base",
-    lg: "px-6 py-3 text-lg",
+    sm: "px-6 py-4 text-xs",
+    md: "px-10 py-5 text-sm",
+    lg: "px-6 py-4 text-md",
   };
 
   return (
@@ -63,6 +63,7 @@ const Button: React.FC<ButtonProps> = ({
         disabled:opacity-50 disabled:cursor-not-allowed
         ${className}
         rounded-3xl
+        flex items-center
       `}
     >
       {loading ? (
