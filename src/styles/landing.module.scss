@@ -1,6 +1,7 @@
 @import './breakpoints.scss';
 
 .heroSectionContainer{
+    padding: 1rem;
     @include up('md'){
         padding:3rem;
     }

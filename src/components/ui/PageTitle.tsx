@@ -7,7 +7,7 @@ interface HeroSectionProps {
 
 const PageTitle = ({ title, highlightedText, description, children }: HeroSectionProps) => {
     return (
-        <div className='flex flex-col gap-4 p-5'>
+        <div className='flex flex-col gap-4 p-2'>
             <h1 className='font-heading text-5xl md:text-6xl font-bold'>
                 {title} <span className='text-primary'>{highlightedText}</span>
             </h1>

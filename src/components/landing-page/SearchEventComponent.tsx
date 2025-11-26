@@ -17,7 +17,7 @@ const SearchEventComponent = () => {
             <Input className="text-lg" label="Search events near you" placeholderBg="none" style={{borderRadius: '10px', backgroundColor: 'var(--background-secondary-light)', border: 'none'}}/>
         </div>
       {/* <Input label="Tell me your interested interests" style={{borderRadius: '10px'}}/> */}
-      <Button variant="primary" onClick={handleSearch} className="mt-2 text-text font-bold shadow-medium hover:shadow-soft" style={{borderRadius: '10px'}}>Find Events</Button>
+      <Button variant="primary" onClick={handleSearch} className="mt-2 text-text text-lg font-bold shadow-medium hover:shadow-soft" style={{borderRadius: '10px'}}>Find Events</Button>
     </div>
   )
 }

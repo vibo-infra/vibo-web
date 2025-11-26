@@ -37,7 +37,7 @@ const FilterMenuBar = ({ selectedOption, onSelect }: FilterMenuBarProps) => {
                 {filterMenuOptions.map((option) => (
                     <button
                         key={option.value}
-                        className={`py-2 px-4 rounded-full duration-200 ease-out relative z-10 ${
+                        className={`${styles.filterMenuButton} py-2 px-4 rounded-full duration-200 ease-out relative z-10 ${
                             selectedOption === option.value ? 'text-white' : 'text-primary-light'
                         }`}
                         onClick={() => handleFilterMenuBarOptionSelect(option.value)}
@@ -55,7 +55,7 @@ const ExplorePage = () => {
     const [selectedFilterMenuBarOption, setSelectedFilterMenuBarOption] = useState('all');
 
   return (
-    <div className="w-screen p-5 bg-background-primary-light h-full">
+    <div className={`${styles.explorePageContainer} w-screen bg-background-primary-light h-full`}>
         <PageTitle 
             title="Discover"
             highlightedText="Events"

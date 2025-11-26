@@ -1,10 +1,28 @@
 @use './breakpoints.scss' as *;
 
+.filterMenuButton{
+    @include down('sm'){
+        font-size: 0.9rem;
+    }
+}
+
 .filterMenuBar{
     background: rgba(255, 255, 255, 0.15);
     box-shadow: 0 8px 32px 0 rgba(141, 146, 220, 0.606);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+
+    @include down('sm'){
+        padding: 0.3rem;
+    }
+}
+
+.explorePageContainer{
+    padding: 2rem;
+
+    @include down('sm'){
+        padding: 1rem;
+    }
 }
 
 .exploreCardContainer{
