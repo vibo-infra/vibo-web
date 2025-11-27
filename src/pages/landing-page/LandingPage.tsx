@@ -83,7 +83,7 @@ const LandingPage = () => {
           <LandingPageCardComponent key={card.number} {...card} />
         ))}
       </div>
-      <div className='py-18 bg-background-primary-light mx-auto border border-green-500'>
+      <div className='py-18 bg-background-primary-light mx-auto'>
         <NearbyEventsSection />
       </div>
     </div>

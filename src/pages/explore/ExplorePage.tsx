@@ -37,8 +37,8 @@ const FilterMenuBar = ({ selectedOption, onSelect }: FilterMenuBarProps) => {
                 {filterMenuOptions.map((option) => (
                     <button
                         key={option.value}
-                        className={`${styles.filterMenuButton} py-2 px-4 rounded-full duration-200 ease-out relative z-10 ${
-                            selectedOption === option.value ? 'text-white' : 'text-primary-light'
+                        className={`${styles.filterMenuButton} w-35 py-5 px-4 rounded-full text-center relative z-10 ${
+                            selectedOption === option.value ? 'text-white font-semibold' : 'text-primary-light'
                         }`}
                         onClick={() => handleFilterMenuBarOptionSelect(option.value)}
                     >

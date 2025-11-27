@@ -2,7 +2,14 @@
 
 .cardContainer {
     width: 28rem;
-    height: 28rem;
+    height: 25rem;
+    padding: 0 2rem;
+
+    @include down('md'){
+        width: 32rem;
+        height: 28rem;
+        padding: 0;
+    }
 }
 
 .onlyPreviewWrapper {
