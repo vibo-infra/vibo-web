@@ -64,6 +64,7 @@ const Button: React.FC<ButtonProps> = ({
         ${className}
         rounded-3xl
         flex items-center
+        text-center justify-center
       `}
     >
       {loading ? (

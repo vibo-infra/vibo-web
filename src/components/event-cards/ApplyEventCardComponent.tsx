@@ -3,8 +3,15 @@ import { FiUsers } from "react-icons/fi";
 import { SlLocationPin } from "react-icons/sl";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoPersonCircleSharp } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 const ApplyEventCardComponent = () => {
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate('/id')
+  }
+
   return (
     <div className={`${styles.onlyPreviewWrapper} flex flex-col rounded-lg overflow-hidden shadow-lg bg-transparent snap-center`}>
         <div className="relative overflow-hidden">
@@ -19,7 +26,7 @@ const ApplyEventCardComponent = () => {
       </div>
       <div className='p-4 border-t border-background-primary-light flex items-center justify-between rounded-b-lg bg-background-secondary-light'>
         <p className='text-sm text-gray-600'> <IoPersonCircleSharp className='inline mr-0.5 w-10 h-10' /> Organiser</p>
-        <button className='bg-primary text-white py-2 px-4 rounded-full text-sm'>Join Now</button>
+        <button onClick={handleButtonClick} className='bg-primary text-white py-2 px-4 rounded-full text-sm'>Join Now</button>
       </div>
     </div>
   )

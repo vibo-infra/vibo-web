@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 @theme {
     /* Colors */
@@ -41,7 +42,7 @@
     --text-xxxl: 4.8rem;    /* ~48px  -->Heading*/
     --text-xxl: 3.2rem;       /* ~32px  -->SubHeading*/
     --text-xl: 2.4rem;       /* ~24px  -->Section Title*/
-
+    --text-lg: 2.0rem;       /* ~20px  -->Card Title*/
     /* Body text */
     --text-md: 1.6rem;    /* ~16px  -->Paragraph*/
     --text-sm: 1.4rem;    /* ~14px */
