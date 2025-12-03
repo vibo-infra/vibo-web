@@ -13,7 +13,7 @@ const EventDetails = () => {
 
 
   return (
-    <div className='flex flex-col bg-background-tertiary-light min-h-screen pt-3'>
+    <div className='flex flex-col bg-background-tertiary-light min-h-screen py-3'>
       <div className='m-4'>
         <img className='rounded-4xl' src="https://images.unsplash.com/photo-1549452026-91574599e7f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="" />
       </div>
@@ -45,7 +45,7 @@ const EventDetails = () => {
       </div>
         <div className='fixed bottom-0 w-full flex gap-4 items-center justify-around p-4 z-1000'>
             <Button variant="primary" className="w-full rounded-4xl flex text-text text-md font-bolder shadow-soft">Register Now</Button>
-            <RiHeartAdd2Line className='text-xxxl text-primary bg-background-tertiary-light p-2 rounded-full'/>
+            <RiHeartAdd2Line className='text-xxl w-20 h-17 text-primary bg-background-primary p-2 rounded-full'/>
         </div>
     </div>
   )
