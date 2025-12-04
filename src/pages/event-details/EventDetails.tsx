@@ -4,12 +4,19 @@ import Button from '../../components/ui/Button'
 import { RiHeartAdd2Line } from "react-icons/ri";
 import LocationMap from '../../components/event-cards/LocationMap';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const EventDetails = () => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    const handleRegisterClick = () => {
+        navigate('/register');
+    }
 
 
   return (
@@ -44,7 +51,7 @@ const EventDetails = () => {
         <LocationMap />
       </div>
         <div className='fixed bottom-0 w-full flex gap-4 items-center justify-around p-4 z-1000'>
-            <Button variant="primary" className="w-full rounded-4xl flex text-text text-md font-bolder shadow-soft">Register Now</Button>
+            <Button onClick={handleRegisterClick} variant="primary" className="w-full rounded-4xl flex text-text text-md font-bolder shadow-soft">Register Now</Button>
             <RiHeartAdd2Line className='text-xxl w-20 h-17 text-primary bg-background-primary p-2 rounded-full'/>
         </div>
     </div>
