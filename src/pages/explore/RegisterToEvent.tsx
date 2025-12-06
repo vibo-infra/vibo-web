@@ -1,13 +1,16 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import MultiSelectRadio from '../../components/ui/MultiSelectRadio';
 import { IoIosArrowBack } from "react-icons/io";
 import { registerForEvent } from '../../services/apiServices';
+import { usePageTracking } from '../../hooks/usePageTracking';
+import { trackClickWithUser, trackClick } from '../../utils/tracking';
+import { ApiError } from '../../utils/apiUtils';
 
 interface FormValues {
   phone: string;
@@ -50,9 +53,13 @@ const ErrorText = ({ name }: { name: string }) => (
 );
 
 const RegisterToEvent = () => {
+    usePageTracking(); // Track page views
+    
     const { eventId } = useParams<{ eventId: string }>();
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const location = useLocation();
     const navigate = useNavigate();
+    const pageStartTimeRef = useRef<number>(Date.now());
+    const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     
@@ -74,11 +81,14 @@ const RegisterToEvent = () => {
     if (!eventId) {
       navigate('/explore');
     }
+    pageStartTimeRef.current = Date.now();
   }, [eventId, navigate]);
 
   const handleSubmit = async (values: FormValues, { setSubmitting, resetForm }: HandleSubmitProps) => {
     if (!eventId) {
-      setError('Event ID is required');
+      const errorMessage = 'Event ID is required';
+      setError(errorMessage);
+      toast.error(errorMessage);
       setSubmitting(false);
       return;
     }
@@ -100,6 +110,15 @@ const RegisterToEvent = () => {
       const response = await registerForEvent(registrationData);
       
       if (response.success) {
+        // Track registration click with user info (fire and forget)
+        const duration = Date.now() - pageStartTimeRef.current;
+        trackClickWithUser(location.pathname, duration, {
+          phone: values.phone,
+          instagram: instagramHandle,
+        }, 'register_submit').catch(() => {
+          // Silently fail tracking
+        });
+        
         toast.success('Registration successful!');
         resetForm();
         setSelectedItems([]);
@@ -110,7 +129,26 @@ const RegisterToEvent = () => {
         toast.error(errorMessage);
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred during registration';
+      let errorMessage = 'Registration failed. Please try again later.';
+      
+      if (err instanceof ApiError) {
+        errorMessage = err.message || errorMessage;
+        // Handle specific status codes
+        if (err.statusCode === 400) {
+          errorMessage = 'Invalid registration data. Please check your information and try again.';
+        } else if (err.statusCode === 404) {
+          errorMessage = 'Event not found. It may have been removed.';
+        } else if (err.statusCode === 409) {
+          errorMessage = 'You are already registered for this event.';
+        } else if (err.statusCode === 500) {
+          errorMessage = 'Server error. Please try again later.';
+        } else if (err.statusCode === 0) {
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+        }
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -123,7 +161,11 @@ const RegisterToEvent = () => {
     <div className="w-screen min-h-screen bg-background-primary top-0 left-0 fixed overflow-y-auto">
     <IoIosArrowBack 
         className="absolute top-6 left-4 text-xl text-text-muted cursor-pointer"
-        onClick={() => eventId ? navigate(`/event/${eventId}`) : navigate('/explore')}
+        onClick={() => {
+          const duration = Date.now() - pageStartTimeRef.current;
+          trackClick(location.pathname, duration, 'back_button');
+          eventId ? navigate(`/event/${eventId}`) : navigate('/explore');
+        }}
       />
       <div className="max-w-xxl mx-auto py-[15%] px-4">
         <h1 className="text-center text-xxl font-bold text-text mb-4">

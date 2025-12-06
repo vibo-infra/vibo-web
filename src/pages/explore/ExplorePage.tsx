@@ -4,6 +4,8 @@ import PageTitle from '../../components/ui/PageTitle';
 import ApplyEventCardComponent from '../../components/event-cards/ApplyEventCardComponent';
 import styles from '../../styles/explorePage.module.scss';
 import { getAllEvents } from '../../services/apiServices';
+import { usePageTracking } from '../../hooks/usePageTracking';
+import { ApiError } from '../../utils/apiUtils';
 import type { Event } from '../../types';
 
 interface FilterMenuBarProps {
@@ -21,6 +23,9 @@ const FilterMenuBar = ({ selectedOption, onSelect }: FilterMenuBarProps) => {
     
     const handleFilterMenuBarOptionSelect = (optionValue: string) => {
         onSelect(optionValue);
+        // Track filter selection
+        const duration = 0; // Filter clicks are instant
+        trackClick(window.location.pathname, duration, `filter_${optionValue}`);
     }
     
     const selectedIndex = filterMenuOptions.findIndex(option => option.value === selectedOption);
@@ -54,6 +59,8 @@ const FilterMenuBar = ({ selectedOption, onSelect }: FilterMenuBarProps) => {
 }
 
 const ExplorePage = () => {
+    usePageTracking(); // Track page views
+    
     const [selectedFilterMenuBarOption, setSelectedFilterMenuBarOption] = useState('all');
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
@@ -65,17 +72,35 @@ const ExplorePage = () => {
                 setLoading(true);
                 setError(null);
                 const response = await getAllEvents();
+                
                 if (response.success && response.events) {
                     setEvents(response.events);
                 } else {
-                    const errorMessage = 'Failed to load events';
+                    const errorMessage = 'Failed to load events. Please try again.';
                     setError(errorMessage);
                     toast.error(errorMessage);
                 }
             } catch (err) {
-                const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+                let errorMessage = 'Failed to load events. Please try again later.';
+                
+                if (err instanceof ApiError) {
+                    errorMessage = err.message || errorMessage;
+                    // Handle specific status codes
+                    if (err.statusCode === 404) {
+                        errorMessage = 'Events endpoint not found. Please contact support.';
+                    } else if (err.statusCode === 500) {
+                        errorMessage = 'Server error. Please try again later.';
+                    } else if (err.statusCode === 0) {
+                        errorMessage = 'Network error. Please check your internet connection.';
+                    }
+                } else if (err instanceof Error) {
+                    errorMessage = err.message;
+                }
+                
                 setError(errorMessage);
                 toast.error(errorMessage);
+                // Set empty array on error so UI doesn't break
+                setEvents([]);
             } finally {
                 setLoading(false);
             }

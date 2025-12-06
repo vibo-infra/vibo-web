@@ -1,8 +1,10 @@
+import { useRef, useEffect } from 'react';
 import styles from '../../styles/component.module.scss';
 import { SlLocationPin } from "react-icons/sl";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoPersonCircleSharp } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { trackClick } from '../../utils/tracking';
 import type { Event } from '../../types';
 
 interface ApplyEventCardComponentProps {
@@ -22,12 +24,22 @@ const formatDate = (dateString: string): string => {
 
 const ApplyEventCardComponent = ({ event }: ApplyEventCardComponentProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const cardStartTimeRef = useRef<number>(Date.now());
+
+  useEffect(() => {
+    cardStartTimeRef.current = Date.now();
+  }, []);
 
   const handleButtonClick = () => {
+    const duration = Date.now() - cardStartTimeRef.current;
+    trackClick(location.pathname, duration, 'join_now');
     navigate(`/event/${event.eventId}`);
   };
 
   const handleCardClick = () => {
+    const duration = Date.now() - cardStartTimeRef.current;
+    trackClick(location.pathname, duration, 'event_card');
     navigate(`/event/${event.eventId}`);
   };
 

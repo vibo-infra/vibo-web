@@ -1,15 +1,23 @@
+import { useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import Input from '../../components/ui/Input'
 import styles from '../../styles/auth.module.scss'
 import Button from '../../components/ui/Button'
 import OAuth from '../../components/auth/OAuth'
 import { useNavigate } from 'react-router-dom'
+import { usePageTracking } from '../../hooks/usePageTracking';
+import { trackClick } from '../../utils/tracking';
 
 const Login = () => {
-
-  const navigate = useNavigate()
+  usePageTracking(); // Track page views
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pageStartTimeRef = useRef<number>(Date.now());
 
   const handleFormClick = (e: React.FormEvent) => {
     e.preventDefault();
+    const duration = Date.now() - pageStartTimeRef.current;
+    trackClick(location.pathname, duration, 'sign_in');
     navigate('/');
   }
 

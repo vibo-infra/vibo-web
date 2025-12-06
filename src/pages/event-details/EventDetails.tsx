@@ -1,12 +1,15 @@
 import { IoTimeOutline } from 'react-icons/io5'
 import { SlLocationPin } from 'react-icons/sl'
 import { RiHeartAdd2Line, RiShareLine, RiArrowLeftLine } from "react-icons/ri";
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LocationMap from '../../components/event-cards/LocationMap';
 import Button from '../../components/ui/Button';
 import { getEventById, getEventAttendees } from '../../services/apiServices';
+import { usePageTracking } from '../../hooks/usePageTracking';
+import { trackClick } from '../../utils/tracking';
+import { ApiError } from '../../utils/apiUtils';
 import type { Event, Attendee } from '../../types';
 
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1549452026-91574599e7f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
@@ -60,8 +63,12 @@ const renderTags = () => {
 };
 
 const EventDetails = () => {
+    usePageTracking(); // Track page views
+    
     const { eventId } = useParams<{ eventId: string }>();
     const navigate = useNavigate();
+    const location = useLocation();
+    const pageStartTimeRef = useRef<number>(Date.now());
     const [event, setEvent] = useState<Event | null>(null);
     const [attendees, setAttendees] = useState<Attendee[]>([]);
     const [loading, setLoading] = useState(true);
@@ -69,13 +76,16 @@ const EventDetails = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        pageStartTimeRef.current = Date.now();
     }, []);
 
     useEffect(() => {
         const fetchEventData = async () => {
             if (!eventId) {
-                setError('Event ID is required');
+                const errorMessage = 'Event ID is required';
+                setError(errorMessage);
                 setLoading(false);
+                toast.error(errorMessage);
                 return;
             }
 
@@ -83,24 +93,56 @@ const EventDetails = () => {
                 setLoading(true);
                 setError(null);
                 
-                const [eventResponse, attendeesResponse] = await Promise.all([
-                    getEventById(eventId),
-                    getEventAttendees(eventId).catch(() => ({ success: true, attendees: [] }))
-                ]);
+                // Fetch event details - this is critical, so we handle errors
+                let eventResponse;
+                try {
+                    eventResponse = await getEventById(eventId);
+                } catch (err) {
+                    let errorMessage = 'Failed to load event details. Please try again later.';
+                    
+                    if (err instanceof ApiError) {
+                        errorMessage = err.message || errorMessage;
+                        if (err.statusCode === 404) {
+                            errorMessage = 'Event not found. It may have been removed.';
+                        } else if (err.statusCode === 500) {
+                            errorMessage = 'Server error. Please try again later.';
+                        } else if (err.statusCode === 0) {
+                            errorMessage = 'Network error. Please check your internet connection.';
+                        }
+                    } else if (err instanceof Error) {
+                        errorMessage = err.message;
+                    }
+                    
+                    setError(errorMessage);
+                    toast.error(errorMessage);
+                    setLoading(false);
+                    return;
+                }
 
                 if (eventResponse.success && eventResponse.event) {
                     setEvent(eventResponse.event);
                 } else {
-                    const errorMessage = 'Failed to load event';
+                    const errorMessage = 'Failed to load event. Please try again.';
                     setError(errorMessage);
                     toast.error(errorMessage);
+                    setLoading(false);
+                    return;
                 }
 
-                if (attendeesResponse.success && attendeesResponse.attendees) {
-                    setAttendees(attendeesResponse.attendees);
+                // Fetch attendees - this is optional, so we fail silently
+                try {
+                    const attendeesResponse = await getEventAttendees(eventId);
+                    if (attendeesResponse.success && attendeesResponse.attendees) {
+                        setAttendees(attendeesResponse.attendees);
+                    }
+                } catch (err) {
+                    // Silently fail for attendees - don't break the page
+                    console.warn('Failed to load attendees:', err);
+                    setAttendees([]);
                 }
             } catch (err) {
-                const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+                // Fallback error handler
+                const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
                 setError(errorMessage);
                 toast.error(errorMessage);
             } finally {
@@ -113,12 +155,21 @@ const EventDetails = () => {
 
     const handleRegisterClick = () => {
         if (eventId) {
+            const duration = Date.now() - pageStartTimeRef.current;
+            trackClick(location.pathname, duration, 'register_now');
             navigate(`/register/${eventId}`);
         }
     }
 
     const handleBackClick = () => {
-        navigate('/explore',{ replace: true });
+        const duration = Date.now() - pageStartTimeRef.current;
+        trackClick(location.pathname, duration, 'back_button');
+        navigate(-1);
+    }
+
+    const handleShareClick = () => {
+        const duration = Date.now() - pageStartTimeRef.current;
+        trackClick(location.pathname, duration, 'share_button');
     }
 
     if (loading) {
@@ -147,7 +198,10 @@ const EventDetails = () => {
                 >
                     <RiArrowLeftLine className='text-xl text-gray-800' />
                 </button>
-                <button className='bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white transition-all'>
+                <button 
+                    onClick={handleShareClick}
+                    className='bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-white transition-all'
+                >
                     <RiShareLine className='text-xl text-gray-800' />
                 </button>
             </div>
