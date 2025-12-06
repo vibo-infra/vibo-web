@@ -1,11 +1,13 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import MultiSelectRadio from '../../components/ui/MultiSelectRadio';
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from 'react-router-dom';
+import { registerForEvent } from '../../services/apiServices';
 
 interface FormValues {
   phone: string;
@@ -48,9 +50,11 @@ const ErrorText = ({ name }: { name: string }) => (
 );
 
 const RegisterToEvent = () => {
+    const { eventId } = useParams<{ eventId: string }>();
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const navigate = useNavigate();
-    
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     
   const interestsList = [
     'Explore New Places',
@@ -66,37 +70,74 @@ const RegisterToEvent = () => {
     instagram: ''
   };
 
-  const handleSubmit = (values: FormValues, { setSubmitting, resetForm }: HandleSubmitProps) => {
-    const formData = {
-      ...values,
-      instagram: values.instagram.startsWith('@') ? values.instagram : `@${values.instagram}`,
-      interests: selectedItems
-    };
-    
-    console.log('Form data:', formData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      alert('Registration successful!');
-      resetForm();
-      setSelectedItems([]);
+  useEffect(() => {
+    if (!eventId) {
+      navigate('/explore');
+    }
+  }, [eventId, navigate]);
+
+  const handleSubmit = async (values: FormValues, { setSubmitting, resetForm }: HandleSubmitProps) => {
+    if (!eventId) {
+      setError('Event ID is required');
       setSubmitting(false);
-    }, 1000);
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      setError(null);
+      
+      const instagramHandle = values.instagram.startsWith('@') 
+        ? values.instagram.replace('@', '') 
+        : values.instagram;
+
+      const registrationData = {
+        eventId,
+        mobileNumber: values.phone,
+        instagram: instagramHandle
+      };
+
+      const response = await registerForEvent(registrationData);
+      
+      if (response.success) {
+        toast.success('Registration successful!');
+        resetForm();
+        setSelectedItems([]);
+        navigate(`/event/${eventId}`, { replace: true });
+      } else {
+        const errorMessage = 'Registration failed. Please try again.';
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred during registration';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="w-screen min-h-screen bg-background-primary top-0 left-0 fixed overflow-y-auto">
     <IoIosArrowBack 
         className="absolute top-6 left-4 text-xl text-text-muted cursor-pointer"
-        onClick={() => navigate('/explore')}
+        onClick={() => eventId ? navigate(`/event/${eventId}`) : navigate('/explore')}
       />
       <div className="max-w-xxl mx-auto py-[15%] px-4">
         <h1 className="text-center text-xxl font-bold text-text mb-4">
-          Register for Event
+          Let’s get you in.
         </h1>
         <p className="text-center text-md text-text-muted mb-12">
           Tell us more about yourself
         </p>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 text-sm text-center">{error}</p>
+          </div>
+        )}
 
         <Formik
           initialValues={initialValues}
@@ -105,7 +146,7 @@ const RegisterToEvent = () => {
           validateOnChange={true}
           validateOnBlur={true}
         >
-          {({ isSubmitting, handleSubmit }) => (
+          {({ handleSubmit: formikHandleSubmit }) => (
             <div className="flex flex-col gap-2 w-full max-w-lg mx-auto">
               {/* Phone Number Field */}
               <Field name="phone">
@@ -158,7 +199,7 @@ const RegisterToEvent = () => {
               <Button
                 variant="primary"
                 className="h-20 shadow-soft mt-20 font-semibold text-md text-text-light absolute bottom-8 left-1/2 transform -translate-x-1/2 max-w-lg w-full"
-                onClick={handleSubmit}
+                onClick={formikHandleSubmit}
                 disabled={isSubmitting}
                 type='submit'
               >

@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import PageTitle from '../../components/ui/PageTitle';
 import ApplyEventCardComponent from '../../components/event-cards/ApplyEventCardComponent';
 import styles from '../../styles/explorePage.module.scss';
+import { getAllEvents } from '../../services/apiServices';
+import type { Event } from '../../types';
 
 interface FilterMenuBarProps {
     selectedOption: string;
@@ -51,33 +54,74 @@ const FilterMenuBar = ({ selectedOption, onSelect }: FilterMenuBarProps) => {
 }
 
 const ExplorePage = () => {
-
     const [selectedFilterMenuBarOption, setSelectedFilterMenuBarOption] = useState('all');
+    const [events, setEvents] = useState<Event[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-  return (
-    <div className={`${styles.explorePageContainer} w-screen bg-background-primary-light h-full`}>
-        <PageTitle 
-            title="Discover"
-            highlightedText="Events"
-            description="Find the best events happening around you."
-        />
-        <div className='sticky top-8 z-50 mt-8'>
-            <FilterMenuBar 
-                selectedOption={selectedFilterMenuBarOption} 
-                onSelect={setSelectedFilterMenuBarOption}
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await getAllEvents();
+                if (response.success && response.events) {
+                    setEvents(response.events);
+                } else {
+                    const errorMessage = 'Failed to load events';
+                    setError(errorMessage);
+                    toast.error(errorMessage);
+                }
+            } catch (err) {
+                const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+                setError(errorMessage);
+                toast.error(errorMessage);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
+    return (
+        <div className={`${styles.explorePageContainer} w-screen bg-background-primary-light h-full`}>
+            <PageTitle 
+                title="Discover"
+                highlightedText="Events"
+                description="Find the best events happening around you."
             />
+            <div className='sticky top-8 z-50 mt-8'>
+                <FilterMenuBar 
+                    selectedOption={selectedFilterMenuBarOption} 
+                    onSelect={setSelectedFilterMenuBarOption}
+                />
+            </div>
+            {loading && (
+                <div className="flex justify-center items-center py-20">
+                    <p className="text-text-muted">Loading events...</p>
+                </div>
+            )}
+            {error && (
+                <div className="flex justify-center items-center py-20">
+                    <p className="text-red-500">{error}</p>
+                </div>
+            )}
+            {!loading && !error && (
+                <div className={`${styles.exploreCardContainer} snap-y snap-mandatory`}>
+                    {events.length > 0 ? (
+                        events.map((event) => (
+                            <ApplyEventCardComponent key={event.eventId} event={event} />
+                        ))
+                    ) : (
+                        <div className="flex justify-center items-center py-20">
+                            <p className="text-text-muted">No events found</p>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
-         <div className={`${styles.exploreCardContainer} snap-y snap-mandatory`}>
-            <ApplyEventCardComponent />
-            <ApplyEventCardComponent />
-            <ApplyEventCardComponent />
-            <ApplyEventCardComponent />
-            <ApplyEventCardComponent />
-            <ApplyEventCardComponent />
-            <ApplyEventCardComponent />
-         </div>
-    </div>
-  )
+    )
 }
 
 export default ExplorePage

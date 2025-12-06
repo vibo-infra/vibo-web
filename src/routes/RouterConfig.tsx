@@ -13,8 +13,8 @@ const RouterConfig = () => {
             <Route path='/' element={<LandingPage />} />
             <Route path='/login' element={<Login />} />
             <Route path='/explore' element={<ExplorePage />} />
-            <Route path='/id' element={<EventDetails />} />
-            <Route path='/register' element={<RegisterToEvent />} />
+            <Route path='/event/:eventId' element={<EventDetails />} />
+            <Route path='/register/:eventId' element={<RegisterToEvent />} />
         </Routes>
       </BrowserRouter>
     </div>

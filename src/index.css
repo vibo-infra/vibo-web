@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+@import "react-toastify/dist/ReactToastify.css";
 
 @theme {
     /* Colors */
@@ -91,4 +92,13 @@ p{
 .peer:focus ~ label,
 .peer:not(:placeholder-shown) ~ label {
     font-size: var(--font-xs) !important;
+}
+
+/* Toast notification styles */
+.Toastify__toast {
+    font-size: var(--text-md) !important;
+}
+
+.Toastify__toast-body {
+    font-size: var(--text-md) !important;
 }
