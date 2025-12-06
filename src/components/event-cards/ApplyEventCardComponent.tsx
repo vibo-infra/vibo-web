@@ -1,5 +1,4 @@
 import styles from '../../styles/component.module.scss';
-import { FiUsers } from "react-icons/fi";
 import { SlLocationPin } from "react-icons/sl";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoPersonCircleSharp } from "react-icons/io5";
