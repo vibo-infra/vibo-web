@@ -6,6 +6,7 @@ import styles from '../../styles/explorePage.module.scss';
 import { getAllEvents } from '../../services/apiServices';
 import { usePageTracking } from '../../hooks/usePageTracking';
 import { ApiError } from '../../utils/apiUtils';
+import { trackClick } from '../../utils/tracking';
 import type { Event } from '../../types';
 
 interface FilterMenuBarProps {

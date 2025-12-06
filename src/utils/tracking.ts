@@ -4,7 +4,7 @@ import type { LocationSchema, UserSchema, EventType } from '../types';
 
 // Get user's geolocation
 export const getUserLocation = (): Promise<LocationSchema> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         if (!navigator.geolocation) {
             // Fallback to default location if geolocation is not supported
             resolve({

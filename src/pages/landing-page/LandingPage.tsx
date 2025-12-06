@@ -1,12 +1,9 @@
-import { useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 import SearchEventComponent from '../../components/landing-page/SearchEventComponent';
 import LandingPageCardComponent from '../../components/landing-page/LandingPageCardComponent';
 import styles from '../../styles/landing.module.scss';
 import OnlyPreviewCardComponent from '../../components/event-cards/OnlyPreviewCardComponent';
 import PageTitle from '../../components/ui/PageTitle';
 import { usePageTracking } from '../../hooks/usePageTracking';
-import { trackClick } from '../../utils/tracking';
 
 const HeroSection = () => {
   return (
@@ -41,8 +38,6 @@ const NearbyEventsSection = () => {
 
 const LandingPage = () => {
   usePageTracking(); // Track page views
-  const location = useLocation();
-  const pageStartTimeRef = useRef<number>(Date.now());
 
 const cards = [
   {

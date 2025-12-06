@@ -2,14 +2,21 @@ const BASE_URL_V0 = import.meta.env.VITE_BASE_URL_V0 as string;
 
 // Custom error class for API errors
 export class ApiError extends Error {
+    statusCode?: number;
+    statusText?: string;
+    url?: string;
+
     constructor(
         message: string,
-        public statusCode?: number,
-        public statusText?: string,
-        public url?: string
+        statusCode?: number,
+        statusText?: string,
+        url?: string
     ) {
         super(message);
         this.name = 'ApiError';
+        this.statusCode = statusCode;
+        this.statusText = statusText;
+        this.url = url;
     }
 }
 
