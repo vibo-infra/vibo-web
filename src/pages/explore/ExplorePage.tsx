@@ -9,6 +9,7 @@ import { ApiError } from '../../utils/apiUtils';
 import { trackClick } from '../../utils/tracking';
 import type { Event } from '../../types';
 import Loader from '../../components/ui/Loader';
+import { MdFreeBreakfast } from "react-icons/md";
 
 interface FilterMenuBarProps {
     selectedOption: string;
@@ -76,7 +77,19 @@ const ExplorePage = () => {
                 const response = await getAllEvents();
                 
                 if (response.success && response.events) {
-                    setEvents(response.events);
+                    // Sort events by eventId - latest first (assuming higher eventId = newer)
+                    const sortedEvents = [...response.events].sort((a, b) => {
+                        // Convert eventId to number for comparison, fallback to string comparison
+                        const idA = parseInt(a.eventId, 10) || a.eventId;
+                        const idB = parseInt(b.eventId, 10) || b.eventId;
+                        // Sort descending (higher/newer eventId first)
+                        if (typeof idA === 'number' && typeof idB === 'number') {
+                            return idB - idA;
+                        }
+                        // String comparison (descending)
+                        return String(idB).localeCompare(String(idA));
+                    });
+                    setEvents(sortedEvents);
                 } else {
                     const errorMessage = 'Failed to load events. Please try again.';
                     setError(errorMessage);
@@ -141,8 +154,9 @@ const ExplorePage = () => {
                             <ApplyEventCardComponent key={event.eventId} event={event} />
                         ))
                     ) : (
-                        <div className="flex justify-center items-center py-20">
-                            <p className="text-text-muted">No events found</p>
+                        <div className="flex flex-col mt-5 text-[10rem] text-text-muted/35 justify-center items-center py-20">
+                            <MdFreeBreakfast />
+                            <p className="text-text-muted/35 text-xl text-center font-bold">Your neighborhood is taking a break</p>
                         </div>
                     )}
                 </div>

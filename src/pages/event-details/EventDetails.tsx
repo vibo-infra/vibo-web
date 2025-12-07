@@ -248,7 +248,7 @@ const EventDetails = () => {
                         <div className='bg-linear-to-br from-primary to-primary-hover text-white px-5 py-3 rounded-2xl shadow-lg'>
                             <div className='text-center'>
                                 <span className='text-2xl font-bold'>{event.eventCost}</span>
-                                <p className='text-xs opacity-90 mt-0.5'>per ticket</p>
+                                <p className='text-xs opacity-90 mt-0.5'>{event.eventCost === "FREE" ? "" : "per ticket"}</p>
                             </div>
                         </div>
                     </div>
