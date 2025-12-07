@@ -8,6 +8,7 @@ import { usePageTracking } from '../../hooks/usePageTracking';
 import { ApiError } from '../../utils/apiUtils';
 import { trackClick } from '../../utils/tracking';
 import type { Event } from '../../types';
+import Loader from '../../components/ui/Loader';
 
 interface FilterMenuBarProps {
     selectedOption: string;
@@ -125,7 +126,7 @@ const ExplorePage = () => {
             </div>
             {loading && (
                 <div className="flex justify-center items-center py-20">
-                    <p className="text-text-muted">Loading events...</p>
+                    <Loader size='lg' color='border-primary'/>
                 </div>
             )}
             {error && (

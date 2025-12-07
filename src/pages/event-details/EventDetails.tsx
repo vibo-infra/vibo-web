@@ -11,6 +11,7 @@ import { usePageTracking } from '../../hooks/usePageTracking';
 import { trackClick } from '../../utils/tracking';
 import { ApiError } from '../../utils/apiUtils';
 import type { Event, Attendee } from '../../types';
+import Loader from '../../components/ui/Loader';
 
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1549452026-91574599e7f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 
@@ -164,7 +165,7 @@ const EventDetails = () => {
     const handleBackClick = () => {
         const duration = Date.now() - pageStartTimeRef.current;
         trackClick(location.pathname, duration, 'back_button');
-        navigate(-1);
+        navigate('/explore');
     }
 
     const handleShareClick = () => {
@@ -174,8 +175,9 @@ const EventDetails = () => {
 
     if (loading) {
         return (
-            <div className='flex justify-center items-center min-h-screen'>
-                <p className='text-text-muted'>Loading event details...</p>
+            <div className='flex flex-col gap-3 justify-center items-center min-h-screen'>
+                <p className='text-black text-md'>Loading event details...</p>
+                <Loader size='lg' color='border-secondary'/>
             </div>
         );
     }
