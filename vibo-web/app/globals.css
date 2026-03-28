@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens: Light Theme ─── */
+:root {
+  --orange: #ff6b4a;
+  --orange-dim: rgba(255, 107, 74, 0.12);
+  --yellow: #c8f135;
+  --yellow-dim: rgba(200, 241, 53, 0.22);
+
+  --bg: #f5f5f0;
+  --surface: #edede7;
+  --surface2: #deded6;
+  --border: rgba(15, 15, 15, 0.08);
+  --border-strong: rgba(15, 15, 15, 0.14);
+
+  --text: #0f0f0f;
+  --text-2: #4a4a44;
+  --text-3: #8a8a84;
+  --text-4: #c0c0b8;
+}
+
+/* ─── Design Tokens: Dark Theme ─── */
+[data-theme="dark"] {
+  --bg: #111111;
+  --surface: #1a1a1a;
+  --surface2: #252525;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  --text: #f2f2ec;
+  --text-2: #b8b8b0;
+  --text-3: #666660;
+  --text-4: #303030;
+}
+
+/* ─── Tailwind Theme Extension ─── */
+@theme inline {
+  --color-accent: var(--orange);
+  --color-accent-dim: var(--orange-dim);
+  --color-highlight: var(--yellow);
+  --color-highlight-dim: var(--yellow-dim);
+
+  --color-page: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface2);
+
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+
+  --color-heading: var(--text);
+  --color-body: var(--text-2);
+  --color-muted: var(--text-3);
+  --color-faint: var(--text-4);
+
+  --font-display: var(--font-syne);
+  --font-body: var(--font-nunito);
+
+  --radius-card: 14px;
+}
+
+/* ─── Global Base ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-nunito, "Nunito", sans-serif);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Smooth theme transitions */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: background-color 0.4s ease, color 0.3s ease, border-color 0.4s ease,
+    box-shadow 0.4s ease, fill 0.3s ease, stroke 0.3s ease !important;
+}
+
+/* ─── Keyframe Animations ─── */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes draw-underline {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ─── Utility Classes ─── */
+.underline-word {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-word::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background: var(--orange);
+  border-radius: 2px;
+  transform-origin: left;
+  animation: draw-underline 0.8s ease 0.8s both;
+}
+
+/* ─── Map Grid Background ─── */
+.map-grid-lines {
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ─── Selection Styling ─── */
+::selection {
+  background: var(--orange-dim);
+  color: var(--text);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-4);
+}
