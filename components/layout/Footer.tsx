@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { homeSectionLinks } from "@/lib/constants";
 
 export function Footer() {
   return (
@@ -14,20 +15,20 @@ export function Footer() {
           </Link>
 
           <div className="flex flex-wrap gap-6">
-            <a
-              href="#how"
+            <Link
+              href={homeSectionLinks.howItWorks}
               className="text-[13px] text-muted no-underline transition-colors hover:text-heading"
             >
               How it works
-            </a>
-            <a
-              href="#price"
+            </Link>
+            <Link
+              href={homeSectionLinks.pricing}
               className="text-[13px] text-muted no-underline transition-colors hover:text-heading"
             >
               Pricing
-            </a>
+            </Link>
             <Link
-              href="/terms"
+              href="/tnc"
               className="text-[13px] text-muted no-underline transition-colors hover:text-heading"
             >
               Terms & Conditions

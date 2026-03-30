@@ -3,13 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
-import { navLinks } from "@/lib/constants";
+import { homeSectionLinks, navLinks } from "@/lib/constants";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { MobileMenu } from "./MobileMenu";
+import { fetchWaitlistCountClient } from "@/lib/api/services/webApi";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [lineCount, setLineCount] = useState<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -29,6 +31,12 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    void fetchWaitlistCountClient().then((n) => {
+      if (n != null) setLineCount(n);
+    });
+  }, []);
+
   return (
     <>
       <nav
@@ -38,44 +46,50 @@ export function Navbar() {
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <div className="mx-auto flex w-full max-w-[1120px] items-center justify-between">
+        <div className="mx-auto flex w-full max-w-[1120px] items-center justify-between gap-4">
           <Link
             href="/"
-            className="font-display text-[22px] font-extrabold tracking-[-0.04em] text-heading no-underline"
+            className="shrink-0 font-display text-[22px] font-extrabold tracking-[-0.04em] text-heading no-underline"
           >
             vi<span className="text-accent">b</span>o
           </Link>
 
-          <ul className="flex items-center gap-8 max-md:hidden">
+          <ul className="flex flex-1 items-center justify-center gap-8 max-lg:hidden">
             {navLinks.map((link) => (
               <li key={link.label} className="list-none">
-                {link.href.startsWith("/") ? (
-                  <Link
-                    href={link.href}
-                    className="text-[13px] font-bold tracking-[0.01em] text-muted no-underline transition-colors hover:text-heading"
-                  >
-                    {link.label}
-                  </Link>
-                ) : (
-                  <a
-                    href={link.href}
-                    className="text-[13px] font-bold tracking-[0.01em] text-muted no-underline transition-colors hover:text-heading"
-                  >
-                    {link.label}
-                  </a>
-                )}
+                <Link
+                  href={link.href}
+                  className="text-[13px] font-bold tracking-[0.01em] text-muted no-underline transition-colors hover:text-heading"
+                >
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-3">
+            <span className="hidden text-[12px] font-semibold text-muted min-[900px]:inline">
+              {lineCount != null ? (
+                <>
+                  <strong className="font-extrabold text-body">
+                    {lineCount.toLocaleString("en-IN")}
+                  </strong>{" "}
+                  people in line
+                </>
+              ) : (
+                <>
+                  <strong className="font-extrabold text-body">0</strong>{" "}
+                  people in line
+                </>
+              )}
+            </span>
             <ThemeToggle />
-            <a
-              href="#wl"
+            <Link
+              href={homeSectionLinks.waitlist}
               className="inline-flex items-center gap-1.5 rounded-full bg-heading px-5 py-2.5 font-body text-[13px] font-extrabold text-page no-underline transition-all hover:opacity-90 hover:-translate-y-px max-md:hidden"
             >
               Get early access →
-            </a>
+            </Link>
             <button
               className="hidden cursor-pointer border-none bg-transparent p-1 text-heading max-md:flex"
               onClick={() => setMobileOpen(true)}

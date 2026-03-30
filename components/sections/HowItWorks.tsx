@@ -1,13 +1,21 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { steps, phoneCards } from "@/lib/constants";
+import { steps, phoneCards, type PhoneCard } from "@/lib/constants";
+import type { NearbyEvent } from "@/lib/api/types";
+import { nearbyEventsToPhoneCards } from "@/lib/map-events";
 
-function PhoneMockup({ activeStep }: { activeStep: number }) {
+function PhoneMockup({
+  activeStep,
+  cards,
+}: {
+  activeStep: number;
+  cards: PhoneCard[];
+}) {
   return (
     <div className="w-full max-w-[300px] rounded-[36px] border border-line-strong bg-surface" style={{ aspectRatio: "9/19" }}>
       <div className="flex h-full flex-col px-4 pt-6 pb-4">
@@ -29,7 +37,7 @@ function PhoneMockup({ activeStep }: { activeStep: number }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          {phoneCards.map((card) => (
+          {cards.map((card) => (
             <motion.div
               key={card.id}
               className={`rounded-xl border bg-page p-3 transition-colors duration-300 ${
@@ -87,8 +95,19 @@ function PhoneMockup({ activeStep }: { activeStep: number }) {
   );
 }
 
-export function HowItWorks() {
+type HowItWorksProps = {
+  previewEvents: NearbyEvent[];
+};
+
+export function HowItWorks({ previewEvents }: HowItWorksProps) {
   const [activeStep, setActiveStep] = useState(1);
+
+  const cards = useMemo(() => {
+    const fromApi = nearbyEventsToPhoneCards(previewEvents);
+    if (fromApi.length >= 2) return fromApi;
+    if (fromApi.length === 1) return [fromApi[0], phoneCards[1]];
+    return [...phoneCards];
+  }, [previewEvents]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -115,7 +134,7 @@ export function HowItWorks() {
 
         <div className="mt-16 grid grid-cols-2 items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-12">
           <FadeIn className="sticky top-[100px] max-[900px]:static max-[900px]:flex max-[900px]:justify-center">
-            <PhoneMockup activeStep={activeStep} />
+            <PhoneMockup activeStep={activeStep} cards={cards} />
           </FadeIn>
 
           <FadeIn className="pt-2">

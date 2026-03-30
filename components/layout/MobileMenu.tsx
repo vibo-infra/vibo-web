@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { navLinks } from "@/lib/constants";
+import { homeSectionLinks, navLinks } from "@/lib/constants";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 type MobileMenuProps = {
@@ -41,35 +41,25 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.05 * i, duration: 0.3 }}
           >
-            {link.href.startsWith("/") ? (
-              <Link
-                href={link.href}
-                onClick={onClose}
-                className="font-display border-b border-line-strong py-2 text-[30px] font-extrabold tracking-[-0.02em] text-heading no-underline transition-colors hover:text-highlight"
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                href={link.href}
-                onClick={onClose}
-                className="font-display border-b border-line-strong py-2 text-[30px] font-extrabold tracking-[-0.02em] text-heading no-underline transition-colors hover:text-highlight"
-              >
-                {link.label}
-              </a>
-            )}
+            <Link
+              href={link.href}
+              onClick={onClose}
+              className="font-display border-b border-line-strong py-2 text-[30px] font-extrabold tracking-[-0.02em] text-heading no-underline transition-colors hover:text-highlight"
+            >
+              {link.label}
+            </Link>
           </motion.div>
         ))}
       </div>
 
       <div className="mt-auto flex flex-col gap-4">
-        <a
-          href="#wl"
+        <Link
+          href={homeSectionLinks.waitlist}
           onClick={onClose}
           className="flex h-12 items-center justify-center rounded-xl bg-heading text-center text-sm font-extrabold text-page no-underline transition-opacity hover:opacity-90"
         >
           Get early access →
-        </a>
+        </Link>
         <div className="flex items-center gap-2.5">
           <span className="text-[13px] text-muted">Switch theme</span>
           <ThemeToggle />

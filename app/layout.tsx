@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { AnalyticsRoot } from "@/components/providers/AnalyticsRoot";
 import "./globals.css";
 
 const syne = Syne({
@@ -127,6 +128,7 @@ export default function RootLayout({
         className={`${syne.variable} ${nunito.variable} font-body antialiased`}
       >
         <ThemeProvider>
+          <AnalyticsRoot />
           <ScrollProgress />
           <Navbar />
           <main>{children}</main>
