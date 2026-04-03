@@ -25,9 +25,9 @@ export const navLinks = [
 ] as const;
 
 export const trustStats = [
-  { value: "2,400", unit: "+", label: "events hosted" },
-  { value: "4.8", unit: "★", label: "average rating" },
-  { value: "12", unit: " cities", label: "and growing" },
+  { value: "0", unit: "", label: "events hosted" },
+  { value: "5", unit: "★", label: "average rating" },
+  { value: "1", unit: " cities", label: "and growing" },
   { value: "0", unit: "₹", label: "to attend any event" },
 ] as const;
 
@@ -85,30 +85,6 @@ export type PhoneCard = {
   badgeColor?: string;
   gradient: string;
 };
-
-export const phoneCards: PhoneCard[] = [
-  {
-    id: 1,
-    title: "Sunrise Hike — Sanjay Gandhi Park",
-    rating: "4.9",
-    attendees: "12 going",
-    price: "Free",
-    priceHighlight: true,
-    distance: "2.1km",
-    gradient: "from-accent-dim to-highlight-dim",
-  },
-  {
-    id: 2,
-    title: "Board Game Night · Bandra",
-    rating: "4.8",
-    attendees: "8/15 spots",
-    price: "Free",
-    priceHighlight: false,
-    badge: "✓ Verified",
-    badgeColor: "#00B4A0",
-    gradient: "from-highlight-dim to-[rgba(0,180,160,0.1)]",
-  },
-];
 
 export type BentoFeature = {
   span: number;
@@ -181,60 +157,42 @@ export const bentoBottomFeatures = [
   },
 ] as const;
 
-export const mapPins = [
-  {
-    left: "22%",
-    top: "35%",
-    color: "orange" as const,
-    title: "Sunrise Hike — Sanjay Gandhi Park",
-    meta: ["★ 4.9", "12 going", "2.1km"],
-  },
-  {
-    left: "48%",
-    top: "55%",
-    color: "teal" as const,
-    title: "Sketching at the Sea Link · Bandra",
-    meta: ["★ 4.8", "8/15 spots", "Verified"],
-  },
-  {
-    left: "65%",
-    top: "42%",
-    color: "orange" as const,
-    title: "Board Game Night · Colaba",
-    meta: ["★ 4.7", "6 going", "Tomorrow"],
-  },
-  {
-    left: "35%",
-    top: "68%",
-    color: "orange" as const,
-    title: "Rooftop Jam Session · Juhu",
-    meta: ["★ 5.0", "4 going", "3.5km"],
-  },
-  {
-    left: "75%",
-    top: "65%",
-    color: "teal" as const,
-    title: "Community Run · Carter Road",
-    meta: ["★ 4.9", "23 going", "6am"],
-  },
-  {
-    left: "55%",
-    top: "28%",
-    color: "orange" as const,
-    title: "Home-Cook Meetup — Try 5 Dishes",
-    meta: ["★ 4.8", "₹499", "6 spots left"],
-  },
-] as const;
-
 export const mapFilters = ["All", "Outdoors", "Creative", "Food", "Social"] as const;
 
-export const pricingPlans = [
+/** Keys for `GET /content?section=pricing` — amounts must not be hardcoded in the UI. */
+export type PricingCmsSlot = "host_boost" | "host_unlimited" | "ticketing_fee";
+
+export const PRICING_CMS_KEYS: Record<PricingCmsSlot, string> = {
+  host_boost: "pricing.host_boost",
+  host_unlimited: "pricing.host_unlimited",
+  ticketing_fee: "pricing.ticketing_fee",
+};
+
+export type PricingPlanFeature =
+  | { text: string; included: boolean }
+  | { included: false; cmsSlot: PricingCmsSlot };
+
+export type PricingPlanDef = {
+  tier: string;
+  /** Shown as headline price when not using CMS. */
+  priceLiteral: string | null;
+  /** When set, headline price comes from this `product_content` key only. */
+  priceCmsKey: string | null;
+  priceSuffix: string | null;
+  subtitle: string;
+  featured: boolean;
+  cta: string;
+  features: readonly PricingPlanFeature[];
+};
+
+export const pricingPlans: readonly PricingPlanDef[] = [
   {
     tier: "Attendee",
-    price: "Free",
+    priceLiteral: "Free",
+    priceCmsKey: null,
     priceSuffix: null,
     subtitle: "No asterisk. No trial. No catch.",
-    featured: false,
+    featured: true,
     cta: "Get started free",
     features: [
       { text: "Discover all events near you", included: true },
@@ -246,36 +204,38 @@ export const pricingPlans = [
   },
   {
     tier: "Host",
-    price: "Free",
+    priceLiteral: "Free ",
+    priceCmsKey: null,
     priceSuffix: "to start",
     subtitle: "Pay only when you want to grow.",
-    featured: true,
+    featured: false,
     cta: "Start hosting free",
     features: [
       { text: "3 events per month, completely free", included: true },
       { text: "Verified host badge from day one", included: true },
       { text: "Basic attendance and rating stats", included: true },
-      { text: "Event Boost from ₹199 / event", included: false },
-      { text: "Unlimited events from ₹499 / mo", included: false },
-      { text: "Ticketing — 6% per ticket sold", included: false },
+      { included: false, cmsSlot: "host_boost" },
+      { included: false, cmsSlot: "host_unlimited" },
+      { included: false, cmsSlot: "ticketing_fee" },
     ],
   },
-  {
-    tier: "Host Pro",
-    price: "₹999",
-    priceSuffix: "/mo",
-    subtitle: "For hosts serious about building something.",
-    featured: false,
-    cta: "Go Pro",
-    features: [
-      { text: "Everything in Host, no limits", included: true },
-      { text: "Deep analytics and reach stats", included: true },
-      { text: "2 free event boosts every month", included: true },
-      { text: "Priority verification in 24 hours", included: true },
-      { text: "First access to every new feature", included: true },
-      { text: "Direct support — not a ticket queue", included: true },
-    ],
-  },
-] as const;
+  // {
+  //   tier: "Host Pro",
+  //   priceLiteral: null,
+  //   priceCmsKey: "pricing.host_pro",
+  //   priceSuffix: null,
+  //   subtitle: "For hosts serious about building something.",
+  //   featured: false,
+  //   cta: "Go Pro",
+  //   features: [
+  //     { text: "Everything in Host, no limits", included: true },
+  //     { text: "Deep analytics and reach stats", included: true },
+  //     { text: "2 free event boosts every month", included: true },
+  //     { text: "Priority verification in 24 hours", included: true },
+  //     { text: "First access to every new feature", included: true },
+  //     { text: "Direct support — not a ticket queue", included: true },
+  //   ],
+  // },
+];
 
 export const socialProofAvatars = ["AK", "SP", "RN", "MV", "+"] as const;

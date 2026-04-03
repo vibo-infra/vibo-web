@@ -27,7 +27,7 @@ export const AnalyticsEndpoints = {
   events: `${ANALYTICS_API_PREFIX}/events`,
 } as const;
 
-/** Default query params for landing “near Mumbai” feeds */
+/** `GET /v0/api/web/events/nearby` — vibo-backend `getNearbyEvents`. */
 export const DEFAULT_EVENT_CITY = "Mumbai" as const;
 export const DEFAULT_EVENT_LIMIT = 6 as const;
 

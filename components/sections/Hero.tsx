@@ -131,8 +131,8 @@ export function Hero() {
       className="relative flex min-h-screen flex-col justify-center overflow-hidden pt-[130px] pb-[90px]"
       id="top"
     >
-      <div className="pointer-events-none absolute top-1/2 -right-[120px] h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,var(--yellow-dim)_0%,transparent_68%)]" />
-      <div className="pointer-events-none absolute bottom-[10%] -left-[80px] h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,var(--orange-dim)_0%,transparent_70%)]" />
+      {/* <div className="pointer-events-none absolute top-1/2 -right-[120px] h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,var(--yellow-dim)_0%,transparent_68%)]" />
+      <div className="pointer-events-none absolute bottom-[10%] -left-[80px] h-[300px] w-[300px] rounded-full bg-[radial-gradient(circle,var(--orange-dim)_0%,transparent_70%)]" /> */}
 
       <Container>
         <FadeIn>
@@ -155,7 +155,7 @@ export function Hero() {
         ) : null} */}
 
         <FadeIn delay={0.1}>
-          <h1 className="mb-4 max-w-[820px] font-display text-[clamp(46px,6.5vw,88px)] font-extrabold leading-[1.02] tracking-[-0.03em] text-heading">
+          <h1 className="mb-4 max-w-205 font-display text-[clamp(2.5rem,6.5vw,5.5rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-heading">
             Something fun is
             <br />
             <em className="font-semibold italic">happening near you.</em>
@@ -233,10 +233,10 @@ export function Hero() {
               </div>
             ) : (
               <>
-                <p className="max-w-[460px] text-[13px] font-semibold leading-snug tracking-[0.01em] text-muted">
+                {/* <p className="max-w-[460px] text-[13px] font-semibold leading-snug tracking-[0.01em] text-muted">
                   Get notified when VIBO launches in your city.
-                </p>
-                <div className="flex max-w-[460px] items-center gap-2">
+                </p> */}
+                <div className="flex max-w-115 items-center gap-2 mt-3">
                   <input
                     id="emailInput"
                     type="email"
@@ -266,9 +266,8 @@ export function Hero() {
               </>
             )}
 
-            <p className="text-xs font-medium text-faint">
-              Free forever for attendees. One email when VIBO hits your city.
-              That&apos;s it.
+            <p className="text-xs font-medium text-muted">
+                  Get notified when VIBO launches in your city.
             </p>
 
             <div className="flex items-center gap-5 pt-2">

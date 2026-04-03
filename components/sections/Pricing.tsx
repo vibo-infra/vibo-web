@@ -1,17 +1,20 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/FadeIn";
-import { pricingPlans } from "@/lib/constants";
+import {
+  pricingPlans,
+  PRICING_CMS_KEYS,
+  type PricingCmsSlot,
+  type PricingPlanDef,
+  type PricingPlanFeature,
+} from "@/lib/constants";
 import type { ProductContentMap } from "@/lib/api/types";
 import { readContentValue } from "@/lib/api/content-keys";
+import { fetchContentPricingClient } from "@/lib/api/services/webApi";
 import { track } from "@/lib/analytics";
-
-type PricingProps = {
-  content: ProductContentMap;
-};
 
 function planKey(tier: string): "attendee" | "host" | "host_pro" {
   if (tier === "Host Pro") return "host_pro";
@@ -19,42 +22,104 @@ function planKey(tier: string): "attendee" | "host" | "host_pro" {
   return "attendee";
 }
 
-export function Pricing({ content }: PricingProps) {
-  const hoverOnce = useRef(new Set<string>());
+function cmsFeatureLine(
+  slot: PricingCmsSlot,
+  raw: unknown,
+  loading: boolean
+): string {
+  if (loading) return "…";
+  const s = raw != null && String(raw).trim() !== "" ? String(raw) : "";
+  if (!s) return "—";
+  switch (slot) {
+    case "host_boost":
+      return `Event Boost from ${s} / event`;
+    case "host_unlimited":
+      return `Unlimited events from ${s}`;
+    case "ticketing_fee":
+      return `Ticketing — ${s} per ticket sold`;
+  }
+}
 
-  const labels = useMemo(
-    () => ({
-      boost: String(readContentValue(content, "pricing.host_boost") ?? "₹199"),
-      unlimited: String(
-        readContentValue(content, "pricing.host_unlimited") ?? "₹499/month"
-      ),
-      pro: String(readContentValue(content, "pricing.host_pro") ?? "₹999/mo"),
-      fee: String(readContentValue(content, "pricing.ticketing_fee") ?? "6%"),
-    }),
-    [content]
+function resolveFeature(
+  f: PricingPlanFeature,
+  content: ProductContentMap,
+  loading: boolean
+): { text: string; included: boolean } {
+  if ("text" in f) return { text: f.text, included: f.included };
+  const key = PRICING_CMS_KEYS[f.cmsSlot];
+  const raw = readContentValue(content, key);
+  return {
+    included: f.included,
+    text: cmsFeatureLine(f.cmsSlot, raw, loading),
+  };
+}
+
+/** Splits `…/mo` for typographic main + suffix when the API returns a combined string. */
+function headlineFromCms(
+  raw: unknown,
+  loading: boolean
+): { main: string; suffix: string | null } {
+  if (loading) return { main: "…", suffix: null };
+  const s = raw != null && String(raw).trim() !== "" ? String(raw).trim() : "";
+  if (!s) return { main: "—", suffix: null };
+  const m = s.match(/^(.+?)(\s*\/mo\s*)$/i);
+  if (m) {
+    return { main: m[1].trim(), suffix: "/mo" };
+  }
+  return { main: s, suffix: null };
+}
+
+function resolveHeadline(
+  plan: PricingPlanDef,
+  content: ProductContentMap,
+  loading: boolean
+): { main: string; suffix: string | null } {
+  if (plan.priceCmsKey) {
+    const raw = readContentValue(content, plan.priceCmsKey);
+    return headlineFromCms(raw, loading);
+  }
+  if (plan.priceLiteral) {
+    return { main: plan.priceLiteral, suffix: plan.priceSuffix };
+  }
+  return { main: "—", suffix: null };
+}
+
+export function Pricing() {
+  const hoverOnce = useRef(new Set<string>());
+  const [loadState, setLoadState] = useState<"loading" | "error" | "ok">(
+    "loading"
   );
+  const [content, setContent] = useState<ProductContentMap>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchContentPricingClient().then((data) => {
+      if (cancelled) return;
+      if (data === null) {
+        setLoadState("error");
+        return;
+      }
+      setContent(data);
+      setLoadState("ok");
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const loading = loadState === "loading";
 
   const plans = useMemo(() => {
     return pricingPlans.map((plan) => {
-      if (plan.tier === "Host") {
-        return {
-          ...plan,
-          features: plan.features.map((f) => {
-            let text: string = f.text;
-            text = text.replace("₹199 / event", `${labels.boost} / event`);
-            text = text.replace("from ₹499 / mo", `from ${labels.unlimited}`);
-            text = text.replace("6%", labels.fee);
-            return { ...f, text };
-          }),
-        };
-      }
-      if (plan.tier === "Host Pro") {
-        const main = labels.pro.replace(/\s*\/mo\s*$/i, "").trim();
-        return { ...plan, price: main || plan.price };
-      }
-      return plan;
+      const { main, suffix } = resolveHeadline(plan, content, loading);
+      return {
+        ...plan,
+        displayPrice: main,
+        displaySuffix: suffix,
+        features: plan.features.map((f) => resolveFeature(f, content, loading)),
+      };
     });
-  }, [labels]);
+  }, [content, loading]);
 
   const scrollToWaitlist = (tier: string) => {
     const el = document.getElementById("wl");
@@ -89,79 +154,84 @@ export function Pricing({ content }: PricingProps) {
           </p>
         </FadeIn>
 
-        <StaggerContainer className="mt-14 grid grid-cols-1 gap-3 md:grid-cols-3">
-          {plans.map((plan) => (
-            <StaggerItem key={plan.tier}>
-              <div
-                className={`relative rounded-card border p-8 transition-all hover:-translate-y-1 ${
-                  plan.featured
-                    ? "border-accent bg-page"
-                    : "border-line bg-surface"
-                }`}
-                onMouseEnter={() => onPlanHover(plan.tier)}
-              >
-                {plan.featured && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white">
-                    Most popular
-                  </div>
-                )}
-
-                <div className="mb-3 text-xs font-medium uppercase tracking-wider text-muted">
-                  {plan.tier}
-                </div>
-
-                <div className="mb-1.5 font-display text-[44px] font-light leading-none text-heading">
-                  {plan.price}
-                  {plan.priceSuffix && (
-                    <span className="text-lg text-muted">
-                      {plan.priceSuffix}
-                    </span>
-                  )}
-                </div>
-
-                <div className="mb-6 text-[13px] text-muted">
-                  {plan.subtitle}
-                </div>
-
-                <ul className="mb-7">
-                  {plan.features.map((feature, j) => (
-                    <li
-                      key={j}
-                      className="flex gap-2.5 border-b border-line py-[7px] text-sm font-light text-body last:border-b-0"
-                    >
-                      <span
-                        className={`mt-px shrink-0 text-xs ${
-                          feature.included ? "text-accent" : "text-faint"
-                        }`}
-                      >
-                        {feature.included ? "✓" : "—"}
-                      </span>
-                      {feature.text}
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  type="button"
-                  onClick={() => scrollToWaitlist(plan.tier)}
-                  className={`h-11 w-full cursor-pointer rounded-lg font-body text-sm font-medium transition-all ${
+        {loadState === "error" ? (
+          <FadeIn delay={0.15}>
+            <p className="mt-14 text-sm font-light leading-relaxed text-muted">
+              We couldn&apos;t load pricing. Check that the API is running and{" "}
+              <code className="text-xs">NEXT_PUBLIC_API_URL</code> is set, and
+              that the pricing section is published in{" "}
+              <code className="text-xs">product_content</code>.
+            </p>
+          </FadeIn>
+        ) : (
+          <StaggerContainer className="mt-14 grid grid-cols-1 gap-3 md:grid-cols-3">
+            {plans.map((plan) => (
+              <StaggerItem key={plan.tier}>
+                <div
+                  className={`relative rounded-card border p-8 transition-all hover:-translate-y-1 ${
                     plan.featured
-                      ? "border border-accent bg-accent text-white hover:opacity-90"
-                      : "border border-line-strong bg-transparent text-heading hover:bg-surface-alt"
+                      ? "border-accent bg-page"
+                      : "border-line bg-surface"
                   }`}
+                  onMouseEnter={() => onPlanHover(plan.tier)}
                 >
-                  {plan.cta}
-                </button>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+                  {plan.featured && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white">
+                      Most popular
+                    </div>
+                  )}
 
-        <FadeIn delay={0.2}>
-          <p className="mt-5 text-center text-[13px] text-muted">
-            Prices in INR. GST where applicable. Cancel anytime.
-          </p>
-        </FadeIn>
+                  <div className="mb-3 text-xs font-medium uppercase tracking-wider text-muted">
+                    {plan.tier}
+                  </div>
+
+                  <div className="mb-1.5 font-display text-[44px] font-light leading-none text-heading">
+                    {plan.displayPrice}
+                    {plan.displaySuffix ? (
+                      <span className="text-lg text-muted">
+                        {plan.displaySuffix}
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <div className="mb-6 text-[13px] text-muted">
+                    {plan.subtitle}
+                  </div>
+
+                  <ul className="mb-7">
+                    {plan.features.map((feature, j) => (
+                      <li
+                        key={j}
+                        className="flex gap-2.5 border-b border-line py-[7px] text-sm font-light text-body last:border-b-0"
+                      >
+                        <span
+                          className={`mt-px shrink-0 text-xs ${
+                            feature.included ? "text-accent" : "text-faint"
+                          }`}
+                        >
+                          {feature.included ? "✓" : "—"}
+                        </span>
+                        {feature.text}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    type="button"
+                    onClick={() => scrollToWaitlist(plan.tier)}
+                    className={`h-11 w-full cursor-pointer rounded-lg font-body text-sm font-medium transition-all ${
+                      plan.featured
+                        ? "border border-accent bg-accent text-white hover:opacity-90"
+                        : "border border-line-strong bg-transparent text-heading hover:bg-surface-alt"
+                    }`}
+                  >
+                    {plan.cta}
+                  </button>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        )}
       </Container>
     </section>
   );

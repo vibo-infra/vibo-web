@@ -1,9 +1,4 @@
-import {
-  WebEndpoints,
-  buildNearbyQuery,
-  DEFAULT_EVENT_CITY,
-  DEFAULT_EVENT_LIMIT,
-} from "@/lib/constants/api";
+import { WebEndpoints } from "@/lib/constants/api";
 import {
   webGetServer,
   webGetClient,
@@ -13,7 +8,6 @@ import {
 } from "@/lib/api/methods";
 import { sanitizeEmail, sanitizeReferralCode } from "@/lib/api/sanitize";
 import type {
-  NearbyEvent,
   ProductContentMap,
   ReferralLookupData,
   TncPayload,
@@ -34,14 +28,20 @@ export async function fetchContentTrustBarServer(): Promise<ProductContentMap> {
   }
 }
 
-export async function fetchContentPricingServer(): Promise<ProductContentMap> {
+/** Client-only — use with static export (`output: 'export'`) where RSC fetch only runs at build time. */
+export async function fetchContentPricingClient(): Promise<ProductContentMap | null> {
   try {
-    return await webGetServer<ProductContentMap>(
-      WebEndpoints.content("pricing"),
-      60
+    return await webGetClient<ProductContentMap>(
+      WebEndpoints.content("pricing")
     );
-  } catch {
-    return {};
+  } catch (e) {
+    if (process.env.NODE_ENV === "development") {
+      console.error(
+        "[vibo-web] GET /content?section=pricing failed. Check NEXT_PUBLIC_API_URL and the API.",
+        e
+      );
+    }
+    return null;
   }
 }
 
@@ -57,17 +57,6 @@ export async function fetchFaqsClient(): Promise<WebFaq[] | null> {
       );
     }
     return null;
-  }
-}
-
-export async function fetchNearbyEventsServer(): Promise<NearbyEvent[]> {
-  try {
-    return await webGetServer<NearbyEvent[]>(
-      buildNearbyQuery({ city: DEFAULT_EVENT_CITY, limit: DEFAULT_EVENT_LIMIT }),
-      300
-    );
-  } catch {
-    return [];
   }
 }
 
@@ -152,28 +141,15 @@ export async function updateWaitlistCityClient(
   >(WebEndpoints.waitlistCity, { email: safeEmail, city });
 }
 
-export async function fetchNearbyEventsClient(
-  category?: string
-): Promise<NearbyEvent[]> {
-  const path = buildNearbyQuery({
-    city: DEFAULT_EVENT_CITY,
-    limit: DEFAULT_EVENT_LIMIT,
-    category,
-  });
-  return webGetClient<NearbyEvent[]>(path);
-}
-
 /** Grouped facade — use individual exports above in UI, or this for DI/testing */
 export const webApi = {
   fetchContentTrustBarServer,
-  fetchContentPricingServer,
+  fetchContentPricingClient,
   fetchFaqsClient,
-  fetchNearbyEventsServer,
   fetchTncClient,
   fetchWaitlistCountClient,
   postReferralClickClient,
   fetchReferralClient,
   joinWaitlistClient,
   updateWaitlistCityClient,
-  fetchNearbyEventsClient,
 };

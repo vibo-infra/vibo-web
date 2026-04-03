@@ -46,13 +46,13 @@ export const metadata: Metadata = {
     "social events",
     "VIBO",
   ],
-  authors: [{ name: "VIBO Technologies" }],
-  creator: "VIBO Technologies",
-  metadataBase: new URL("https://vibo.app"),
+  authors: [{ name: "Vibo" }],
+  creator: "VIBO",
+  metadataBase: new URL("https://hellovibo.in"),
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://vibo.app",
+    url: "https://hellovibo.in",
     siteName: "VIBO",
     title: "VIBO — Good vibes happen nearby.",
     description:
@@ -98,7 +98,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "VIBO",
-    url: "https://vibo.app",
+    url: "https://hellovibo.in",
     description:
       "Discover local events, meet real people, and build community.",
     applicationCategory: "SocialNetworkingApplication",
@@ -111,8 +111,8 @@ export default function RootLayout({
     },
     creator: {
       "@type": "Organization",
-      name: "VIBO Technologies",
-      url: "https://vibo.app",
+      name: "VIBO",
+      url: "https://hellovibo.in",
     },
   };
 

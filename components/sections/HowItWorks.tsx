@@ -5,9 +5,34 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { steps, phoneCards, type PhoneCard } from "@/lib/constants";
-import type { NearbyEvent } from "@/lib/api/types";
-import { nearbyEventsToPhoneCards } from "@/lib/map-events";
+import { steps, type PhoneCard } from "@/lib/constants";
+import {
+  fetchNearbyEvents,
+  nearbyEventsToPhoneCards,
+} from "@/lib/map-events";
+
+const PHONE_PLACEHOLDERS: PhoneCard[] = [
+  {
+    id: 1,
+    title: "Nothing nearby yet",
+    rating: "—",
+    attendees: " ",
+    price: "—",
+    priceHighlight: false,
+    distance: "Check back soon",
+    gradient: "from-accent-dim to-highlight-dim",
+  },
+  {
+    id: 2,
+    title: "Host the first one",
+    rating: "—",
+    attendees: " ",
+    price: "—",
+    priceHighlight: false,
+    distance: "Near Mumbai",
+    gradient: "from-highlight-dim to-[rgba(0,180,160,0.1)]",
+  },
+];
 
 function PhoneMockup({
   activeStep,
@@ -95,19 +120,24 @@ function PhoneMockup({
   );
 }
 
-type HowItWorksProps = {
-  previewEvents: NearbyEvent[];
-};
-
-export function HowItWorks({ previewEvents }: HowItWorksProps) {
+export function HowItWorks() {
   const [activeStep, setActiveStep] = useState(1);
+  const [cards, setCards] = useState<PhoneCard[]>(PHONE_PLACEHOLDERS);
 
-  const cards = useMemo(() => {
-    const fromApi = nearbyEventsToPhoneCards(previewEvents);
-    if (fromApi.length >= 2) return fromApi;
-    if (fromApi.length === 1) return [fromApi[0], phoneCards[1]];
-    return [...phoneCards];
-  }, [previewEvents]);
+  useEffect(() => {
+    let cancelled = false;
+    void fetchNearbyEvents().then((events) => {
+      if (cancelled) return;
+      const fromApi = nearbyEventsToPhoneCards(events);
+      if (fromApi.length >= 2) setCards(fromApi.slice(0, 2));
+      else if (fromApi.length === 1)
+        setCards([fromApi[0], PHONE_PLACEHOLDERS[1]]);
+      else setCards(PHONE_PLACEHOLDERS);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -128,7 +158,8 @@ export function HowItWorks({ previewEvents }: HowItWorksProps) {
           <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
             Three taps to
             <br />
-            <em className="font-light text-accent">something real.</em>
+            <em className="font-light text-accent">something real </em>
+            - a visual
           </h2>
         </FadeIn>
 

@@ -8,11 +8,7 @@ import { MapSection } from "@/components/sections/MapSection";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCTA } from "@/components/sections/FinalCTA";
-import {
-  fetchContentTrustBarServer,
-  fetchContentPricingServer,
-  fetchNearbyEventsServer,
-} from "@/lib/api/services/webApi";
+import { fetchContentTrustBarServer } from "@/lib/api/services/webApi";
 import { siteConfig } from "@/lib/constants";
 
 export const revalidate = 60;
@@ -52,21 +48,17 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [trustContent, pricingContent, nearbyEvents] = await Promise.all([
-    fetchContentTrustBarServer(),
-    fetchContentPricingServer(),
-    fetchNearbyEventsServer(),
-  ]);
+  const trustContent = await fetchContentTrustBarServer();
 
   return (
     <>
       <Hero />
-      <TrustStrip content={trustContent} />
+      {/* <TrustStrip content={trustContent} /> */}
       <EmotionSection />
-      <HowItWorks previewEvents={nearbyEvents} />
+      <HowItWorks />
       <Features />
-      <MapSection initialEvents={nearbyEvents} />
-      <Pricing content={pricingContent} />
+      <MapSection />
+      <Pricing />
       <FAQ />
       <FinalCTA />
     </>

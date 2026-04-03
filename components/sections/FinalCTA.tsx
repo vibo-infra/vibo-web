@@ -7,6 +7,10 @@ import { joinWaitlistClient } from "@/lib/api/services/webApi";
 import { sanitizeReferralCode } from "@/lib/api/sanitize";
 import { track } from "@/lib/analytics";
 import { WaitlistCityStep } from "@/components/waitlist/WaitlistCityStep";
+import { FaApple } from "react-icons/fa";
+import { BiLogoPlayStore } from "react-icons/bi";
+
+
 
 export function FinalCTA() {
   const [email, setEmail] = useState("");
@@ -73,7 +77,7 @@ export function FinalCTA() {
   }, [success]);
 
   return (
-    <section className="bg-heading py-[120px]">
+    <section className="bg-fixed py-[120px]">
       <FadeIn>
         <div className="mx-auto max-w-[600px] px-6 text-center">
           <h2 className="mb-4 font-display text-[clamp(32px,4vw,52px)] font-extrabold leading-[1.12] tracking-[-0.025em] text-white">
@@ -130,7 +134,7 @@ export function FinalCTA() {
                   <button
                     type="button"
                     onClick={copyShare}
-                    className="h-11 w-full cursor-pointer rounded-[10px] border-none bg-highlight px-6 font-body text-[13px] font-extrabold text-heading transition-all hover:-translate-y-0.5 hover:opacity-90 sm:w-auto"
+                    className="h-11 w-full cursor-pointer rounded-[10px] border-none bg-highlight px-6 font-body text-[13px] font-extrabold text-fixed transition-all hover:-translate-y-0.5 hover:opacity-90 sm:w-auto"
                   >
                     Copy link
                   </button>
@@ -148,7 +152,7 @@ export function FinalCTA() {
                   }}
                   placeholder="your@email.com"
                   disabled={loading}
-                  className={`h-[50px] flex-1 rounded-[10px] border bg-white/10 px-[18px] font-body text-sm font-semibold text-white outline-none transition-colors placeholder:text-white/40 focus:border-highlight ${
+                  className={`h-[50px] md:flex-1 rounded-[10px] border bg-white/10 px-[18px] font-body text-sm font-semibold text-white outline-none transition-colors placeholder:text-white/40 focus:border-highlight ${
                     inlineError ? "border-red-400" : "border-white/25"
                   }`}
                 />
@@ -156,7 +160,7 @@ export function FinalCTA() {
                   type="button"
                   onClick={() => void handleSubmit()}
                   disabled={loading}
-                  className="h-[50px] cursor-pointer whitespace-nowrap rounded-[10px] border-none bg-highlight px-6 font-body text-[13px] font-extrabold text-heading transition-all hover:-translate-y-0.5 hover:opacity-90 disabled:opacity-60"
+                  className="h-[50px] cursor-pointer whitespace-nowrap rounded-[10px] border-none bg-highlight px-6 font-body text-[13px] font-extrabold text-fixed transition-all hover:-translate-y-0.5 hover:opacity-90 disabled:opacity-60"
                 >
                   {loading ? "…" : "Save my spot →"}
                 </button>
@@ -178,12 +182,12 @@ export function FinalCTA() {
               }}
               className="inline-flex items-center gap-3 rounded-[10px] border border-highlight bg-highlight px-6 py-3 text-sm font-extrabold text-heading no-underline transition-all hover:-translate-y-0.5 hover:opacity-90"
             >
-              <span className="text-xl leading-none">🍎</span>
+              <span className="text-2xl leading-none text-fixed"><FaApple /></span>
               <span className="text-left">
-                <span className="block text-[10px] font-light opacity-70">
+                <span className="block text-[10px] font-light opacity-70 text-fixed">
                   Download on the
                 </span>
-                <span className="text-[15px] font-medium">App Store</span>
+                <span className="text-[15px] font-medium text-fixed">App Store</span>
               </span>
             </a>
             <a
@@ -194,7 +198,7 @@ export function FinalCTA() {
               }}
               className="inline-flex items-center gap-3 rounded-[10px] border border-white/20 bg-white/10 px-6 py-3 text-sm font-extrabold text-white no-underline transition-all hover:-translate-y-0.5 hover:bg-white/15"
             >
-              <span className="text-xl leading-none">▶</span>
+              <span className="text-2xl leading-none"><BiLogoPlayStore /></span>
               <span className="text-left">
                 <span className="block text-[10px] font-light opacity-70">
                   Get it on
