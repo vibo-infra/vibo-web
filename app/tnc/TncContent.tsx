@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { TncSection } from "@/lib/api/types";
 
-const EMAIL = "hello@vibo.in";
+const EMAIL = "sayhellovibo@gmail.com";
 
 function ParagraphWithEmail({ text }: { text: string }) {
   if (!text.includes(EMAIL)) {

@@ -34,7 +34,7 @@ export function Footer() {
               Terms & Conditions
             </Link>
             <a
-              href="mailto:hello@vibo.in"
+              href="mailto:sayhellovibo@gmail.com"
               className="text-[13px] text-muted no-underline transition-colors hover:text-heading"
             >
               Contact

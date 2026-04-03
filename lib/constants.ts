@@ -5,8 +5,8 @@ export const siteConfig = {
     "Discover local events, meet real people, and build community. VIBO connects you to hikes, workshops, jam sessions, and more happening near you.",
   url: "https://vibo.app",
   /** Shown in waitlist success “Share:” line */
-  shareDomain: "vibo.in",
-  email: "hello@vibo.in",
+  shareDomain: "hellovibo.in",
+  email: "sayhellovibo@gmail.com",
   ogImage: "/og-image.png",
 } as const;
 
