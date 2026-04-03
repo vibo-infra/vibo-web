@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "VIBO",
-  tagline: "Find your people. Show up. Live it.",
+  tagline: "Good vibes happen nearby.",
   description:
     "Discover local events, meet real people, and build community. VIBO connects you to hikes, workshops, jam sessions, and more happening near you.",
   url: "https://vibo.app",
@@ -34,42 +34,42 @@ export const trustStats = [
 export const emotionCards = [
   {
     num: "01",
-    title: "Plans that never quite happen",
+    title: '"Haan haan, plan karte hain" — and then nothing.',
     description:
-      'You say "we should do something" every week. Then Sunday comes and you\'re back on the couch. Not because you don\'t want to — but because no one made it easy.',
+      'You say it every week. Your friends say it back. Somebody says "this Sunday for sure" and then Sunday disappears into a phone screen and leftover dal. Not because you don\'t want to go out — but because no one ever made it easy to actually go.',
   },
   {
     num: "02",
-    title: "A city full of things you've never found",
+    title: "Your city is alive. You're just not seeing it.",
     description:
-      "There's a ceramics workshop two streets away. A sunrise hike leaving tomorrow at 6am. A book club that actually reads the book. You just didn't know where to look.",
+      "There's a group doing a 6am run near Carter Road. A rooftop sketch session in Bandra this Saturday. A board game night two lanes from your house — every Thursday. You didn't know because no one told you where to look.",
   },
   {
     num: "03",
-    title: "Meeting people who get it",
+    title: "Not networking. Not swiping. Just people.",
     description:
-      "Not networking. Not dating. Just the easy, low-stakes kind of connection that happens when you show up for the same thing. The kind that used to happen naturally.",
+      "The best conversations don't happen at corporate mixers. They happen when two strangers show up for the same thing — a trail, a table, a song. VIBO is just the reason to show up. The connection happens on its own.",
   },
 ] as const;
 
 export const steps = [
   {
     num: 1,
-    title: "Open VIBO wherever you are.",
+    title: "Open VIBO. See what's around you.",
     description:
-      "Your feed shows what's happening nearby — filtered to the things you care about. Real events, real distances, real people hosting them.",
+      "Your feed shows real events happening nearby — filtered to what you actually care about. Real distances, real hosts, real people going.",
   },
   {
     num: 2,
     title: "Tap once. You're in.",
     description:
-      "No lengthy flows, no approval limbo. Tap Join, see who else is going, get a reminder before it starts.",
+      "No long forms. No waiting for approval. Tap Join, see who else is going, get a reminder before it starts. Done.",
   },
   {
     num: 3,
-    title: "Show up. The rest takes care of itself.",
+    title: "Show up. That's the whole plan.",
     description:
-      "The best part of every event isn't on the app. VIBO just gets you to the door — what happens after is yours.",
+      "The best part of any event isn't on the screen. VIBO just handles the 'how to get there' — everything after is yours to keep.",
   },
 ] as const;
 
@@ -89,7 +89,7 @@ export type PhoneCard = {
 export const phoneCards: PhoneCard[] = [
   {
     id: 1,
-    title: "Morning Hike — Sanjay Gandhi Park",
+    title: "Sunrise Hike — Sanjay Gandhi Park",
     rating: "4.9",
     attendees: "12 going",
     price: "Free",
@@ -99,7 +99,7 @@ export const phoneCards: PhoneCard[] = [
   },
   {
     id: 2,
-    title: "Pottery for Beginners · Bandra",
+    title: "Board Game Night · Bandra",
     rating: "4.8",
     attendees: "8/15 spots",
     price: "Free",
@@ -124,18 +124,18 @@ export const bentoFeatures: BentoFeature[] = [
   {
     span: 7,
     tag: "Discovery",
-    title: "Everything good that's happening near you.",
+    title: "Everything good happening near you — finally in one place.",
     description:
-      "Events ranked by proximity, your interests, and honest attendee ratings. The more you use VIBO, the better it understands what a good evening looks like for you.",
+      "Events ranked by how close they are, what you enjoy, and what real attendees thought. The more you use VIBO, the sharper it gets at knowing what a good evening looks like for you.",
     accent: null,
     trustBadges: ["Live near you", "Rated by real attendees"],
   },
   {
     span: 5,
     tag: "Trust",
-    title: "Every host is a real person with a real reputation.",
+    title: "Every host is a real person with a real reputation on the line.",
     description:
-      "Government ID verified. Ratings built from real attendees. A host who ghosts gets removed. Permanently.",
+      "Government ID verified. Ratings earned from actual attendees — not friends. A host who cancels last minute or ghosts the group gets removed. Permanently. No second chances.",
     accent: "orange",
     trustBadges: null,
   },
@@ -144,7 +144,7 @@ export const bentoFeatures: BentoFeature[] = [
     tag: null,
     title: null,
     description:
-      "Showing up costs nothing. We charge hosts for growth tools — never attendees for existing.",
+      "Showing up costs nothing — ever. We charge hosts for tools that help them grow. Never attendees for simply existing.",
     accent: null,
     stat: { value: "₹0", label: "to attend any event" },
     trustBadges: null,
@@ -152,9 +152,9 @@ export const bentoFeatures: BentoFeature[] = [
   {
     span: 8,
     tag: "Community",
-    title: "The people you meet become your community.",
+    title: "The people you meet once become the ones you keep going back out with.",
     description:
-      "Every event you attend adds a group to your life — people who showed up for the same reason you did. See what they're going to next.",
+      "Every event you attend adds a small group to your life — people who showed up for the same reason you did. See what they're going to next.",
     accent: "yellow",
     trustBadges: null,
   },
@@ -163,21 +163,21 @@ export const bentoFeatures: BentoFeature[] = [
 export const bentoBottomFeatures = [
   {
     tag: "Safety",
-    title: "Payments held in escrow",
+    title: "Your money doesn't move until the event actually happens.",
     description:
-      "For paid events, your money sits with the platform — not the host — until the event is confirmed complete. If it doesn't happen, you're refunded automatically.",
+      "For paid events, your payment sits with us — not the host — until the event is confirmed done. If it gets cancelled or doesn't happen, you're refunded automatically. No chasing, no drama.",
   },
   {
     tag: "Hosts",
-    title: "Host 3 events free, every month",
+    title: "Host 3 events free, every month.",
     description:
-      "No upfront cost to start hosting. Create an event, invite people, build a reputation. Pay only when you want more reach.",
+      "No cost to start. Create an event, invite people, build a name for yourself. Pay only when you want more reach — not before.",
   },
   {
     tag: "Coming soon",
     title: "Wander Mode",
     description:
-      "Open the app. Let it surprise you. One event, picked for you, happening nearby. For days when you don't want to decide — you just want to go.",
+      "Open the app. Let it decide. One event, picked just for you, happening close by. For days when you don't want to think — you just want to get out.",
   },
 ] as const;
 
@@ -186,14 +186,14 @@ export const mapPins = [
     left: "22%",
     top: "35%",
     color: "orange" as const,
-    title: "Morning Hike — Sanjay Gandhi",
+    title: "Sunrise Hike — Sanjay Gandhi Park",
     meta: ["★ 4.9", "12 going", "2.1km"],
   },
   {
     left: "48%",
     top: "55%",
     color: "teal" as const,
-    title: "Pottery for Beginners · Bandra",
+    title: "Sketching at the Sea Link · Bandra",
     meta: ["★ 4.8", "8/15 spots", "Verified"],
   },
   {
@@ -207,7 +207,7 @@ export const mapPins = [
     left: "35%",
     top: "68%",
     color: "orange" as const,
-    title: "Rooftop Sketch Session",
+    title: "Rooftop Jam Session · Juhu",
     meta: ["★ 5.0", "4 going", "3.5km"],
   },
   {
@@ -221,7 +221,7 @@ export const mapPins = [
     left: "55%",
     top: "28%",
     color: "orange" as const,
-    title: "Sourdough Baking Workshop",
+    title: "Home-Cook Meetup — Try 5 Dishes",
     meta: ["★ 4.8", "₹499", "6 spots left"],
   },
 ] as const;
@@ -233,14 +233,14 @@ export const pricingPlans = [
     tier: "Attendee",
     price: "Free",
     priceSuffix: null,
-    subtitle: "No asterisk. No trial. Forever.",
+    subtitle: "No asterisk. No trial. No catch.",
     featured: false,
     cta: "Get started free",
     features: [
       { text: "Discover all events near you", included: true },
       { text: "Join any free event, anytime", included: true },
-      { text: "See who's going before committing", included: true },
-      { text: "Rate and review experiences", included: true },
+      { text: "See who's going before you commit", included: true },
+      { text: "Rate and review every experience", included: true },
       { text: "Community page access", included: true },
     ],
   },
@@ -248,11 +248,11 @@ export const pricingPlans = [
     tier: "Host",
     price: "Free",
     priceSuffix: "to start",
-    subtitle: "Pay only to grow your reach.",
+    subtitle: "Pay only when you want to grow.",
     featured: true,
     cta: "Start hosting free",
     features: [
-      { text: "3 events per month, free", included: true },
+      { text: "3 events per month, completely free", included: true },
       { text: "Verified host badge from day one", included: true },
       { text: "Basic attendance and rating stats", included: true },
       { text: "Event Boost from ₹199 / event", included: false },
@@ -264,16 +264,16 @@ export const pricingPlans = [
     tier: "Host Pro",
     price: "₹999",
     priceSuffix: "/mo",
-    subtitle: "For hosts serious about their community.",
+    subtitle: "For hosts serious about building something.",
     featured: false,
     cta: "Go Pro",
     features: [
       { text: "Everything in Host, no limits", included: true },
       { text: "Deep analytics and reach stats", included: true },
-      { text: "2 free event boosts per month", included: true },
-      { text: "Priority verification — 24hr", included: true },
+      { text: "2 free event boosts every month", included: true },
+      { text: "Priority verification in 24 hours", included: true },
       { text: "First access to every new feature", included: true },
-      { text: "Direct support, not a ticket queue", included: true },
+      { text: "Direct support — not a ticket queue", included: true },
     ],
   },
 ] as const;

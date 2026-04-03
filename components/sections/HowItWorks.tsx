@@ -128,7 +128,7 @@ export function HowItWorks({ previewEvents }: HowItWorksProps) {
           <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
             Three taps to
             <br />
-            <em className="font-light text-accent">somewhere good.</em>
+            <em className="font-light text-accent">something real.</em>
           </h2>
         </FadeIn>
 

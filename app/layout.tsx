@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "VIBO — Find your people. Show up. Live it.",
+    default: "VIBO — Good vibes happen nearby.",
     template: "%s | VIBO",
   },
   description:
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "https://vibo.app",
     siteName: "VIBO",
-    title: "VIBO — Find your people. Show up. Live it.",
+    title: "VIBO — Good vibes happen nearby.",
     description:
       "Discover local events, meet real people, and build community. Free forever for attendees.",
     images: [
@@ -62,13 +62,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "VIBO — Find your people. Show up. Live it.",
+        alt: "VIBO — Good vibes happen nearby.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VIBO — Find your people. Show up. Live it.",
+    title: "VIBO — Good vibes happen nearby.",
     description:
       "Discover local events, meet real people, and build community.",
     images: ["/og-image.png"],

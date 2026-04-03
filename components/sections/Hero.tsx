@@ -148,19 +148,21 @@ export function Hero() {
 
         <FadeIn delay={0.1}>
           <h1 className="mb-7 max-w-[820px] font-display text-[clamp(46px,6.5vw,88px)] font-extrabold leading-[1.02] tracking-[-0.03em] text-heading">
-            The weekend you
+            Something fun is
             <br />
-            <em className="font-semibold italic">actually want</em> is
+            <em className="font-semibold italic">happening near you.</em>
             <br />
-            <span className="underline-word">already out there.</span>
+            You just
+            <br />
+            <span className="underline-word">don&apos;t know it yet.</span>
           </h1>
         </FadeIn>
 
         <FadeIn delay={0.2}>
           <p className="mb-10 max-w-[520px] text-[17px] font-medium leading-[1.78] text-body">
-            Somewhere near you, someone is hosting a hike, a cooking class, a
-            rooftop jam session. VIBO connects you to the people making it
-            happen — and the ones showing up.
+            Somewhere close by, someone is organising a sunrise trek, a
+            chai-and-sketch morning, a rooftop jam. VIBO finds those people — and
+            gets you to the door.
           </p>
         </FadeIn>
 
@@ -218,7 +220,7 @@ export function Hero() {
 
             <p className="text-xs font-medium text-faint">
               Free forever for attendees. One email when your city goes live.
-              Nothing else.
+              That&apos;s it.
             </p>
 
             <div className="flex items-center gap-5 pt-2">

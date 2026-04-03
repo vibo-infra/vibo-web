@@ -86,9 +86,9 @@ export function MapSection({ initialEvents }: MapSectionProps) {
         <SectionEyebrow text="Live events" />
         <FadeIn>
           <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
-            Here&apos;s a taste of
+            This is what&apos;s already
             <br />
-            <em className="font-light">what&apos;s out there.</em>
+            <em className="font-light">waiting outside.</em>
           </h2>
         </FadeIn>
 

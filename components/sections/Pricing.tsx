@@ -77,15 +77,15 @@ export function Pricing({ content }: PricingProps) {
         <SectionEyebrow text="Pricing" />
         <FadeIn>
           <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
-            Honest pricing.
+            Simple, honest pricing.
             <br />
-            <em className="font-light">Pay only for what you need.</em>
+            <em className="font-light">Nothing buried in the fine print.</em>
           </h2>
         </FadeIn>
         <FadeIn delay={0.1}>
           <p className="mt-3 max-w-[540px] text-base font-light leading-relaxed text-body">
-            Showing up to events is free, forever. We charge hosts only when
-            they want more tools and reach.
+            Attending events is free. Always. We only charge hosts when they
+            want tools to grow — and even then, only what&apos;s fair.
           </p>
         </FadeIn>
 

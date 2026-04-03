@@ -1,7 +1,17 @@
 import { AnalyticsEndpoints } from "@/lib/constants/api";
 
+function fallbackUUID() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replaceAll(/[xy]/g, (c) => {
+    const r = Math.trunc(Math.random() * 16);
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 const SESSION_ID =
-  typeof crypto !== "undefined" ? crypto.randomUUID() : "ssr";
+  typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : fallbackUUID();
 
 const queue: object[] = [];
 

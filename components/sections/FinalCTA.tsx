@@ -69,13 +69,13 @@ export function FinalCTA() {
       <FadeIn>
         <div className="mx-auto max-w-[600px] px-6 text-center">
           <h2 className="mb-4 font-display text-[clamp(32px,4vw,52px)] font-extrabold leading-[1.12] tracking-[-0.025em] text-white">
-            Your next favourite
+            Your next favourite memory
             <br />
-            <em className="font-semibold text-highlight">memory is 2km away.</em>
+            <em className="font-semibold text-highlight">is 2km away.</em>
           </h2>
           <p className="mb-8 text-lg font-medium leading-relaxed text-white/60">
-            Someone nearby is planning something you&apos;d love. Join the list
-            or download VIBO when we launch.
+            Someone nearby is already planning something you&apos;d love. Be the
+            first to know when VIBO goes live in your city.
           </p>
 
           <div className="mb-10 text-left">

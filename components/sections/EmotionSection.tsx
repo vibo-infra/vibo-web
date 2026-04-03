@@ -14,7 +14,7 @@ export function EmotionSection() {
           <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
             You already know
             <br />
-            the feeling.
+            this feeling.
           </h2>
         </FadeIn>
 
