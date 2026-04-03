@@ -17,6 +17,11 @@ export type WaitlistJoinResult = {
   position: number | null;
 };
 
+export type WaitlistCityUpdateResult = {
+  updated: boolean;
+  city: string;
+};
+
 export type ReferralLookupData = {
   valid: boolean;
   owner_name: string;

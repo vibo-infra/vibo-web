@@ -12,6 +12,7 @@ import {
 } from "@/lib/api/services/webApi";
 import { safeDisplayText, sanitizeReferralCode } from "@/lib/api/sanitize";
 import { track } from "@/lib/analytics";
+import { WaitlistCityStep } from "@/components/waitlist/WaitlistCityStep";
 
 export function Hero() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,9 @@ export function Hero() {
     position: number | null;
     code: string;
     already: boolean;
+    email: string;
   } | null>(null);
+  const [cityStepComplete, setCityStepComplete] = useState(false);
   const heroRef = useRef<HTMLElement | null>(null);
   const heroViewTracked = useRef(false);
 
@@ -33,6 +36,10 @@ export function Hero() {
       if (n != null) setCount(n);
     });
   }, []);
+
+  useEffect(() => {
+    if (!success) setCityStepComplete(false);
+  }, [success]);
 
   useEffect(() => {
     const ref = sanitizeReferralCode(
@@ -94,6 +101,7 @@ export function Hero() {
         position: result.position,
         code: result.referral_code,
         already: result.already_registered,
+        email: trimmed,
       });
       track("cta_click", "hero_cta");
     } catch {
@@ -136,7 +144,7 @@ export function Hero() {
           </div>
         </FadeIn>
 
-        {inviter ? (
+        {/* {inviter ? (
           <FadeIn delay={0.05}>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-4 py-1.5">
               <span className="text-[12px] font-bold tracking-[0.02em] text-body">
@@ -144,10 +152,10 @@ export function Hero() {
               </span>
             </div>
           </FadeIn>
-        ) : null}
+        ) : null} */}
 
         <FadeIn delay={0.1}>
-          <h1 className="mb-7 max-w-[820px] font-display text-[clamp(46px,6.5vw,88px)] font-extrabold leading-[1.02] tracking-[-0.03em] text-heading">
+          <h1 className="mb-4 max-w-[820px] font-display text-[clamp(46px,6.5vw,88px)] font-extrabold leading-[1.02] tracking-[-0.03em] text-heading">
             Something fun is
             <br />
             <em className="font-semibold italic">happening near you.</em>
@@ -158,36 +166,76 @@ export function Hero() {
           </h1>
         </FadeIn>
 
+        {/* <FadeIn delay={0.15}>
+          <p className="mb-7 text-[13px] font-semibold italic tracking-wide text-muted">
+            — good vibes happen nearby
+          </p>
+        </FadeIn> */}
+
         <FadeIn delay={0.2}>
-          <p className="mb-10 max-w-[520px] text-[17px] font-medium leading-[1.78] text-body">
+          <p className="mb-5 max-w-[520px] text-[17px] font-medium leading-[1.78] text-body">
             Somewhere close by, someone is organising a sunrise trek, a
-            chai-and-sketch morning, a rooftop jam. VIBO finds those people — and
-            gets you to the door.
+            chai-and-sketch morning, a rooftop jam. VIBO finds those people —
+            and gets you to the door.
           </p>
         </FadeIn>
 
         <FadeIn delay={0.3}>
           <div className="flex flex-col gap-4" id="wl">
             {success ? (
-              <div className="max-w-[460px] space-y-3">
-                <p className="text-[15px] font-semibold text-heading">
-                  {success.already || success.position == null
-                    ? "You're already in line"
-                    : `You're #${success.position} in line`}
+              <div className="max-w-[460px] animate-[fadeUp_0.35s_ease_forwards]">
+                {/* Position confirmation */}
+                <p className="mb-4 text-[1rem] font-semibold text-body">
+                  {success.already || success.position == null ? (
+                    "You're already one of us. 🤝"
+                  ) : (
+                    <>
+                      You&apos;re in.{" "}
+                      <span className="font-extrabold text-[1.5rem] text-heading animate-[pop_0.4s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
+                        #{success.position}
+                      </span>{" "}
+                      and early.
+                    </>
+                  )}
                 </p>
-                <p className="text-sm font-medium text-body">
-                  Share: {siteConfig.shareDomain}?ref={success.code}
-                </p>
-                <button
-                  type="button"
-                  onClick={copyShare}
-                  className="h-[50px] cursor-pointer whitespace-nowrap rounded-[10px] border-none bg-heading px-6 font-body text-[13px] font-extrabold tracking-[0.02em] text-page transition-all hover:-translate-y-px hover:opacity-90"
-                >
-                  Copy link
-                </button>
+
+                {/* City step */}
+                {!cityStepComplete ? (
+                  <WaitlistCityStep
+                    email={success.email}
+                    theme="hero"
+                    onComplete={() => setCityStepComplete(true)}
+                  />
+                ) : null}
+
+                {/* Share — always visible after join; city step hides above when done */}
+                <div className="space-y-3 pt-1">
+
+                  <p className="text-sm font-medium text-body">
+                    Share: {" "}
+                    <a
+                      className="text-[15px] font-extrabold tracking-[0.02em] text-heading underline underline-offset-2"
+                      href={`https://${siteConfig.shareDomain}?ref=${success.code}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {siteConfig.shareDomain}?ref={success.code}
+                    </a>
+                  </p>
+                  <button
+                    type="button"
+                    onClick={copyShare}
+                    className="h-[46px] cursor-pointer whitespace-nowrap rounded-[10px] border-none bg-heading px-6 font-body text-[13px] font-extrabold tracking-[0.02em] text-page transition-all hover:-translate-y-px hover:opacity-90"
+                  >
+                    Copy link
+                  </button>
+                </div>
               </div>
             ) : (
               <>
+                <p className="max-w-[460px] text-[13px] font-semibold leading-snug tracking-[0.01em] text-muted">
+                  Get notified when VIBO launches in your city.
+                </p>
                 <div className="flex max-w-[460px] items-center gap-2">
                   <input
                     id="emailInput"
@@ -219,7 +267,7 @@ export function Hero() {
             )}
 
             <p className="text-xs font-medium text-faint">
-              Free forever for attendees. One email when your city goes live.
+              Free forever for attendees. One email when VIBO hits your city.
               That&apos;s it.
             </p>
 
@@ -244,10 +292,8 @@ export function Hero() {
                   </>
                 ) : (
                   <>
-                    <strong className="font-extrabold text-body">
-                      0 people
-                    </strong>{" "}
-                    already in line
+                    <strong className="font-extrabold text-body">0</strong>{" "}
+                    people already in line
                   </>
                 )}
               </span>

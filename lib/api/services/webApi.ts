@@ -8,6 +8,7 @@ import {
   webGetServer,
   webGetClient,
   webPostClient,
+  webPatchClient,
   webPostVoid,
 } from "@/lib/api/methods";
 import { sanitizeEmail, sanitizeReferralCode } from "@/lib/api/sanitize";
@@ -18,6 +19,7 @@ import type {
   TncPayload,
   WaitlistCountData,
   WaitlistJoinResult,
+  WaitlistCityUpdateResult,
   WebFaq,
 } from "@/lib/api/types";
 
@@ -139,6 +141,17 @@ export async function joinWaitlistClient(
   );
 }
 
+export async function updateWaitlistCityClient(
+  email: string,
+  city: string
+): Promise<WaitlistCityUpdateResult> {
+  const safeEmail = sanitizeEmail(email);
+  return webPatchClient<
+    WaitlistCityUpdateResult,
+    { email: string; city: string }
+  >(WebEndpoints.waitlistCity, { email: safeEmail, city });
+}
+
 export async function fetchNearbyEventsClient(
   category?: string
 ): Promise<NearbyEvent[]> {
@@ -161,5 +174,6 @@ export const webApi = {
   postReferralClickClient,
   fetchReferralClient,
   joinWaitlistClient,
+  updateWaitlistCityClient,
   fetchNearbyEventsClient,
 };

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { siteConfig } from "@/lib/constants";
 import { joinWaitlistClient } from "@/lib/api/services/webApi";
 import { sanitizeReferralCode } from "@/lib/api/sanitize";
 import { track } from "@/lib/analytics";
+import { WaitlistCityStep } from "@/components/waitlist/WaitlistCityStep";
 
 export function FinalCTA() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,13 @@ export function FinalCTA() {
     position: number | null;
     code: string;
     already: boolean;
+    email: string;
   } | null>(null);
+  const [cityStepComplete, setCityStepComplete] = useState(false);
+
+  useEffect(() => {
+    if (!success) setCityStepComplete(false);
+  }, [success]);
 
   const handleSubmit = useCallback(async () => {
     const trimmed = email.trim();
@@ -48,6 +55,7 @@ export function FinalCTA() {
         position: result.position,
         code: result.referral_code,
         already: result.already_registered,
+        email: trimmed,
       });
       track("cta_click", "footer_cta");
     } catch {
@@ -75,27 +83,58 @@ export function FinalCTA() {
           </h2>
           <p className="mb-8 text-lg font-medium leading-relaxed text-white/60">
             Someone nearby is already planning something you&apos;d love. Be the
-            first to know when VIBO goes live in your city.
+            first to know when VIBO hits your city.
           </p>
 
           <div className="mb-10 text-left">
             {success ? (
-              <div className="space-y-3 text-center text-white">
-                <p className="text-[15px] font-semibold">
-                  {success.already || success.position == null
-                    ? "You're already in line"
-                    : `You're #${success.position} in line`}
+              <div className="animate-[fadeUp_0.35s_ease_forwards] space-y-1 text-center text-white">
+                {/* Position */}
+                <p className="mb-4 text-[15px] font-semibold">
+                  {success.already || success.position == null ? (
+                    "You're already one of us. 🤝"
+                  ) : (
+                    <>
+                      You&apos;re in.{" "}
+                      <span className="font-extrabold text-[1.5rem] animate-[pop_0.4s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">
+                        #{success.position}
+                      </span>{" "}
+                      and early.
+                    </>
+                  )}
                 </p>
-                <p className="text-sm font-medium text-white/80">
-                  Share: {siteConfig.shareDomain}?ref={success.code}
-                </p>
-                <button
-                  type="button"
-                  onClick={copyShare}
-                  className="h-11 w-full cursor-pointer rounded-[10px] border-none bg-highlight px-6 font-body text-[13px] font-extrabold text-heading transition-all hover:-translate-y-0.5 hover:opacity-90 sm:w-auto"
-                >
-                  Copy link
-                </button>
+
+                {/* City step */}
+                {!cityStepComplete ? (
+                  <WaitlistCityStep
+                    email={success.email}
+                    theme="cta"
+                    onComplete={() => setCityStepComplete(true)}
+                  />
+                ) : null}
+
+                <div className="space-y-3 pt-2">
+                  <p className="text-sm font-medium text-white/70">
+                    Share your link and move up the list:
+                  </p>
+                  <p className="text-sm font-medium text-white/80">
+                    <a
+                      className="font-extrabold text-highlight underline underline-offset-2"
+                      href={`https://${siteConfig.shareDomain}?ref=${success.code}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {siteConfig.shareDomain}?ref={success.code}
+                    </a>
+                  </p>
+                  <button
+                    type="button"
+                    onClick={copyShare}
+                    className="h-11 w-full cursor-pointer rounded-[10px] border-none bg-highlight px-6 font-body text-[13px] font-extrabold text-heading transition-all hover:-translate-y-0.5 hover:opacity-90 sm:w-auto"
+                  >
+                    Copy link
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center">

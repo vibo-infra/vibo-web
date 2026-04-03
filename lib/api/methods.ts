@@ -43,6 +43,20 @@ export async function webPostClient<TResponse, TBody extends object>(
   return unwrapWebData(json);
 }
 
+export async function webPatchClient<TResponse, TBody extends object>(
+  path: string,
+  body: TBody,
+  extra?: Omit<ApiFetchOptions, "method" | "body" | "headers">
+): Promise<TResponse> {
+  const json = await apiFetch<ApiEnvelope<TResponse>>(path, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    ...extra,
+  });
+  return unwrapWebData(json);
+}
+
 /** Fire-and-forget POST — errors swallowed */
 export function webPostVoid(path: string, body: object): void {
   void apiFetch<unknown>(path, {

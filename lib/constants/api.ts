@@ -7,6 +7,7 @@ export const ANALYTICS_API_PREFIX = "/v0/api/analytics" as const;
 
 export const WebEndpoints = {
   waitlist: `${WEB_API_PREFIX}/waitlist`,
+  waitlistCity: `${WEB_API_PREFIX}/waitlist/city`,
   waitlistCount: `${WEB_API_PREFIX}/waitlist/count`,
   referralClick: `${WEB_API_PREFIX}/referral/click`,
   /** Pass encoded code — use buildReferralPath(code) */
