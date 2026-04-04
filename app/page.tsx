@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { EmotionSection } from "@/components/sections/EmotionSection";
+import { SolutionBridgeSection } from "@/components/sections/SolutionBridgeSection";
+import { StoryBandSection } from "@/components/sections/StoryBandSection";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Features } from "@/components/sections/Features";
 import { MapSection } from "@/components/sections/MapSection";
@@ -56,6 +58,8 @@ export default async function HomePage() {
       <Hero />
       {/* <TrustStrip content={trustContent} /> */}
       <EmotionSection />
+      <SolutionBridgeSection />
+      <StoryBandSection />
       <HowItWorks />
       <Features />
       <MapSection />

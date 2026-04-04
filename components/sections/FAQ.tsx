@@ -126,6 +126,12 @@ export function FAQ() {
             Good questions.
           </h2>
         </FadeIn>
+        <FadeIn delay={0.05}>
+          <p className="mt-4 max-w-[520px] text-sm font-light leading-relaxed text-muted">
+            Quick recap: VIBO helps you find local events, join in one tap, and
+            meet people offline — with hosts we verify.
+          </p>
+        </FadeIn>
 
         <FadeIn delay={0.1}>
           {loadState === "loading" ? (

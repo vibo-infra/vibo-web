@@ -3,7 +3,7 @@ export const siteConfig = {
   name: "VIBO",
   tagline: "Good vibes happen nearby.",
   description:
-    "Discover local events, meet real people, and build community. VIBO connects you to hikes, workshops, jam sessions, and more happening near you.",
+    "VIBO is an app for local events near you: see what's on, tap to join, show up. Free for attendees. Verified hosts. Launching Mumbai first.",
   url: "https://hellovibo.in",
   /** Referral / share links (host only; same site as `url`) */
   shareDomain: "hellovibo.in",
@@ -39,6 +39,13 @@ export const navLinks = [
   { label: "Terms", href: "/tnc" },
 ] as const;
 
+/** Hero only — one glance = what we’re building. */
+export const heroSkimPoints = [
+  "Local events near you (map + list)",
+  "Tap to join · free for attendees",
+  "Verified hosts · Mumbai first",
+] as const;
+
 export const trustStats = [
   { value: "0", unit: "", label: "events hosted" },
   { value: "5", unit: "★", label: "average rating" },
@@ -51,19 +58,72 @@ export const emotionCards = [
     num: "01",
     title: '"Haan haan, plan karte hain" — and then nothing.',
     description:
-      'You say it every week. Your friends say it back. Somebody says "this Sunday for sure" and then Sunday disappears into a phone screen and leftover dal. Not because you don\'t want to go out — but because no one ever made it easy to actually go.',
+      'Everyone says "this Sunday." Then Sunday ends on your phone. You wanted to go. Making it happen was just too hard.',
   },
   {
     num: "02",
     title: "Your city is alive. You're just not seeing it.",
     description:
-      "There's a group doing a 6am run near Carter Road. A rooftop sketch session in Bandra this Saturday. A board game night two lanes from your house — every Thursday. You didn't know because no one told you where to look.",
+      "Morning runs, art nights, games down the road — they were always there. You didn't miss them on purpose. No one showed you where.",
   },
   {
     num: "03",
     title: "Not networking. Not swiping. Just people.",
     description:
-      "The best conversations don't happen at corporate mixers. They happen when two strangers show up for the same thing — a trail, a table, a song. VIBO is just the reason to show up. The connection happens on its own.",
+      "Good talks don't come from forced meetups. They come when two people show up for the same walk, game, or song. Easy after that.",
+  },
+] as const;
+
+/** Bridge: pain → product (Desire + curiosity) before How it works (Action). */
+export const solutionBridgeSection = {
+  eyebrow: "So here's the answer",
+  headlineLine1: "We built",
+  headlineAccent: "VIBO",
+  headlineLine2: "for plans that almost happen.",
+  body:
+    "We put real events near you on one simple list. Tap to join. No long chat that dies before the weekend.",
+  sub: "The fun was already out there. We just help you find it.",
+  cta: "How it works",
+} as const;
+
+/** One skim: problem → product → detail — sits before How it works. */
+export const storyBandSection = {
+  eyebrow: "Start to finish",
+  headlineLine1: "One app.",
+  headlineLine2: "From your phone to the live event.",
+  steps: [
+    {
+      title: "See",
+      body: "Local events on a map and list — what's on near you.",
+    },
+    {
+      title: "Trust",
+      body: "Hosts checked. Reviews from people who actually went.",
+    },
+    {
+      title: "Join",
+      body: "One tap. A reminder before it starts.",
+    },
+    {
+      title: "Go",
+      body: "Free for you to show up. The rest is offline.",
+    },
+  ],
+} as const;
+
+/** One line each — under shortened Features grid. */
+export const featureFootnotes = [
+  {
+    label: "Paid events",
+    text: "Your money stays with us until the event happens.",
+  },
+  {
+    label: "Hosts",
+    text: "Three free events every month to start.",
+  },
+  {
+    label: "Soon",
+    text: "Wander mode — we pick one nearby event for you.",
   },
 ] as const;
 
@@ -72,19 +132,19 @@ export const steps = [
     num: 1,
     title: "Open VIBO. See what's around you.",
     description:
-      "Your feed shows real events happening nearby — filtered to what you actually care about. Real distances, real hosts, real people going.",
+      "Nearby events in one feed. Real distance, real host, who's going.",
   },
   {
     num: 2,
     title: "Tap once. You're in.",
     description:
-      "No long forms. No waiting for approval. Tap Join, see who else is going, get a reminder before it starts. Done.",
+      "No long forms. Tap join, see the group, get a ping before it starts.",
   },
   {
     num: 3,
     title: "Show up. That's the whole plan.",
     description:
-      "The best part of any event isn't on the screen. VIBO just handles the 'how to get there' — everything after is yours to keep.",
+      "The good part isn't on the screen. We just get you to the door.",
   },
 ] as const;
 
@@ -115,18 +175,18 @@ export const bentoFeatures: BentoFeature[] = [
   {
     span: 7,
     tag: "Discovery",
-    title: "Everything good happening near you — finally in one place.",
+    title: "What's on near you, in one place.",
     description:
-      "Events ranked by how close they are, what you enjoy, and what real attendees thought. The more you use VIBO, the sharper it gets at knowing what a good evening looks like for you.",
+      "Sorted by distance and what you like. It learns as you use it.",
     accent: null,
     trustBadges: ["Live near you", "Rated by real attendees"],
   },
   {
     span: 5,
     tag: "Trust",
-    title: "Every host is a real person with a real reputation on the line.",
+    title: "Hosts are real people — ID checked.",
     description:
-      "Government ID verified. Ratings earned from actual attendees — not friends. A host who cancels last minute or ghosts the group gets removed. Permanently. No second chances.",
+      "Stars come from attendees, not friends. Bad hosts don't stay.",
     accent: "orange",
     trustBadges: null,
   },
@@ -134,8 +194,7 @@ export const bentoFeatures: BentoFeature[] = [
     span: 4,
     tag: null,
     title: null,
-    description:
-      "Showing up costs nothing — ever. We charge hosts for tools that help them grow. Never attendees for simply existing.",
+    description: "We charge hosts for growth tools. Not you for showing up.",
     accent: null,
     stat: { value: "₹0", label: "to attend any event" },
     trustBadges: null,
@@ -143,34 +202,13 @@ export const bentoFeatures: BentoFeature[] = [
   {
     span: 8,
     tag: "Community",
-    title: "The people you meet once become the ones you keep going back out with.",
+    title: "Same crowd, next weekend.",
     description:
-      "Every event you attend adds a small group to your life — people who showed up for the same reason you did. See what they're going to next.",
+      "See people from past events and what they're joining next.",
     accent: "yellow",
     trustBadges: null,
   },
 ];
-
-export const bentoBottomFeatures = [
-  {
-    tag: "Safety",
-    title: "Your money doesn't move until the event actually happens.",
-    description:
-      "For paid events, your payment sits with us — not the host — until the event is confirmed done. If it gets cancelled or doesn't happen, you're refunded automatically. No chasing, no drama.",
-  },
-  {
-    tag: "Hosts",
-    title: "Host 3 events free, every month.",
-    description:
-      "No cost to start. Create an event, invite people, build a name for yourself. Pay only when you want more reach — not before.",
-  },
-  {
-    tag: "Coming soon",
-    title: "Wander Mode",
-    description:
-      "Open the app. Let it decide. One event, picked just for you, happening close by. For days when you don't want to think — you just want to get out.",
-  },
-] as const;
 
 export const mapFilters = ["All", "Outdoors", "Creative", "Food", "Social"] as const;
 

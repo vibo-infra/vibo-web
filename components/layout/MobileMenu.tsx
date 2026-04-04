@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { IoClose } from "react-icons/io5";
 import { homeSectionLinks, navLinks } from "@/lib/constants";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -12,25 +13,26 @@ type MobileMenuProps = {
 export function MobileMenu({ onClose }: MobileMenuProps) {
   return (
     <motion.div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-90 flex flex-col bg-page px-8 pt-20 pb-10"
+      className="fixed inset-0 z-[130] flex flex-col bg-page px-6 pt-[max(5rem,env(safe-area-inset-top)+3.25rem)] pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:px-8"
     >
       <button
-        onClick={onClose}
-        className="absolute top-5 right-6 cursor-pointer border-none bg-transparent p-1 text-heading"
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute top-[max(0.75rem,env(safe-area-inset-top))] right-[max(1rem,env(safe-area-inset-right))] z-10 flex h-11 w-11 cursor-pointer touch-manipulation items-center justify-center rounded-full border border-line-strong bg-surface text-heading shadow-sm transition-colors hover:border-accent hover:bg-surface-alt hover:text-accent active:scale-[0.98]"
         aria-label="Close menu"
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path
-            d="M5 5l10 10M15 5l-10 10"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
+        <IoClose className="h-6 w-6 shrink-0" aria-hidden />
       </button>
 
       <div className="flex flex-col gap-8">

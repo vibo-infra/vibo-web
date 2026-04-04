@@ -8,6 +8,7 @@ import {
   siteConfig,
   socialProofAvatars,
 } from "@/lib/constants";
+import { siteTopBannerConfig } from "@/lib/siteTopBanner";
 import {
   fetchWaitlistCountClient,
   fetchReferralClient,
@@ -130,7 +131,7 @@ export function Hero() {
   }, [success]);
 
   const scrollToWaitlistPerks = useCallback(() => {
-    track("cta_click", "hero_perks_teaser");
+    track("cta_click", "hero_perks_link");
     requestAnimationFrame(() => {
       document
         .getElementById("waitlist-perks")
@@ -138,10 +139,14 @@ export function Hero() {
     });
   }, []);
 
+  const heroTopPad = siteTopBannerConfig.enabled
+    ? "pt-14 sm:pt-20 md:pt-24"
+    : "pt-[130px]";
+
   return (
     <section
       ref={heroRef}
-      className="relative flex min-h-screen flex-col justify-center overflow-hidden pt-[130px] pb-[90px]"
+      className={`relative flex min-h-screen flex-col justify-center overflow-hidden pb-20.5 ${heroTopPad}`}
       id="top"
     >
       {/* <div className="pointer-events-none absolute top-1/2 -right-[120px] h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,var(--yellow-dim)_0%,transparent_68%)]" />
@@ -173,9 +178,11 @@ export function Hero() {
             <br />
             <em className="font-semibold italic">happening near you.</em>
             <br />
-            You just
-            <br />
-            <span className="underline-word">don&apos;t know it yet.</span>
+            <span className="mt-3 block sm:mt-5">
+              You just
+              <br />
+              <span className="underline-word">don&apos;t know it yet.</span>
+            </span>
           </h1>
         </FadeIn>
 
@@ -186,44 +193,27 @@ export function Hero() {
         </FadeIn> */}
 
         <FadeIn delay={0.2}>
-          <p className="mb-8 max-w-[520px] text-[17px] font-medium leading-[1.78] text-body">
-            Somewhere close by, someone is organising a sunrise trek, a
-            chai-and-sketch morning, a rooftop jam. VIBO finds those people —
+          <p className="mb-3 max-w-[520px] text-[17px] font-medium leading-[1.78] text-body">
+            Sunrise treks, rooftop jams, late-night hangs — VIBO finds those people
             and gets you to the door.
           </p>
         </FadeIn>
 
-        {!SHOW_PRICING_SECTION ? (
-          <FadeIn delay={0.24} className="relative z-10 mb-6">
-            <button
-              type="button"
-              onClick={scrollToWaitlistPerks}
-              aria-label="See full waitlist perks at launch"
-              className="pointer-events-auto group flex w-full max-w-[440px] cursor-pointer touch-manipulation items-stretch gap-0 overflow-hidden rounded-xl border border-accent/40 bg-gradient-to-r from-accent-dim/80 via-page to-highlight-dim/50 text-left shadow-sm ring-1 ring-accent/10 transition-[transform,box-shadow,ring-color] active:scale-[0.995] min-[480px]:max-w-lg md:hover:ring-accent/25 dark:from-accent-dim/50 dark:via-page dark:to-highlight-dim/35 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
-            >
-              <span
-                className="w-1 shrink-0 bg-accent"
-                aria-hidden
-              />
-              <span className="flex min-h-[52px] min-w-0 flex-1 flex-col justify-center px-4 py-3.5">
-                <span className="font-display text-[15px] font-semibold leading-snug tracking-tight text-heading sm:text-base">
-                  Launch-day perks for the waitlist
-                </span>
-                {/*                 <span className="mt-1 text-[12px] font-bold uppercase tracking-[0.08em] text-accent sm:text-[11px]">
-                  What Sparks are + full perk list — see below
-                </span> */}
-              </span>
-              <span
-                className="flex w-12 shrink-0 items-center justify-center border-l border-line bg-surface/60 text-lg font-light text-accent transition-transform duration-200 group-active:translate-x-0.5 dark:bg-surface-alt/40"
-                aria-hidden
-              >
-                →
-              </span>
-            </button>
-          </FadeIn>
-        ) : null}
+        {/* <FadeIn delay={0.22}>
+          <ul
+            className="mb-8 flex max-w-[520px] flex-col gap-2 text-[14px] font-medium leading-snug text-body"
+            aria-label="What VIBO is"
+          >
+            {heroSkimPoints.map((line) => (
+              <li key={line} className="flex gap-2.5">
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden />
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+        </FadeIn> */}
 
-        <FadeIn delay={0.3}>
+        <FadeIn delay={0.24}>
           <div className="flex flex-col gap-4" id="wl">
             {success ? (
               <div className="max-w-[460px] animate-[fadeUp_0.35s_ease_forwards]">
@@ -311,6 +301,23 @@ export function Hero() {
 
             <p className="text-xs font-medium text-muted">
                   Get notified when VIBO launches in your city.
+                  {!SHOW_PRICING_SECTION ? (
+                    <button
+                      type="button"
+                      onClick={scrollToWaitlistPerks}
+                      className="group mb-6 border-none bg-transparent p-0 text-[13px] font-medium text-muted transition-colors hover:text-accent"
+                    >
+                      <span className="border-b border-line pb-px transition-[border-color,color] group-hover:border-accent">
+                        Launch perks for the waitlist
+                      </span>
+                      <span
+                        className="ml-1 inline-block transition-transform group-hover:translate-x-0.5"
+                        aria-hidden
+                      >
+                        →
+                      </span>
+                    </button>
+                  ) : null}
             </p>
 
             <div className="flex items-center gap-5 pt-2">

@@ -117,6 +117,109 @@ html.theme-transitioning *::after {
   to   { transform: scale(1); opacity: 1; }
 }
 
+/* ─── Navbar contribute strip: horizontal marquee (global only) ───
+   Two identical .vibo-contrib-marquee-chunk siblings; -50% = one chunk width. */
+@keyframes viboContribMarqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.vibo-contrib-marquee-viewport {
+  overflow: hidden !important;
+  width: 100%;
+  min-height: 2.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.vibo-contrib-marquee-track {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  flex-shrink: 0;
+  width: max-content !important;
+  min-width: max-content;
+  box-sizing: border-box;
+  animation: viboContribMarqueeScroll 35s linear infinite !important;
+  will-change: transform;
+}
+
+.vibo-contrib-marquee-chunk {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  flex-shrink: 0 !important;
+  align-items: center;
+  white-space: nowrap !important;
+  box-sizing: border-box;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+@media (min-width: 640px) {
+  .vibo-contrib-marquee-chunk {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    font-size: 13px;
+  }
+}
+
+/* Static line when user prefers reduced motion */
+.vibo-contrib-marquee-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.35;
+  background: color-mix(in srgb, var(--surface2) 95%, transparent);
+}
+
+@media (min-width: 640px) {
+  .vibo-contrib-marquee-fallback {
+    font-size: 13px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    background: transparent;
+  }
+}
+
+[data-theme="dark"] .vibo-contrib-marquee-fallback {
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
+}
+
+@media (min-width: 640px) {
+  [data-theme="dark"] .vibo-contrib-marquee-fallback {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vibo-contrib-marquee-track {
+    animation: none !important;
+    transform: translateX(0) !important;
+  }
+
+  .vibo-contrib-marquee-viewport {
+    display: none !important;
+  }
+
+  .vibo-contrib-marquee-fallback {
+    display: flex !important;
+  }
+}
+
 /* Solo map placeholder dot (no events / empty filter) */
 @keyframes map-pin-pulse-teal {
   0% {

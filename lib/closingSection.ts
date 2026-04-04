@@ -6,10 +6,10 @@ export const closingSection = {
   titleLine1: "Your next favourite memory",
   titleLine2: "is 2km away.",
   body:
-    "VIBO will be on the App Store and Google Play. We’re still building the apps.",
+    "Apps for iPhone and Android are in the works. Join the waitlist — we’ll email you when you can download.",
   /** Shown under the main paragraph — waitlist → email at launch. */
   waitlistEmailNote:
-    "If you’re on the waitlist, we’ll email you as soon as you can download. No need to keep checking the stores.",
+    "No need to refresh the App Store. Waitlist = first to know.",
   storesEyebrow: "Coming to",
   apple: { name: "App Store", status: "Coming soon" },
   google: { name: "Google Play", status: "Coming soon" },

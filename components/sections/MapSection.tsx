@@ -244,9 +244,11 @@ export function MapSection() {
             </h2>
           ) : (
             <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
-              See live events on the map
+              The map fills up
               <br />
-              <em className="font-light text-accent">- waiting for the first pin {":)"}</em>
+              <em className="font-light not-italic text-accent">
+                as hosts go live.
+              </em>
             </h2>
           )}
         </FadeIn>

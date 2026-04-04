@@ -151,15 +151,14 @@ export function HowItWorks() {
   }, []);
 
   return (
-    <section id="how" className="py-[100px]">
+    <section id="how" className="scroll-mt-[76px] py-[100px]">
       <Container>
         <SectionEyebrow text="How it works" />
         <FadeIn>
           <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
             Three taps to
             <br />
-            <em className="font-light text-accent">something real </em>
-            - a visual
+            <em className="font-light not-italic text-accent">something real.</em>
           </h2>
         </FadeIn>
 

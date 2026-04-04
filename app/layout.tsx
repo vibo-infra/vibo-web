@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Syne, Nunito } from "next/font/google";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { Navbar } from "@/components/layout/Navbar";
+import { SiteTopBanner } from "@/components/layout/SiteTopBanner";
+import { ContribMarqueeStrip } from "@/components/layout/ContribMarqueeStrip";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { AnalyticsRoot } from "@/components/providers/AnalyticsRoot";
@@ -177,6 +179,8 @@ export default function RootLayout({
           <AnalyticsRoot />
           <ScrollProgress />
           <Navbar />
+          <SiteTopBanner />
+          <ContribMarqueeStrip />
           <main>{children}</main>
           <Footer />
         </ThemeProvider>

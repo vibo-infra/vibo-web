@@ -3,7 +3,7 @@
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/FadeIn";
-import { bentoFeatures, bentoBottomFeatures } from "@/lib/constants";
+import { bentoFeatures, featureFootnotes } from "@/lib/constants";
 
 const spanClasses: Record<number, string> = {
   4: "col-span-12 min-[900px]:col-span-4",
@@ -30,18 +30,23 @@ const accentStyles = {
 
 export function Features() {
   return (
-    <section id="feat" className="bg-surface py-[108px]">
+    <section id="feat" className="scroll-mt-[76px] bg-surface py-[88px] md:py-[96px]">
       <Container>
         <SectionEyebrow text="Features" />
         <FadeIn>
           <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
-            Built around trust,
+            Built for trust,
             <br />
-            <em className="font-light">not metrics.</em>
+            <em className="font-light">not noise.</em>
           </h2>
         </FadeIn>
+        <FadeIn delay={0.06}>
+          <p className="mt-4 max-w-[520px] text-sm font-light leading-relaxed text-muted">
+            Local events, real hosts, free to join. That&apos;s the core.
+          </p>
+        </FadeIn>
 
-        <StaggerContainer className="mt-14 grid auto-rows-auto grid-cols-12 gap-3">
+        <StaggerContainer className="mt-10 grid auto-rows-auto grid-cols-12 gap-3 md:mt-12">
           {bentoFeatures.map((feature, i) => {
             const accent = feature.accent
               ? accentStyles[feature.accent]
@@ -53,7 +58,7 @@ export function Features() {
                 className={spanClasses[feature.span] ?? "col-span-12"}
               >
                 <div
-                  className={`relative overflow-hidden rounded-card border p-8 transition-all hover:-translate-y-0.5 hover:border-line-strong ${
+                  className={`relative overflow-hidden rounded-card border p-6 transition-all hover:-translate-y-0.5 hover:border-line-strong md:p-7 ${
                     accent?.card ?? "border-line bg-surface"
                   }`}
                 >
@@ -124,19 +129,16 @@ export function Features() {
           })}
 
           <StaggerItem className="col-span-12">
-            <div className="rounded-card border border-line bg-surface p-8 transition-all hover:-translate-y-0.5 hover:border-line-strong">
-              <div className="grid grid-cols-1 items-start gap-8 min-[900px]:grid-cols-3">
-                {bentoBottomFeatures.map((feature) => (
-                  <div key={feature.tag}>
-                    <span className="mb-4 inline-block rounded-full bg-surface-alt px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-muted">
-                      {feature.tag}
+            <div className="rounded-card border border-line bg-surface-alt/50 px-5 py-5 md:px-8 md:py-6">
+              <div className="grid grid-cols-1 gap-5 min-[700px]:grid-cols-3 min-[700px]:gap-6">
+                {featureFootnotes.map((row) => (
+                  <div key={row.label} className="min-w-0">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-accent">
+                      {row.label}
                     </span>
-                    <div className="mb-2 text-[15px] font-medium text-heading">
-                      {feature.title}
-                    </div>
-                    <div className="text-[13px] font-light leading-relaxed text-body">
-                      {feature.description}
-                    </div>
+                    <p className="mt-1.5 text-[13px] font-light leading-relaxed text-body">
+                      {row.text}
+                    </p>
                   </div>
                 ))}
               </div>
