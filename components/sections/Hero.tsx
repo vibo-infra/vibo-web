@@ -3,7 +3,11 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { siteConfig, socialProofAvatars } from "@/lib/constants";
+import {
+  SHOW_PRICING_SECTION,
+  siteConfig,
+  socialProofAvatars,
+} from "@/lib/constants";
 import {
   fetchWaitlistCountClient,
   fetchReferralClient,
@@ -125,6 +129,15 @@ export function Hero() {
     );
   }, [success]);
 
+  const scrollToWaitlistPerks = useCallback(() => {
+    track("cta_click", "hero_perks_teaser");
+    requestAnimationFrame(() => {
+      document
+        .getElementById("waitlist-perks")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
+
   return (
     <section
       ref={heroRef}
@@ -173,12 +186,42 @@ export function Hero() {
         </FadeIn> */}
 
         <FadeIn delay={0.2}>
-          <p className="mb-5 max-w-[520px] text-[17px] font-medium leading-[1.78] text-body">
+          <p className="mb-8 max-w-[520px] text-[17px] font-medium leading-[1.78] text-body">
             Somewhere close by, someone is organising a sunrise trek, a
             chai-and-sketch morning, a rooftop jam. VIBO finds those people —
             and gets you to the door.
           </p>
         </FadeIn>
+
+        {!SHOW_PRICING_SECTION ? (
+          <FadeIn delay={0.24} className="relative z-10 mb-6">
+            <button
+              type="button"
+              onClick={scrollToWaitlistPerks}
+              aria-label="See full waitlist perks at launch"
+              className="pointer-events-auto group flex w-full max-w-[440px] cursor-pointer touch-manipulation items-stretch gap-0 overflow-hidden rounded-xl border border-accent/40 bg-gradient-to-r from-accent-dim/80 via-page to-highlight-dim/50 text-left shadow-sm ring-1 ring-accent/10 transition-[transform,box-shadow,ring-color] active:scale-[0.995] min-[480px]:max-w-lg md:hover:ring-accent/25 dark:from-accent-dim/50 dark:via-page dark:to-highlight-dim/35 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+            >
+              <span
+                className="w-1 shrink-0 bg-accent"
+                aria-hidden
+              />
+              <span className="flex min-h-[52px] min-w-0 flex-1 flex-col justify-center px-4 py-3.5">
+                <span className="font-display text-[15px] font-semibold leading-snug tracking-tight text-heading sm:text-base">
+                  Launch-day perks for the waitlist
+                </span>
+                {/*                 <span className="mt-1 text-[12px] font-bold uppercase tracking-[0.08em] text-accent sm:text-[11px]">
+                  What Sparks are + full perk list — see below
+                </span> */}
+              </span>
+              <span
+                className="flex w-12 shrink-0 items-center justify-center border-l border-line bg-surface/60 text-lg font-light text-accent transition-transform duration-200 group-active:translate-x-0.5 dark:bg-surface-alt/40"
+                aria-hidden
+              >
+                →
+              </span>
+            </button>
+          </FadeIn>
+        ) : null}
 
         <FadeIn delay={0.3}>
           <div className="flex flex-col gap-4" id="wl">

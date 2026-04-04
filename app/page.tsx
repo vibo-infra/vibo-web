@@ -6,10 +6,11 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Features } from "@/components/sections/Features";
 import { MapSection } from "@/components/sections/MapSection";
 import { Pricing } from "@/components/sections/Pricing";
+import { WaitlistBenefits } from "@/components/sections/WaitlistBenefits";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { fetchContentTrustBarServer } from "@/lib/api/services/webApi";
-import { siteConfig } from "@/lib/constants";
+import { SHOW_PRICING_SECTION, siteConfig } from "@/lib/constants";
 
 export const revalidate = 60;
 
@@ -58,7 +59,7 @@ export default async function HomePage() {
       <HowItWorks />
       <Features />
       <MapSection />
-      <Pricing />
+      {SHOW_PRICING_SECTION ? <Pricing /> : <WaitlistBenefits />}
       <FAQ />
       <FinalCTA />
     </>

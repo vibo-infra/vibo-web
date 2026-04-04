@@ -1,5 +1,7 @@
 "use client";
 
+/** Renders when `SHOW_PRICING_SECTION` is `true` in `@/lib/constants`. */
+
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";

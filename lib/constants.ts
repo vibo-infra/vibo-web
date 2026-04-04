@@ -1,26 +1,41 @@
+/** Production site — canonical URLs, OG, JSON-LD */
 export const siteConfig = {
   name: "VIBO",
   tagline: "Good vibes happen nearby.",
   description:
     "Discover local events, meet real people, and build community. VIBO connects you to hikes, workshops, jam sessions, and more happening near you.",
-  url: "https://vibo.app",
-  /** Shown in waitlist success “Share:” line */
+  url: "https://hellovibo.in",
+  /** Referral / share links (host only; same site as `url`) */
   shareDomain: "hellovibo.in",
   email: "sayhellovibo@gmail.com",
   ogImage: "/og-image.png",
 } as const;
+
+/**
+ * When `true`, the home page shows the pricing section (`#price`).
+ * When `false`, shows waitlist privileges instead (`#waitlist-perks`).
+ */
+export const SHOW_PRICING_SECTION = false;
 
 export const homeSectionLinks = {
   waitlist: "/#wl",
   howItWorks: "/#how",
   features: "/#feat",
   pricing: "/#price",
+  waitlistPerks: "/#waitlist-perks",
 } as const;
+
+const navPricingOrPerks = SHOW_PRICING_SECTION
+  ? ({ label: "Pricing", href: homeSectionLinks.pricing } as const)
+  : ({
+      label: "Waitlist Perks",
+      href: homeSectionLinks.waitlistPerks,
+    } as const);
 
 export const navLinks = [
   { label: "How it works", href: homeSectionLinks.howItWorks },
   { label: "Features", href: homeSectionLinks.features },
-  { label: "Pricing", href: homeSectionLinks.pricing },
+  navPricingOrPerks,
   { label: "Terms", href: "/tnc" },
 ] as const;
 

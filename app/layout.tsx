@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { AnalyticsRoot } from "@/components/providers/AnalyticsRoot";
+import { siteConfig } from "@/lib/constants";
 import "./globals.css";
 
 const syne = Syne({
@@ -37,22 +38,28 @@ export const metadata: Metadata = {
   description:
     "Discover local events, meet real people, and build community. VIBO connects you to hikes, workshops, jam sessions, and more happening near you. Free forever for attendees.",
   keywords: [
-    "local events",
-    "community events",
-    "activities near me",
-    "meetups",
+    "Vibo",
+    "hellovibo",
+    "local events India",
     "Mumbai events",
-    "discover events",
-    "social events",
-    "VIBO",
+    "events near me",
+    "community events",
+    "meetups",
+    "hosting",
+    "fun activities",
+    "things to do Mumbai",
+    "discover local events",
+    "social events app",
+    "new"
   ],
-  authors: [{ name: "Vibo" }],
+  authors: [{ name: "VIBO", url: siteConfig.url }],
   creator: "VIBO",
-  metadataBase: new URL("https://hellovibo.in"),
+  publisher: "VIBO",
+  metadataBase: new URL(siteConfig.url),
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://hellovibo.in",
+    url: siteConfig.url,
     siteName: "VIBO",
     title: "VIBO — Good vibes happen nearby.",
     description:
@@ -85,8 +92,26 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://vibo.app",
+    canonical: siteConfig.url,
   },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+    ? {
+        verification: {
+          ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+            ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+            : {}),
+          ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+            ? {
+                other: {
+                  "msvalidate.01":
+                    process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
+                },
+              }
+            : {}),
+        },
+      }
+    : {}),
 };
 
 export default function RootLayout({
@@ -94,30 +119,51 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const siteUrl = siteConfig.url;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "VIBO",
-    url: "https://hellovibo.in",
-    description:
-      "Discover local events, meet real people, and build community.",
-    applicationCategory: "SocialNetworkingApplication",
-    operatingSystem: "iOS, Android",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "INR",
-      description: "Free forever for attendees",
-    },
-    creator: {
-      "@type": "Organization",
-      name: "VIBO",
-      url: "https://hellovibo.in",
-    },
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
+        name: "VIBO",
+        url: siteUrl,
+        logo: `${siteUrl}${siteConfig.ogImage}`,
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "VIBO",
+        description: siteConfig.description,
+        inLanguage: "en-IN",
+        publisher: { "@id": `${siteUrl}/#organization` },
+        potentialAction: {
+          "@type": "ReadAction",
+          target: siteUrl,
+        },
+      },
+      {
+        "@type": "WebApplication",
+        name: "VIBO",
+        url: siteUrl,
+        description: siteConfig.description,
+        applicationCategory: "LifestyleApplication",
+        operatingSystem: "Web, iOS, Android",
+        browserRequirements: "Requires JavaScript",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "INR, USD",
+          description: "Free forever for attendees",
+        },
+        creator: { "@id": `${siteUrl}/#organization` },
+      },
+    ],
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-IN" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
