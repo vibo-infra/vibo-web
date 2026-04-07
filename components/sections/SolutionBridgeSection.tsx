@@ -41,7 +41,7 @@ export function SolutionBridgeSection() {
 
         <FadeIn delay={0.12}>
           <a
-            href="#how"
+            href="#story"
             className="group mt-10 inline-flex items-center gap-2 border-b border-transparent font-body text-sm font-medium text-accent transition-colors hover:border-accent hover:text-heading"
           >
             {cta}

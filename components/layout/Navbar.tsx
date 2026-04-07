@@ -5,10 +5,13 @@ import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
 import { homeSectionLinks, navLinks } from "@/lib/constants";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { SectionHashLink } from "@/components/ui/SectionHashLink";
 import { MobileMenu } from "./MobileMenu";
 import { fetchWaitlistCountClient } from "@/lib/api/services/webApi";
+import { useWaitlistSpot } from "@/context/WaitlistSpotContext";
 
 export function Navbar() {
+  const { userPosition } = useWaitlistSpot();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [lineCount, setLineCount] = useState<number | null>(null);
@@ -57,19 +60,26 @@ export function Navbar() {
           <ul className="flex flex-1 items-center justify-center gap-8 max-lg:hidden">
             {navLinks.map((link) => (
               <li key={link.label} className="list-none">
-                <Link
+                <SectionHashLink
                   href={link.href}
                   className="text-[13px] font-bold tracking-[0.01em] text-muted no-underline transition-colors hover:text-heading"
                 >
                   {link.label}
-                </Link>
+                </SectionHashLink>
               </li>
             ))}
           </ul>
 
           <div className="flex shrink-0 items-center gap-3">
             <span className="hidden text-[12px] font-semibold text-muted min-[900px]:inline">
-              {lineCount != null ? (
+              {userPosition != null ? (
+                <>
+                  Your spot{" "}
+                  <strong className="font-extrabold text-accent">
+                    #{userPosition.toLocaleString("en-IN")}
+                  </strong>
+                </>
+              ) : lineCount != null ? (
                 <>
                   <strong className="font-extrabold text-body">
                     {lineCount.toLocaleString("en-IN")}
@@ -84,12 +94,12 @@ export function Navbar() {
               )}
             </span>
             <ThemeToggle />
-            <Link
+            <SectionHashLink
               href={homeSectionLinks.waitlist}
               className="inline-flex items-center gap-1.5 rounded-full bg-heading px-5 py-2.5 font-body text-[13px] font-extrabold text-page no-underline transition-all hover:opacity-90 hover:-translate-y-px max-md:hidden"
             >
               Get early access →
-            </Link>
+            </SectionHashLink>
             <button
               className="hidden cursor-pointer border-none bg-transparent p-1 text-heading max-md:flex"
               onClick={() => setMobileOpen(true)}

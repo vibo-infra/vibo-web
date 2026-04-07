@@ -5,8 +5,9 @@ import { Navbar } from "@/components/layout/Navbar";
 import { SiteTopBanner } from "@/components/layout/SiteTopBanner";
 import { ContribMarqueeStrip } from "@/components/layout/ContribMarqueeStrip";
 import { Footer } from "@/components/layout/Footer";
-import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { ScrollUpToTop } from "@/components/layout/ScrollUpToTop";
 import { AnalyticsRoot } from "@/components/providers/AnalyticsRoot";
+import { WaitlistSpotProvider } from "@/context/WaitlistSpotContext";
 import { siteConfig } from "@/lib/constants";
 import "./globals.css";
 
@@ -176,13 +177,15 @@ export default function RootLayout({
         className={`${syne.variable} ${nunito.variable} font-body antialiased`}
       >
         <ThemeProvider>
-          <AnalyticsRoot />
-          <ScrollProgress />
-          <Navbar />
-          <SiteTopBanner />
-          <ContribMarqueeStrip />
-          <main>{children}</main>
-          <Footer />
+          <WaitlistSpotProvider>
+            <AnalyticsRoot />
+            <Navbar />
+            <SiteTopBanner />
+            <ContribMarqueeStrip />
+            <main>{children}</main>
+            <Footer />
+            <ScrollUpToTop />
+          </WaitlistSpotProvider>
         </ThemeProvider>
       </body>
     </html>

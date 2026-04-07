@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
-import { TrustStrip } from "@/components/sections/TrustStrip";
-import { EmotionSection } from "@/components/sections/EmotionSection";
+import { WaitlistSection } from "@/components/sections/WaitlistSection";
 import { SolutionBridgeSection } from "@/components/sections/SolutionBridgeSection";
 import { StoryBandSection } from "@/components/sections/StoryBandSection";
 import { HowItWorks } from "@/components/sections/HowItWorks";
@@ -11,10 +10,7 @@ import { Pricing } from "@/components/sections/Pricing";
 import { WaitlistBenefits } from "@/components/sections/WaitlistBenefits";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCTA } from "@/components/sections/FinalCTA";
-import { fetchContentTrustBarServer } from "@/lib/api/services/webApi";
 import { SHOW_PRICING_SECTION, siteConfig } from "@/lib/constants";
-
-export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
@@ -50,19 +46,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function HomePage() {
-  const trustContent = await fetchContentTrustBarServer();
-
+export default function HomePage() {
   return (
     <>
       <Hero />
-      {/* <TrustStrip content={trustContent} /> */}
-      <EmotionSection />
+      <MapSection />
+      <WaitlistSection />
       <SolutionBridgeSection />
       <StoryBandSection />
       <HowItWorks />
       <Features />
-      <MapSection />
       {SHOW_PRICING_SECTION ? <Pricing /> : <WaitlistBenefits />}
       <FAQ />
       <FinalCTA />

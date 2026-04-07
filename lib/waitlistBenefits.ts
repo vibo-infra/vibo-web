@@ -4,8 +4,21 @@
 
 export const waitlistSparkExplainer = {
   title: "What are Sparks?",
-  body:
-    "Credits in your VIBO account. Hosts use them to boost an event or unlock host tools without lots of small fees. You get Sparks on launch day; your balance shows in the app.",
+  /** Sentence split so “tokens” can be highlighted in the UI */
+  subtitleBefore: "They're ",
+  subtitleHighlight: "tokens",
+  subtitleAfter:
+    " in the app — you spend them on hosting and on premium features.",
+  /** Figure: simple what / use-for */
+  whatLabel: "What they are",
+  brandName: "Sparks",
+  whatSub: "In-app tokens in your balance",
+  spendLabel: "What you use them for",
+  useHostingTitle: "Hosting",
+  useHostingLine: "Post & boost your activities",
+  usePremiumTitle: "Premium",
+  usePremiumLine: "Unlock paid extras in the app",
+  spendFooter: "Same balance — you choose where to spend.",
 } as const;
 
 export const waitlistBenefitsSection = {
@@ -18,7 +31,8 @@ export const waitlistBenefitsSection = {
 
 export const waitlistTop100Spotlight = {
   badge: "First 100",
-  headline: "1,000 Sparks from us — your first year.",
+  free: "Free ",
+  headline: " 1,000 Sparks from us — your first year.",
   body:
     "On top of the 30 sparks everyone gets, the first 100 on the waitlist get this extra gift from us for a year after launch. Full details when we're live.",
 } as const;

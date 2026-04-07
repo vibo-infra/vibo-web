@@ -10,6 +10,8 @@ export function ContribMarqueeStrip() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    /* Client-only: sessionStorage + mounted gate for marquee strip */
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional one-time sync after mount
     setMounted(true);
     try {
       if (sessionStorage.getItem(cfg.storageKey) === "1") return;

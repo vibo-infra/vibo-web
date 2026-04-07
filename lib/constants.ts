@@ -18,6 +18,7 @@ export const siteConfig = {
 export const SHOW_PRICING_SECTION = false;
 
 export const homeSectionLinks = {
+  around: "/#around",
   waitlist: "/#wl",
   howItWorks: "/#how",
   features: "/#feat",
@@ -33,6 +34,7 @@ const navPricingOrPerks = SHOW_PRICING_SECTION
     } as const);
 
 export const navLinks = [
+  { label: "Around you", href: homeSectionLinks.around },
   { label: "How it works", href: homeSectionLinks.howItWorks },
   { label: "Features", href: homeSectionLinks.features },
   navPricingOrPerks,
@@ -74,41 +76,54 @@ export const emotionCards = [
   },
 ] as const;
 
-/** Bridge: pain → product (Desire + curiosity) before How it works (Action). */
+/** Bridge: what VIBO is — activities and plans around you. */
 export const solutionBridgeSection = {
-  eyebrow: "So here's the answer",
-  headlineLine1: "We built",
-  headlineAccent: "VIBO",
-  headlineLine2: "for plans that almost happen.",
+  eyebrow: "What VIBO is",
+  headlineLine1: "Activities, plans, and events",
+  headlineAccent: "happening around you",
+  headlineLine2: "— or simply host one yourself.",
   body:
-    "We put real events near you on one simple list. Tap to join. No long chat that dies before the weekend.",
-  sub: "The fun was already out there. We just help you find it.",
-  cta: "How it works",
+    "VIBO is for real-world things near you: runs, games, workshops, meetups. See what others are hosting, join in a tap, or put your own plan out there.",
+  sub: "Nearby first. Practical. Built for showing up.",
+  cta: "See two paths",
 } as const;
 
-/** One skim: problem → product → detail — sits before How it works. */
+export type StoryRouteIconKey =
+  | "mobile"
+  | "map"
+  | "users"
+  | "add"
+  | "people"
+  | "calendar";
+
+export type StoryRouteStep = {
+  label: string;
+  iconKey: StoryRouteIconKey;
+};
+
+/** Start to finish — two illustrated paths (discover vs host). */
 export const storyBandSection = {
   eyebrow: "Start to finish",
-  headlineLine1: "One app.",
-  headlineLine2: "From your phone to the live event.",
-  steps: [
-    {
-      title: "See",
-      body: "Local events on a map and list — what's on near you.",
-    },
-    {
-      title: "Trust",
-      body: "Hosts checked. Reviews from people who actually went.",
-    },
-    {
-      title: "Join",
-      body: "One tap. A reminder before it starts.",
-    },
-    {
-      title: "Go",
-      body: "Free for you to show up. The rest is offline.",
-    },
-  ],
+  headlineLine1: "Discover or host.",
+  headlineLine2: "Two simple routes.",
+  discover: {
+    title: "Discover",
+    hook: "Bored on a Saturday evening?",
+    steps: [
+      { label: "Open VIBO", iconKey: "mobile" },
+      { label: "See what's nearby", iconKey: "map" },
+      { label: "Join · go", iconKey: "users" },
+    ] as const satisfies readonly StoryRouteStep[],
+  },
+  host: {
+    title: "Host",
+    hook: "Want a cycling group?",
+    steps: [
+      { label: "Post a plan", iconKey: "add" },
+      { label: "Locals find you", iconKey: "people" },
+      { label: "Meet up", iconKey: "calendar" },
+    ] as const satisfies readonly StoryRouteStep[],
+  },
 } as const;
 
 /** One line each — under shortened Features grid. */
@@ -132,19 +147,19 @@ export const steps = [
     num: 1,
     title: "Open VIBO. See what's around you.",
     description:
-      "Nearby events in one feed. Real distance, real host, who's going.",
+      "Runs, rides, courts, workshops — what’s live near you, with who’s going.",
   },
   {
     num: 2,
     title: "Tap once. You're in.",
     description:
-      "No long forms. Tap join, see the group, get a ping before it starts.",
+      "No long thread. Join, see the group, get a reminder before kickoff.",
   },
   {
     num: 3,
     title: "Show up. That's the whole plan.",
     description:
-      "The good part isn't on the screen. We just get you to the door.",
+      "The fun isn’t in the app — we just get you to the door.",
   },
 ] as const;
 
@@ -175,9 +190,9 @@ export const bentoFeatures: BentoFeature[] = [
   {
     span: 7,
     tag: "Discovery",
-    title: "What's on near you, in one place.",
+    title: "What’s on near you, in one place.",
     description:
-      "Sorted by distance and what you like. It learns as you use it.",
+      "By distance and what you care about — it gets smarter as you use it.",
     accent: null,
     trustBadges: ["Live near you", "Rated by real attendees"],
   },

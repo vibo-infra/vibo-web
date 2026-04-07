@@ -1,16 +1,28 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { IoClose } from "react-icons/io5";
 import { homeSectionLinks, navLinks } from "@/lib/constants";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { SectionHashLink } from "@/components/ui/SectionHashLink";
+import { useWaitlistSpot } from "@/context/WaitlistSpotContext";
+import { fetchWaitlistCountClient } from "@/lib/api/services/webApi";
 
 type MobileMenuProps = {
   onClose: () => void;
 };
 
 export function MobileMenu({ onClose }: MobileMenuProps) {
+  const { userPosition } = useWaitlistSpot();
+  const [lineCount, setLineCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    void fetchWaitlistCountClient().then((n) => {
+      if (n != null) setLineCount(n);
+    });
+  }, []);
+
   return (
     <motion.div
       role="dialog"
@@ -43,25 +55,47 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.05 * i, duration: 0.3 }}
           >
-            <Link
+            <SectionHashLink
               href={link.href}
-              onClick={onClose}
+              onInteract={onClose}
               className="font-display border-b border-line-strong py-2 text-[30px] font-extrabold tracking-[-0.02em] text-heading no-underline transition-colors hover:text-highlight"
             >
               {link.label}
-            </Link>
+            </SectionHashLink>
           </motion.div>
         ))}
       </div>
 
       <div className="mt-auto flex flex-col gap-4">
-        <Link
+        <p className="text-center text-[13px] font-semibold text-muted">
+          {userPosition != null ? (
+            <>
+              Your spot{" "}
+              <span className="font-extrabold text-accent">
+                #{userPosition.toLocaleString("en-IN")}
+              </span>
+            </>
+          ) : lineCount != null ? (
+            <>
+              <span className="font-extrabold text-body">
+                {lineCount.toLocaleString("en-IN")}
+              </span>{" "}
+              people in line
+            </>
+          ) : (
+            <>
+              <span className="font-extrabold text-body">0</span> people in
+              line
+            </>
+          )}
+        </p>
+        <SectionHashLink
           href={homeSectionLinks.waitlist}
-          onClick={onClose}
+          onInteract={onClose}
           className="flex h-12 items-center justify-center rounded-xl bg-heading text-center text-sm font-extrabold text-page no-underline transition-opacity hover:opacity-90"
         >
           Get early access →
-        </Link>
+        </SectionHashLink>
         <div className="flex items-center gap-2.5">
           <span className="text-[13px] text-muted">Switch theme</span>
           <ThemeToggle />

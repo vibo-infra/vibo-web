@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/FadeIn";
@@ -14,9 +15,148 @@ import {
   waitlistBenefitsCta,
 } from "@/lib/waitlistBenefits";
 import { track } from "@/lib/analytics";
-import { HiSparkles } from "react-icons/hi2";
+import { HiOutlineArrowDown, HiSparkles } from "react-icons/hi2";
 import { IoGiftOutline } from "react-icons/io5";
-import { MdOutlineMarkEmailUnread } from "react-icons/md";
+import {
+  MdEventAvailable,
+  MdOutlineMarkEmailUnread,
+  MdOutlineWorkspacePremium,
+} from "react-icons/md";
+
+function SparksFigure() {
+  const reduceMotion = useReducedMotion();
+  const c = waitlistSparkExplainer;
+
+  return (
+    <motion.div
+      className="w-full"
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <h3
+        id="spark-explainer-title"
+        className="font-display text-lg font-semibold tracking-tight text-heading"
+      >
+        {c.title}
+      </h3>
+      <p className="mt-2 max-w-[480px] text-[14px] font-medium leading-relaxed text-body">
+        {c.subtitleBefore}
+        <span className="font-extrabold text-accent">{c.subtitleHighlight}</span>
+        {c.subtitleAfter}
+      </p>
+
+      <p id="sparks-figure-desc" className="sr-only">
+        Sparks are in-app tokens you spend on hosting and premium features.
+      </p>
+
+      <div
+        className="mt-6 overflow-hidden rounded-2xl border border-line bg-page"
+        aria-labelledby="spark-explainer-title"
+        aria-describedby="sparks-figure-desc"
+      >
+        {/* Step 1: what Sparks are */}
+        <div className="border-b border-line bg-surface-alt/80 px-5 py-5 md:px-6">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted">
+            {c.whatLabel}
+          </p>
+          <div className="mt-3 flex items-start gap-4">
+            <motion.div
+              className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-accent/35 bg-accent-dim/50"
+              animate={
+                reduceMotion
+                  ? undefined
+                  : {
+                      boxShadow: [
+                        "0 0 0 0 rgba(255, 107, 74, 0)",
+                        "0 0 18px 2px rgba(255, 107, 74, 0.12)",
+                        "0 0 0 0 rgba(255, 107, 74, 0)",
+                      ],
+                    }
+              }
+              transition={
+                reduceMotion
+                  ? undefined
+                  : { duration: 2.8, repeat: Infinity, ease: "easeInOut" }
+              }
+            >
+              <HiSparkles className="h-8 w-8 text-accent" aria-hidden />
+            </motion.div>
+            <div className="min-w-0 pt-0.5">
+              <p className="font-display text-xl font-bold tracking-tight text-heading">
+                {c.brandName}
+              </p>
+              <p className="mt-0.5 text-[13px] font-medium leading-snug text-body">
+                {c.whatSub}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="flex justify-center border-b border-line bg-page py-2.5"
+          aria-hidden
+        >
+          <HiOutlineArrowDown className="h-4 w-4 text-accent/60" />
+        </div>
+
+        {/* Step 2: what you use them for */}
+        <div className="px-5 py-5 md:px-6 md:py-6">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted">
+            {c.spendLabel}
+          </p>
+
+          <div className="mt-4 grid gap-3 md:grid-cols-2 md:gap-4">
+              <motion.div
+                className="rounded-xl border border-line-strong bg-surface-alt p-4"
+                whileHover={{ y: -1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 32 }}
+              >
+                <div className="flex items-start gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-page text-accent shadow-sm">
+                    <MdEventAvailable className="h-6 w-6" aria-hidden />
+                  </span>
+                  <div>
+                    <p className="font-display text-[15px] font-bold text-heading">
+                      {c.useHostingTitle}
+                    </p>
+                    <p className="mt-1 text-[12px] font-medium leading-snug text-muted">
+                      {c.useHostingLine}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="rounded-xl border border-line-strong bg-surface-alt p-4"
+                whileHover={{ y: -1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 32 }}
+              >
+                <div className="flex items-start gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-page text-heading shadow-sm">
+                    <MdOutlineWorkspacePremium className="h-6 w-6" aria-hidden />
+                  </span>
+                  <div>
+                    <p className="font-display text-[15px] font-bold text-heading">
+                      {c.usePremiumTitle}
+                    </p>
+                    <p className="mt-1 text-[12px] font-medium leading-snug text-muted">
+                      {c.usePremiumLine}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+          </div>
+
+          <p className="mt-4 text-center text-[11px] font-medium text-muted">
+            {c.spendFooter}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 function scrollToWaitlist() {
   const el = document.getElementById("wl");
@@ -35,47 +175,33 @@ export function WaitlistBenefits() {
     >
       <Container>
         <SectionEyebrow text={waitlistBenefitsSection.eyebrow} />
-        <FadeIn>
-          <h2
-            id="waitlist-perks-heading"
-            className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading"
-          >
-            {waitlistBenefitsSection.titleLine1}
-            <br />
-            <em className="font-light not-italic text-body">
-              {waitlistBenefitsSection.titleEmphasis}
-            </em>
-          </h2>
-        </FadeIn>
 
-        <FadeIn delay={0.06}>
-          <p className="mt-5 max-w-[520px] text-[15px] font-light leading-relaxed text-body">
-            {waitlistBenefitsSection.lead}
-          </p>
-        </FadeIn>
-
-        <FadeIn delay={0.08}>
-          <aside
-            className="mt-6 flex max-w-[520px] gap-3 rounded-card border border-line-strong bg-surface-alt/80 px-4 py-3.5 min-[600px]:px-5 min-[600px]:py-4"
-            aria-labelledby="spark-explainer-title"
-          >
-            <HiSparkles
-              className="mt-0.5 h-5 w-5 shrink-0 text-accent"
-              aria-hidden
-            />
-            <div>
-              <h3
-                id="spark-explainer-title"
-                className="font-display text-sm font-semibold tracking-tight text-heading"
+        <div className="mt-2 grid grid-cols-1 gap-10 lg:mt-0 lg:grid-cols-2 lg:items-start lg:gap-12 xl:gap-14">
+          <div className="min-w-0">
+            <FadeIn>
+              <h2
+                id="waitlist-perks-heading"
+                className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading"
               >
-                {waitlistSparkExplainer.title}
-              </h3>
-              <p className="mt-1.5 text-[13px] font-light leading-relaxed text-body">
-                {waitlistSparkExplainer.body}
+                {waitlistBenefitsSection.titleLine1}
+                <br />
+                <em className="font-light not-italic text-body">
+                  {waitlistBenefitsSection.titleEmphasis}
+                </em>
+              </h2>
+            </FadeIn>
+
+            <FadeIn delay={0.06}>
+              <p className="mt-5 max-w-[540px] text-[15px] font-light leading-relaxed text-body lg:max-w-none">
+                {waitlistBenefitsSection.lead}
               </p>
-            </div>
-          </aside>
-        </FadeIn>
+            </FadeIn>
+          </div>
+
+          <div className="min-w-0 lg:pt-1">
+            <SparksFigure />
+          </div>
+        </div>
 
         <FadeIn delay={0.1}>
           <div className="relative mt-8 overflow-hidden rounded-card border border-line bg-page p-6 min-[600px]:p-8">
@@ -96,6 +222,9 @@ export function WaitlistBenefits() {
                   {waitlistTop100Spotlight.badge}
                 </span>
                 <p className="mt-2 font-display text-[clamp(20px,2.8vw,28px)] font-light leading-snug tracking-tight text-heading">
+                  <span className="font-light text-accent">
+                    {waitlistTop100Spotlight.free}
+                  </span>
                   {waitlistTop100Spotlight.headline}
                 </p>
                 <p className="mt-2 max-w-[480px] text-[13px] font-light leading-relaxed text-body">

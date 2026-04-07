@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
@@ -50,7 +50,7 @@ function PhoneMockup({
         </div>
 
         <div className="mb-3 font-display text-lg font-medium text-heading">
-          Near you
+          Around you
         </div>
 
         <div className="mb-4 flex items-center gap-2 rounded-lg bg-surface-alt px-3 py-2 text-[11px] text-muted">

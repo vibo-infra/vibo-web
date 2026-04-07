@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { SectionHashLink } from "@/components/ui/SectionHashLink";
 import { BrandPronunciation } from "@/components/ui/BrandPronunciation";
 import { navLinks, siteConfig } from "@/lib/constants";
 
@@ -32,13 +33,13 @@ export function Footer() {
             aria-label="Footer"
           >
             {navLinks.map((link) => (
-              <Link
+              <SectionHashLink
                 key={link.href}
                 href={link.href}
                 className="py-1.5 text-[13px] font-semibold tracking-[0.01em] text-body no-underline transition-colors hover:text-accent lg:py-1 lg:text-right"
               >
                 {link.label}
-              </Link>
+              </SectionHashLink>
             ))}
             <a
               href={`mailto:${siteConfig.email}`}
