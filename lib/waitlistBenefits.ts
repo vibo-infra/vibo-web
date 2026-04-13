@@ -1,5 +1,6 @@
 /**
- * Waitlist perks — Sparks for everyone; table mostly host extras.
+ * Waitlist perks — aligned with backend `docs/HOSTING_AND_WELCOME_GRANTS.md` and `app_config`.
+ * Figures are marketing defaults; product can tune via `app_config` without changing this file.
  */
 
 export const waitlistSparkExplainer = {
@@ -8,14 +9,14 @@ export const waitlistSparkExplainer = {
   subtitleBefore: "They're ",
   subtitleHighlight: "tokens",
   subtitleAfter:
-    " in the app — you spend them on hosting and on premium features.",
+    " in the app — you spend them on hosting paid listings and on premium features.",
   /** Figure: simple what / use-for */
   whatLabel: "What they are",
   brandName: "Sparks",
   whatSub: "In-app tokens in your balance",
   spendLabel: "What you use them for",
   useHostingTitle: "Hosting",
-  useHostingLine: "Post & boost your activities",
+  useHostingLine: "Publish paid activities (free listings stay free)",
   usePremiumTitle: "Premium",
   usePremiumLine: "Unlock paid extras in the app",
   spendFooter: "Same balance — you choose where to spend.",
@@ -26,15 +27,15 @@ export const waitlistBenefitsSection = {
   titleLine1: "You joined early.",
   titleEmphasis: "You get extras at launch.",
   lead:
-    "For joining early, we’ve set aside real thank-yous — Sparks (see below) and, if you host, the perks listed here. Your Sparks will be ready in your account when we go live.",
+    "Thank-you Sparks land in your account when you first sign in after launch. First 100 on the list get the biggest bundle; everyone else on the waitlist still gets a boost over the standard signup gift.",
 } as const;
 
 export const waitlistTop100Spotlight = {
   badge: "First 100",
-  free: "Free ",
-  headline: " 1,000 Sparks from us — your first year.",
+  free: "",
+  headline: "1,030 Sparks + discounted paid hosting for six months.",
   body:
-    "On top of the 30 sparks everyone gets, the first 100 on the waitlist get this extra gift from us for a year after launch. Full details when we're live.",
+    "Roughly 1,000 thank-you Sparks plus the same ~30 starter Sparks everyone gets. For six months after your bundle is applied, each paid listing you host costs fewer Sparks than the standard rate (configurable in the product).",
 } as const;
 
 export type WaitlistPrivilegeRow = {
@@ -52,47 +53,47 @@ export const waitlistPrivilegeTableHeaders = {
 } as const;
 
 export const waitlistPrivilegeRows: readonly WaitlistPrivilegeRow[] = [
-  // {
-  //   privilege: "Sparks (everyone)",
-  //   memberGets: "100 when you first open the app after launch",
-  //   duration: "Once",
-  //   standardEquivalent: "30 free Sparks for signing up",
-  // },
   {
-    privilege: "Hosting · your events",
-    memberGets: "Post as many events as you want",
-    duration: "First 3 months after launch",
-    standardEquivalent: "3 events per month",
+    privilege: "Sparks · first 100",
+    memberGets: "~1,030 total when you first sign in (if you joined the waitlist before creating your account)",
+    duration: "Once",
+    standardEquivalent: "~30 starter Sparks if you’re not on the waitlist bundle",
   },
   {
-    privilege: "Hosting · promos & stats",
-    memberGets: "Full promos (3/mo) + all stats",
-    duration: "First 3 months",
-    standardEquivalent: "Pay Sparks · basic stats",
+    privilege: "Sparks · rest of waitlist",
+    memberGets: "~530 total under the same rules",
+    duration: "Once",
+    standardEquivalent: "~30 starter Sparks",
   },
   {
-    privilege: "Paid plans (when live)",
-    memberGets: "30% off your first year",
-    duration: "As long as you keep your account",
-    standardEquivalent: "Full price",
+    privilege: "Paid hosting · welcome",
+    memberGets: "A few paid listings with no Spark charge (quota)",
+    duration: "Until you use the quota",
+    standardEquivalent: "Standard Spark cost per paid listing",
+  },
+  {
+    privilege: "Paid hosting · after quota",
+    memberGets: "Standard Spark cost per paid listing (first 100: lower cost for six months while the discount window is active)",
+    duration: "Ongoing",
+    standardEquivalent: "Same for everyone at public rates",
   },
   {
     privilege: "Nice extras",
-    memberGets: "New features ~4 weeks early; priority email help",
-    duration: "Priority help: 3 months · early features: ongoing",
-    standardEquivalent: "Normal",
+    memberGets: "New features early; priority help when we offer it",
+    duration: "As announced by email",
+    standardEquivalent: "Normal rollout",
   },
 ] as const;
 
 export const waitlistPrivilegesHeading = {
   title: "Your waitlist perks",
-  subtitle: "What you get, how long it lasts, and what changes later for everyone else.",
+  subtitle: "Exact numbers and windows are controlled in the product — this page is the intent, not a legal guarantee.",
 } as const;
 
 export const waitlistStayInTouch =
-  "We email you at launch and again before some perks wind down. This page stays online for anyone to read.";
+  "We email you at launch and when major perks change. Read the latest in-app or on your account after you sign in.";
 
 export const waitlistBenefitsCta = {
   label: "Join the waitlist",
-  helper: "Same waitlist for everyone — earlier often means more thank-you perks.",
+  helper: "Earlier signup position can mean a larger thank-you — same list for everyone.",
 } as const;

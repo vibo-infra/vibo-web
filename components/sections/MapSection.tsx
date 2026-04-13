@@ -43,9 +43,7 @@ export function MapSection() {
 
   useEffect(() => {
     let cancelled = false;
-    void fetchNearbyEvents(
-      activeFilter === "All" ? undefined : activeFilter
-    )
+    void fetchNearbyEvents(activeFilter === "All" ? undefined : activeFilter)
       .then((list) => {
         if (cancelled) return;
         setEvents(list);
@@ -99,7 +97,7 @@ export function MapSection() {
               </>
             ) : (
               <>
-                This fills in
+                This map fills in
                 <br />
                 <em className="font-light not-italic text-accent">
                   as people host nearby.

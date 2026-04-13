@@ -29,7 +29,8 @@ export const AnalyticsEndpoints = {
 
 /** `GET /v0/api/web/events/nearby` — vibo-backend `getNearbyEvents`. */
 export const DEFAULT_EVENT_CITY = "Mumbai" as const;
-export const DEFAULT_EVENT_LIMIT = 6 as const;
+/** Default page size for public nearby feed (backend caps at 100). */
+export const DEFAULT_EVENT_LIMIT = 100 as const;
 
 export function buildNearbyQuery(params: {
   city?: string;

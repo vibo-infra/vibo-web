@@ -6,8 +6,8 @@ export const heroComingSoon = "App coming soon · Mumbai";
 
 /** Hero H1 — line break after “nearby” */
 export const heroHookQuestionLines = [
-  "If you knew what's nearby,",
-  "what would you do?",
+  "Find it.",
+  "Host it.",
 ] as const;
 
 export const heroActivityChips = [
@@ -46,5 +46,5 @@ export const heroHighlights = [
 export const waitlistSectionHeading = "Early access";
 export const waitlistSectionTitle = "Join the waitlist";
 export const waitlistSectionSub =
-  "One email. We’ll notify you when we launch — Mumbai first.";
+  "One email — we’ll notify you at launch (Mumbai first). Earlier spots can mean a bigger Sparks thank-you; see perks below.";
 export const waitlistPerksLinkLabel = "See waitlist perks";

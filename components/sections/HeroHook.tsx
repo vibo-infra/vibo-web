@@ -4,7 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FadeIn } from "@/components/ui/FadeIn";
 import type { IconType } from "react-icons";
-import { GiMountainClimbing } from "react-icons/gi";
+import { FaMountainSun } from "react-icons/fa6";
 import {
   MdDirectionsBike,
   MdPalette,
@@ -23,7 +23,7 @@ import {
 const SLIDE_MS = 5000;
 
 const CHIP_ICONS: Record<(typeof heroActivityChips)[number]["iconKey"], IconType> = {
-  trek: GiMountainClimbing,
+  trek: FaMountainSun,
   cafe: MdPalette,
   football: MdSportsSoccer,
   pottery: MdPalette,
@@ -47,21 +47,45 @@ function getReducedMotionServerSnapshot() {
   return false;
 }
 
+function subscribeCoarsePointer(onStoreChange: () => void) {
+  const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+}
+
+function getCoarsePointerSnapshot() {
+  return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+}
+
+function getCoarsePointerServerSnapshot() {
+  return false;
+}
+
 export function HeroHook() {
   const [ix, setIx] = useState(0);
+  const [slidesHoverPaused, setSlidesHoverPaused] = useState(false);
+  const [slidesTouchPaused, setSlidesTouchPaused] = useState(false);
   const reduceMotion = useSyncExternalStore(
     subscribeReducedMotion,
     getReducedMotionSnapshot,
     getReducedMotionServerSnapshot
   );
+  const coarsePointer = useSyncExternalStore(
+    subscribeCoarsePointer,
+    getCoarsePointerSnapshot,
+    getCoarsePointerServerSnapshot
+  );
+
+  const slidesPaused =
+    slidesHoverPaused || (coarsePointer && slidesTouchPaused);
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (reduceMotion || slidesPaused) return;
     const t = window.setInterval(() => {
       setIx((i) => (i + 1) % heroScenarioSlides.length);
     }, SLIDE_MS);
     return () => window.clearInterval(t);
-  }, [reduceMotion]);
+  }, [reduceMotion, slidesPaused]);
 
   return (
     <div className="mb-8">
@@ -94,7 +118,7 @@ export function HeroHook() {
             />
           </div>
         </div>
-        <h1 className="mt-6 font-display text-[clamp(1.5rem,4.2vw,2.35rem)] font-extrabold leading-[1.3] tracking-[0.03em] text-heading">
+        <h1 className="mt-6 max-w-[22ch] font-body text-[clamp(2rem,6.2vw,3.35rem)] font-black leading-[1.12] tracking-[-0.035em] text-balance text-heading">
           {heroHookQuestionLines[0]}
           <br />
           {heroHookQuestionLines[1]}
@@ -125,7 +149,7 @@ export function HeroHook() {
                     transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
                   },
                 }}
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-page/95 px-3.5 py-2 text-[12px] font-semibold text-body shadow-[0_1px_2px_rgba(15,15,15,0.04)] transition-shadow hover:shadow-md"
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-page/95 px-3.5 py-2 text-[18px] font-semibold text-body shadow-[0_1px_2px_rgba(15,15,15,0.04)] transition-shadow hover:shadow-md"
               >
                 <Icon className="h-4 w-4 shrink-0 text-accent" aria-hidden />
                 {label}
@@ -153,7 +177,14 @@ export function HeroHook() {
               ))}
             </ul>
           ) : (
-            <div className="overflow-hidden py-1">
+            <div
+              className="overflow-hidden py-1 touch-manipulation"
+              onMouseEnter={() => setSlidesHoverPaused(true)}
+              onMouseLeave={() => setSlidesHoverPaused(false)}
+              onClick={() => {
+                if (coarsePointer) setSlidesTouchPaused((p) => !p);
+              }}
+            >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p
                   key={ix}
