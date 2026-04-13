@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FadeIn } from "@/components/ui/FadeIn";
 import type { IconType } from "react-icons";
@@ -21,6 +21,8 @@ import {
 } from "@/lib/heroIntro";
 
 const SLIDE_MS = 5000;
+const SWIPE_MIN_PX = 48;
+const SLIDE_COUNT = heroScenarioSlides.length;
 
 const CHIP_ICONS: Record<(typeof heroActivityChips)[number]["iconKey"], IconType> = {
   trek: FaMountainSun,
@@ -47,45 +49,77 @@ function getReducedMotionServerSnapshot() {
   return false;
 }
 
-function subscribeCoarsePointer(onStoreChange: () => void) {
-  const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
-  mq.addEventListener("change", onStoreChange);
-  return () => mq.removeEventListener("change", onStoreChange);
-}
-
-function getCoarsePointerSnapshot() {
-  return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-}
-
-function getCoarsePointerServerSnapshot() {
-  return false;
-}
-
 export function HeroHook() {
   const [ix, setIx] = useState(0);
+  /** 1 = forward (next), -1 = back — drives enter/exit direction */
+  const [slideDir, setSlideDir] = useState<1 | -1>(1);
   const [slidesHoverPaused, setSlidesHoverPaused] = useState(false);
-  const [slidesTouchPaused, setSlidesTouchPaused] = useState(false);
+  /** True while a finger is on the slides: auto-advance is paused so your gesture wins */
+  const [slideTouchActive, setSlideTouchActive] = useState(false);
+  /** Bumped after touch ends (and on swipe) so the 5s auto timer restarts from now */
+  const [autoTimerEpoch, setAutoTimerEpoch] = useState(0);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const reduceMotion = useSyncExternalStore(
     subscribeReducedMotion,
     getReducedMotionSnapshot,
     getReducedMotionServerSnapshot
   );
-  const coarsePointer = useSyncExternalStore(
-    subscribeCoarsePointer,
-    getCoarsePointerSnapshot,
-    getCoarsePointerServerSnapshot
-  );
 
-  const slidesPaused =
-    slidesHoverPaused || (coarsePointer && slidesTouchPaused);
+  const bumpAutoTimer = useCallback(() => {
+    setAutoTimerEpoch((n) => n + 1);
+  }, []);
+
+  const slidesPaused = slidesHoverPaused || slideTouchActive;
 
   useEffect(() => {
     if (reduceMotion || slidesPaused) return;
     const t = window.setInterval(() => {
-      setIx((i) => (i + 1) % heroScenarioSlides.length);
+      setSlideDir(1);
+      setIx((i) => (i + 1) % SLIDE_COUNT);
     }, SLIDE_MS);
     return () => window.clearInterval(t);
-  }, [reduceMotion, slidesPaused]);
+  }, [reduceMotion, slidesPaused, autoTimerEpoch]);
+
+  const onSlideTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+    setSlideTouchActive(true);
+  };
+
+  const onSlideTouchEnd = (e: React.TouchEvent) => {
+    setSlideTouchActive(false);
+    bumpAutoTimer();
+
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start || e.changedTouches.length !== 1) return;
+
+    const end = e.changedTouches[0];
+    const dx = end.clientX - start.x;
+    const dy = end.clientY - start.y;
+
+    if (
+      Math.abs(dx) < SWIPE_MIN_PX ||
+      Math.abs(dx) < Math.abs(dy) * 1.15
+    ) {
+      return;
+    }
+
+    if (dx < 0) {
+      setSlideDir(1);
+      setIx((i) => (i + 1) % SLIDE_COUNT);
+    } else {
+      setSlideDir(-1);
+      setIx((i) => (i - 1 + SLIDE_COUNT) % SLIDE_COUNT);
+    }
+  };
+
+  const onSlideTouchCancel = () => {
+    touchStartRef.current = null;
+    setSlideTouchActive(false);
+    bumpAutoTimer();
+  };
 
   return (
     <div className="mb-8">
@@ -178,19 +212,27 @@ export function HeroHook() {
             </ul>
           ) : (
             <div
-              className="overflow-hidden py-1 touch-manipulation"
+              className="overflow-hidden py-1 touch-manipulation select-none"
               onMouseEnter={() => setSlidesHoverPaused(true)}
               onMouseLeave={() => setSlidesHoverPaused(false)}
-              onClick={() => {
-                if (coarsePointer) setSlidesTouchPaused((p) => !p);
-              }}
+              onTouchStart={onSlideTouchStart}
+              onTouchEnd={onSlideTouchEnd}
+              onTouchCancel={onSlideTouchCancel}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p
                   key={ix}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={
+                    slideDir === 1
+                      ? { opacity: 0, x: 28 }
+                      : { opacity: 0, x: -28 }
+                  }
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
+                  exit={
+                    slideDir === 1
+                      ? { opacity: 0, x: -28 }
+                      : { opacity: 0, x: 28 }
+                  }
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                   className="mx-auto max-w-xl text-[clamp(1.8rem,2.35vw,2.125rem)] font-medium leading-[1.5] tracking-[0.01em] text-body min-[900px]:mx-0"
                 >

@@ -67,7 +67,7 @@ export const waitlistPrivilegeRows: readonly WaitlistPrivilegeRow[] = [
   },
   {
     privilege: "Paid hosting · welcome",
-    memberGets: "A few paid listings with no Spark charge (quota)",
+    memberGets: "Host paid listings with only 20 Spark",
     duration: "Until you use the quota",
     standardEquivalent: "Standard Spark cost per paid listing",
   },

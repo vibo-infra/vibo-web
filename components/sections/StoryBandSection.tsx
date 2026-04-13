@@ -1,8 +1,10 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion } from "framer-motion";
 import type { IconType } from "react-icons";
 import {
+  HiOutlineArrowLongRight,
   HiOutlineCalendar,
   HiOutlineDevicePhoneMobile,
   HiOutlineMap,
@@ -27,6 +29,20 @@ const ROUTE_ICONS: Record<StoryRouteIconKey, IconType> = {
   people: MdOutlineGroups,
   calendar: HiOutlineCalendar,
 };
+
+function StepArrow() {
+  return (
+    <div
+      className="flex shrink-0 items-center justify-center self-center px-0.5 text-muted sm:px-1.5"
+      aria-hidden
+    >
+      <HiOutlineArrowLongRight
+        className="h-5 w-5 opacity-[0.5] sm:h-7 sm:w-7 sm:opacity-[0.45]"
+        strokeWidth={1.5}
+      />
+    </div>
+  );
+}
 
 function RouteCard({
   title,
@@ -56,38 +72,46 @@ function RouteCard({
         {hook}
       </p>
 
-      <ol className="mt-8 flex flex-col gap-0">
-        {steps.map((step, i) => {
-          const Icon = ROUTE_ICONS[step.iconKey];
-          return (
-            <li key={step.label}>
-              {i > 0 ? (
-                <div className="flex justify-center py-1" aria-hidden>
-                  <span className="block h-5 w-px bg-line-strong" />
-                </div>
-              ) : null}
-              <motion.div
-                className="flex items-center gap-3 min-[480px]:gap-4"
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-24px" }}
-                transition={{
-                  delay: 0.06 * i,
-                  duration: 0.4,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-              >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-line-strong bg-surface-alt text-heading">
-                  <Icon className="h-5 w-5" aria-hidden />
-                </span>
-                <span className="text-[15px] font-medium leading-snug text-body">
-                  {step.label}
-                </span>
-              </motion.div>
-            </li>
-          );
-        })}
-      </ol>
+      <div
+        className="mt-8"
+        role="group"
+        aria-label={`${title} — ${steps.map((s) => s.label).join(" → ")}`}
+      >
+        <div className="relative">
+          <div
+            className="pointer-events-none absolute left-[10%] right-[10%] top-[26px] z-0 hidden h-px bg-gradient-to-r from-transparent via-line-strong/70 to-transparent sm:block sm:top-[30px]"
+            aria-hidden
+          />
+          <div className="relative z-[1] flex flex-row flex-nowrap items-stretch justify-between gap-0 overflow-x-auto overflow-y-visible pb-1 [scrollbar-width:none] sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
+            {steps.map((step, i) => {
+              const Icon = ROUTE_ICONS[step.iconKey];
+              return (
+                <Fragment key={step.label}>
+                  {i > 0 ? <StepArrow /> : null}
+                  <motion.div
+                    className="flex min-w-[6rem] max-w-[10rem] flex-none flex-col items-center gap-2.5 text-center sm:min-w-0 sm:max-w-none sm:flex-1 sm:gap-3"
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-24px" }}
+                    transition={{
+                      delay: 0.07 * i,
+                      duration: 0.42,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-line-strong bg-page shadow-[0_1px_0_var(--color-line)] ring-2 ring-page sm:h-[52px] sm:w-[52px]">
+                      <Icon className="h-[22px] w-[22px] text-heading sm:h-6 sm:w-6" aria-hidden />
+                    </span>
+                    <span className="text-[13px] font-semibold leading-snug tracking-tight text-body sm:text-[15px]">
+                      {step.label}
+                    </span>
+                  </motion.div>
+                </Fragment>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
