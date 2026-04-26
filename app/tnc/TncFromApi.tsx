@@ -36,8 +36,7 @@ export function TncFromApi() {
   if (payload === null) {
     return (
       <p className="text-sm font-light leading-relaxed text-muted">
-        We couldn&apos;t load terms. Check that the API is running and{" "}
-        <code className="text-xs">NEXT_PUBLIC_API_URL</code> is set.
+        We couldn&apos;t load terms. Please check your connection or try again later.
       </p>
     );
   }

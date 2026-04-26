@@ -34,17 +34,17 @@ export const heroScenarioSlides = [
 /** Scannable highlights — bold = eye anchors */
 export const heroHighlights = [
   {
-    lead: "Discover",
-    rest: " activities & events people host near you — tap and go.",
+    lead: "Try VIBO now",
+    rest: " browse nearby plans, apply, and see if it feels useful.",
   },
   {
     lead: "Host",
-    rest: " your own plan. No pro badge — just something you want to try.",
+    rest: " a small plan from the website while the full app gets ready.",
   },
 ] as const;
 
-export const waitlistSectionHeading = "Early access";
+export const waitlistSectionHeading = "Need early access on App ?";
 export const waitlistSectionTitle = "Join the waitlist";
 export const waitlistSectionSub =
-  "One email — we’ll notify you at launch (Mumbai first). Earlier spots can mean a bigger Sparks thank-you; see perks below.";
+  "One email — we’ll notify you at launch. For now, try the website and tell us if VIBO feels useful.";
 export const waitlistPerksLinkLabel = "See waitlist perks";

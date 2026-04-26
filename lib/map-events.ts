@@ -2,23 +2,44 @@ import { webGetClient } from "@/lib/api/methods";
 import type { NearbyEvent } from "@/lib/api/types";
 import { safeDisplayText } from "@/lib/api/sanitize";
 import type { PhoneCard } from "@/lib/constants";
-import {
-  buildNearbyQuery,
-  DEFAULT_EVENT_CITY,
-  DEFAULT_EVENT_LIMIT,
-} from "@/lib/constants/api";
+import { buildNearbyQuery, DEFAULT_EVENT_LIMIT } from "@/lib/constants/api";
+
+function parseCoordinate(raw: unknown): number | undefined {
+  if (raw === null || raw === undefined || raw === "") return undefined;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : undefined;
+}
+
+function pickLatLng(row: NearbyEvent): {
+  lat: number | undefined;
+  lng: number | undefined;
+} {
+  const lat =
+    parseCoordinate(row.lat) ?? parseCoordinate(row.latitude);
+  const lng =
+    parseCoordinate(row.lng) ?? parseCoordinate(row.longitude);
+  return { lat, lng };
+}
 
 /** `GET /v0/api/web/events/nearby` — `{ success, data }` envelope. */
 export async function fetchNearbyEvents(
   category?: string,
-  options?: { limit?: number }
+  options?: { limit?: number; city?: string }
 ): Promise<NearbyEvent[]> {
   const path = buildNearbyQuery({
-    city: DEFAULT_EVENT_CITY,
+    city: options?.city,
     limit: options?.limit ?? DEFAULT_EVENT_LIMIT,
     category,
   });
-  return webGetClient<NearbyEvent[]>(path);
+  const rows = await webGetClient<NearbyEvent[]>(path);
+  return rows.map((row) => {
+    const { lat, lng } = pickLatLng(row);
+    return {
+      ...row,
+      lat,
+      lng,
+    };
+  });
 }
 
 export function nearbyEventsToPhoneCards(events: NearbyEvent[]): PhoneCard[] {

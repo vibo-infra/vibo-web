@@ -5,9 +5,11 @@ import { Navbar } from "@/components/layout/Navbar";
 import { SiteTopBanner } from "@/components/layout/SiteTopBanner";
 import { ContribMarqueeStrip } from "@/components/layout/ContribMarqueeStrip";
 import { Footer } from "@/components/layout/Footer";
+import { MobileStickyCTA } from "@/components/layout/MobileStickyCTA";
 import { ScrollUpToTop } from "@/components/layout/ScrollUpToTop";
 import { AnalyticsRoot } from "@/components/providers/AnalyticsRoot";
 import { WaitlistSpotProvider } from "@/context/WaitlistSpotContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { siteConfig } from "@/lib/constants";
 import "./globals.css";
 
@@ -177,15 +179,18 @@ export default function RootLayout({
         className={`${syne.variable} ${nunito.variable} font-body antialiased`}
       >
         <ThemeProvider>
-          <WaitlistSpotProvider>
-            <AnalyticsRoot />
-            <Navbar />
-            <SiteTopBanner />
-            <ContribMarqueeStrip />
-            <main>{children}</main>
-            <Footer />
-            <ScrollUpToTop />
-          </WaitlistSpotProvider>
+          <AuthProvider>
+            <WaitlistSpotProvider>
+              <AnalyticsRoot />
+              <Navbar />
+              <SiteTopBanner />
+              <ContribMarqueeStrip />
+              <main>{children}</main>
+              <Footer />
+              <MobileStickyCTA />
+              <ScrollUpToTop />
+            </WaitlistSpotProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

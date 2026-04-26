@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { SectionHashLink } from "@/components/ui/SectionHashLink";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
@@ -83,20 +84,34 @@ export function Hero() {
 
           <FadeIn delay={0.2}>
             <motion.div
-              className="mt-10 flex flex-col items-center gap-3 min-[900px]:items-start"
+              className="mt-10 flex flex-col items-start gap-3"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              <SectionHashLink
-                href={homeSectionLinks.waitlist}
-                className="group inline-flex items-center gap-2 rounded-full bg-heading px-7 py-3.5 font-body text-[14px] font-extrabold tracking-wide text-page no-underline shadow-md transition-[transform,box-shadow] hover:shadow-lg active:scale-[0.99]"
-              >
-                Join the waitlist
-                <HiArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-              </SectionHashLink>
+              <div className="flex w-full max-w-[360px] flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-start">
+                <Link
+                  href="/events"
+                  className="inline-flex items-center justify-center rounded-full bg-heading px-7 py-3.5 font-body text-[14px] font-extrabold tracking-wide text-page no-underline shadow-md transition-[transform,box-shadow] hover:shadow-lg active:scale-[0.99]"
+                >
+                  Browse events
+                </Link>
+                <Link
+                  href="/host"
+                  className="inline-flex items-center justify-center rounded-full border border-line-strong px-7 py-3.5 font-body text-[14px] font-extrabold tracking-wide text-heading no-underline transition hover:border-accent hover:text-accent"
+                >
+                  Host one
+                </Link>
+              </div>
               <p className="text-[12px] font-medium text-muted">
-                Free to join · Mumbai first
+                <SectionHashLink
+                  href={homeSectionLinks.waitlist}
+                  className="inline-flex items-center gap-1 text-muted no-underline transition hover:text-accent"
+                >
+                  Join the app waitlist
+                  <HiArrowDown className="h-3.5 w-3.5" />
+                </SectionHashLink>{" "}
+                · Mumbai first
               </p>
             </motion.div>
           </FadeIn>

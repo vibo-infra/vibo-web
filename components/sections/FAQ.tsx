@@ -139,8 +139,7 @@ export function FAQ() {
           ) : null}
           {loadState === "error" ? (
             <p className="mt-12 text-sm font-light leading-relaxed text-muted">
-              We couldn&apos;t load FAQs. Check that the API is running and{" "}
-              <code className="text-xs">NEXT_PUBLIC_API_URL</code> is set.
+              We couldn&apos;t load FAQs. Please check your connection or try again later.
             </p>
           ) : null}
           {loadState === "ok" ? <FaqAccordion faqs={faqs} /> : null}

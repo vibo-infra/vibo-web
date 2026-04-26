@@ -8,6 +8,8 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { SectionHashLink } from "@/components/ui/SectionHashLink";
 import { useWaitlistSpot } from "@/context/WaitlistSpotContext";
 import { fetchWaitlistCountClient } from "@/lib/api/services/webApi";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 type MobileMenuProps = {
   onClose: () => void;
@@ -15,6 +17,7 @@ type MobileMenuProps = {
 
 export function MobileMenu({ onClose }: MobileMenuProps) {
   const { userPosition } = useWaitlistSpot();
+  const { session } = useAuth();
   const [lineCount, setLineCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -96,6 +99,15 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
         >
           Get early access →
         </SectionHashLink>
+        {!session ? (
+          <Link
+            href="/auth"
+            onClick={onClose}
+            className="flex h-12 items-center justify-center rounded-xl border border-line-strong text-center text-sm font-extrabold text-heading no-underline transition-colors hover:border-accent hover:text-accent"
+          >
+            Login
+          </Link>
+        ) : null}
         <div className="flex items-center gap-2.5">
           <span className="text-[13px] text-muted">Switch theme</span>
           <ThemeToggle />

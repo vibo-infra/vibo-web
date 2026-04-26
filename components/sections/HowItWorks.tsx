@@ -2,10 +2,12 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { steps, type PhoneCard } from "@/lib/constants";
+import { HiOutlineCalendarDays, HiOutlineMapPin, HiOutlineUserGroup } from "react-icons/hi2";
 import {
   fetchNearbyEvents,
   nearbyEventsToPhoneCards,
@@ -42,16 +44,14 @@ function PhoneMockup({
   cards: PhoneCard[];
 }) {
   return (
-    <div className="w-full max-w-[300px] rounded-[36px] border border-line-strong bg-surface" style={{ aspectRatio: "9/19" }}>
+    <div className="w-full max-w-[280px] rounded-[36px] border border-line-strong bg-surface shadow-sm sm:max-w-[300px]" style={{ aspectRatio: "9/19" }}>
       <div className="flex h-full flex-col px-4 pt-6 pb-4">
         <div className="mb-4 flex justify-between">
           <span className="text-[10px] text-muted">9:41</span>
           <span className="text-[10px] text-muted">●●●</span>
         </div>
 
-        <div className="mb-3 font-display text-lg font-medium text-heading">
-          Around you
-        </div>
+        <div className="mb-3 font-display text-lg font-medium text-heading">VIBO preview</div>
 
         <div className="mb-4 flex items-center gap-2 rounded-lg bg-surface-alt px-3 py-2 text-[11px] text-muted">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -151,43 +151,53 @@ export function HowItWorks() {
   }, []);
 
   return (
-    <section id="how" className="scroll-mt-[76px] py-[100px]">
+    <section id="how" className="scroll-mt-[76px] py-16 sm:py-20 md:py-[100px]">
       <Container>
         <SectionEyebrow text="How it works" />
         <FadeIn>
-          <h2 className="font-display text-[clamp(32px,4vw,52px)] font-light leading-[1.15] tracking-tight text-heading">
-            Three taps to
+          <h2 className="font-display text-[clamp(34px,8vw,58px)] font-light leading-[1.04] tracking-[-0.06em] text-heading">
+            Try the core idea
             <br />
-            <em className="font-light not-italic text-accent">something real.</em>
+            <em className="font-light not-italic text-accent">right here.</em>
           </h2>
         </FadeIn>
+        <FadeIn delay={0.04}>
+          <p className="mt-5 max-w-[620px] text-[15px] font-medium leading-relaxed text-body sm:text-base">
+            The app is coming. This website is the first slice: find events,
+            apply to attend, or host a small plan and tell us if it feels useful.
+          </p>
+        </FadeIn>
 
-        <div className="mt-16 grid grid-cols-2 items-start gap-20 max-[900px]:grid-cols-1 max-[900px]:gap-12">
-          <FadeIn className="sticky top-[100px] max-[900px]:static max-[900px]:flex max-[900px]:justify-center">
+        <div className="mt-10 grid items-start gap-10 lg:mt-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+          <FadeIn className="lg:sticky lg:top-[100px] max-lg:flex max-lg:justify-center">
             <PhoneMockup activeStep={activeStep} cards={cards} />
           </FadeIn>
 
           <FadeIn className="pt-2">
-            <div className="flex flex-col">
-              {steps.map((step) => (
+            <div className="grid gap-3">
+              {steps.map((step, index) => (
                 <div
                   key={step.num}
                   onClick={() => handleStepClick(step.num)}
-                  className={`cursor-pointer border-b border-line py-7 last:border-b-0`}
+                  className={`cursor-pointer rounded-[24px] border p-4 transition sm:p-5 ${
+                    activeStep === step.num
+                      ? "border-accent bg-accent-dim"
+                      : "border-line bg-surface hover:border-line-strong"
+                  }`}
                 >
                   <div className="flex items-start gap-5">
                     <div
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-display text-sm transition-all duration-300 ${
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-xl transition-all duration-300 ${
                         activeStep === step.num
-                          ? "border border-accent bg-accent text-white"
-                          : "border border-line-strong bg-surface text-muted"
+                          ? "bg-accent text-white"
+                          : "border border-line-strong bg-page text-muted"
                       }`}
                     >
-                      {step.num}
+                      {index === 0 ? <HiOutlineMapPin /> : index === 1 ? <HiOutlineUserGroup /> : <HiOutlineCalendarDays />}
                     </div>
                     <div className="flex-1">
                       <div
-                        className={`mt-1.5 mb-1.5 text-base font-medium transition-colors duration-200 ${
+                        className={`mt-1 mb-1 text-base font-extrabold transition-colors duration-200 ${
                           activeStep === step.num
                             ? "text-accent"
                             : "text-heading"
@@ -204,7 +214,7 @@ export function HowItWorks() {
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             className="overflow-hidden"
                           >
-                            <p className="text-sm font-light leading-relaxed text-body">
+                            <p className="text-sm font-medium leading-relaxed text-body">
                               {step.description}
                             </p>
                           </motion.div>
@@ -214,6 +224,20 @@ export function HowItWorks() {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/events"
+                className="inline-flex justify-center rounded-full bg-heading px-6 py-3 text-sm font-extrabold text-page no-underline transition hover:-translate-y-px hover:opacity-90"
+              >
+                Browse events
+              </Link>
+              <Link
+                href="/host"
+                className="inline-flex justify-center rounded-full border border-line-strong px-6 py-3 text-sm font-extrabold text-heading no-underline transition hover:border-accent hover:text-accent"
+              >
+                Host one
+              </Link>
             </div>
           </FadeIn>
         </div>

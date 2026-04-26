@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { SHOW_PRICING_SECTION, siteConfig } from "@/lib/constants";
+import { siteConfig } from "@/lib/constants";
 import {
   fetchWaitlistCountClient,
-  fetchReferralClient,
-  postReferralClickClient,
   joinWaitlistClient,
 } from "@/lib/api/services/webApi";
 import { sanitizeReferralCode } from "@/lib/api/sanitize";
@@ -16,7 +15,6 @@ import { track } from "@/lib/analytics";
 import { WaitlistCityStep } from "@/components/waitlist/WaitlistCityStep";
 import { useWaitlistSpot } from "@/context/WaitlistSpotContext";
 import {
-  waitlistPerksLinkLabel,
   waitlistSectionHeading,
   waitlistSectionSub,
   waitlistSectionTitle,
@@ -47,15 +45,6 @@ export function WaitlistSection() {
   useEffect(() => {
     if (!success) setCityStepComplete(false);
   }, [success]);
-
-  useEffect(() => {
-    const ref = sanitizeReferralCode(
-      new URLSearchParams(window.location.search).get("ref")
-    );
-    if (!ref) return;
-    postReferralClickClient(ref);
-    void fetchReferralClient(ref);
-  }, []);
 
   const handleSubmit = useCallback(async () => {
     const trimmed = email.trim();
@@ -113,13 +102,6 @@ export function WaitlistSection() {
       `${siteConfig.shareDomain}?ref=${success.code}`
     );
   }, [success]);
-
-  const scrollToPerks = useCallback(() => {
-    track("cta_click", "waitlist_section_perks_link");
-    document
-      .getElementById("waitlist-perks")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
 
   return (
     <section
@@ -239,23 +221,15 @@ export function WaitlistSection() {
             )}
 
             <div className="mt-6 flex flex-row-reverse gap-4 border-t border-line pt-6 sm:flex-row sm:items-center justify-between">
-              {!SHOW_PRICING_SECTION ? (
-                <button
-                  type="button"
-                  onClick={scrollToPerks}
-                  className="group text-left text-[14px] font-semibold text-heading transition-colors hover:text-accent"
+              <div className="text-left text-[13px] font-medium leading-relaxed text-muted">
+                <p>Join the app waitlist while we test the event flow here.</p>
+                <Link
+                  href="/benefits"
+                  className="mt-1 inline-flex font-extrabold text-heading no-underline transition hover:text-accent"
                 >
-                  {waitlistPerksLinkLabel}
-                  <span
-                    className="ml-0.5 inline-block transition-transform group-hover:translate-x-0.5"
-                    aria-hidden
-                  >
-                    →
-                  </span>
-                </button>
-              ) : (
-                <span />
-              )}
+                  See Sparks and perks →
+                </Link>
+              </div>
               <p className="text-[13px] font-medium text-muted">
                 {count != null ? (
                   <>

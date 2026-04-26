@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { WaitlistSection } from "@/components/sections/WaitlistSection";
-import { SolutionBridgeSection } from "@/components/sections/SolutionBridgeSection";
-import { StoryBandSection } from "@/components/sections/StoryBandSection";
-import { HowItWorks } from "@/components/sections/HowItWorks";
-import { Features } from "@/components/sections/Features";
+import { HostFirstEventSection } from "@/components/sections/HostFirstEventSection";
 import { MapSection } from "@/components/sections/MapSection";
-import { Pricing } from "@/components/sections/Pricing";
-import { WaitlistBenefits } from "@/components/sections/WaitlistBenefits";
 import { FAQ } from "@/components/sections/FAQ";
-import { FinalCTA } from "@/components/sections/FinalCTA";
-import { SHOW_PRICING_SECTION, siteConfig } from "@/lib/constants";
+import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
@@ -51,14 +45,9 @@ export default function HomePage() {
     <>
       <Hero />
       <MapSection />
+      <HostFirstEventSection />
       <WaitlistSection />
-      <SolutionBridgeSection />
-      <StoryBandSection />
-      <HowItWorks />
-      <Features />
-      {SHOW_PRICING_SECTION ? <Pricing /> : <WaitlistBenefits />}
       <FAQ />
-      <FinalCTA />
     </>
   );
 }

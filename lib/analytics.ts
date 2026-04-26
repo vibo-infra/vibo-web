@@ -1,3 +1,7 @@
+/**
+ * Product analytics — POST batches to `${NEXT_PUBLIC_API_URL}/v0/api/analytics/events`.
+ * Contract: `vibo-backend/docs/HTTP_API.md` → Analytics.
+ */
 import { AnalyticsEndpoints } from "@/lib/constants/api";
 
 function fallbackUUID() {

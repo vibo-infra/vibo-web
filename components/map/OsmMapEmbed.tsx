@@ -121,8 +121,8 @@ function escapeHtml(s: string) {
     .replace(/"/g, "&quot;");
 }
 
-/** Matches `eventToPinLines` order: category, location, price */
-const POPUP_LINE_LABELS = ["Type", "Where", ""] as const;
+/** Matches pin line order: category, location, price, optional coordinates */
+const POPUP_LINE_LABELS = ["Type", "Where", "", "Coords"] as const;
 
 function buildMarkerPopupHtml(m: OsmMapMarker): string {
   const variant = m.color === "orange" ? "orange" : "teal";
@@ -149,7 +149,7 @@ function buildPopupMetaRows(lines: string[]): string {
       );
       return;
     }
-    const label = POPUP_LINE_LABELS[i] ?? "Detail";
+    const label = POPUP_LINE_LABELS[i] ?? (i === 3 ? "Coords" : "Detail");
     rows.push(
       `<div class="vibo-map-popup__row"><span class="vibo-map-popup__row-label">${escapeHtml(label)}</span><span class="vibo-map-popup__row-value">${escapeHtml(text)}</span></div>`
     );

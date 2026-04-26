@@ -22,12 +22,6 @@ export type WaitlistCityUpdateResult = {
   city: string;
 };
 
-export type ReferralLookupData = {
-  valid: boolean;
-  owner_name: string;
-  signup_count: number;
-};
-
 export type WebFaq = {
   id: string;
   question: string;
@@ -66,6 +60,9 @@ export type NearbyEvent = {
   starts_at: string;
   lat?: number;
   lng?: number;
+  /** Present on some API shapes before client normalization */
+  latitude?: number;
+  longitude?: number;
 };
 
 export type ProductContentMap = Record<string, unknown>;

@@ -4,12 +4,10 @@ import {
   webGetClient,
   webPostClient,
   webPatchClient,
-  webPostVoid,
 } from "@/lib/api/methods";
-import { sanitizeEmail, sanitizeReferralCode } from "@/lib/api/sanitize";
+import { sanitizeEmail } from "@/lib/api/sanitize";
 import type {
   ProductContentMap,
-  ReferralLookupData,
   TncPayload,
   WaitlistCountData,
   WaitlistJoinResult,
@@ -86,26 +84,6 @@ export async function fetchWaitlistCountClient(): Promise<number | null> {
   }
 }
 
-export function postReferralClickClient(code: string): void {
-  const safe = sanitizeReferralCode(code);
-  if (!safe) return;
-  webPostVoid(WebEndpoints.referralClick, { code: safe });
-}
-
-export async function fetchReferralClient(
-  code: string
-): Promise<ReferralLookupData | null> {
-  const safe = sanitizeReferralCode(code);
-  if (!safe) return null;
-  try {
-    return await webGetClient<ReferralLookupData>(
-      WebEndpoints.referralByCode(safe)
-    );
-  } catch {
-    return null;
-  }
-}
-
 export type JoinWaitlistBody = {
   email: string;
   role?: string;
@@ -148,8 +126,6 @@ export const webApi = {
   fetchFaqsClient,
   fetchTncClient,
   fetchWaitlistCountClient,
-  postReferralClickClient,
-  fetchReferralClient,
   joinWaitlistClient,
   updateWaitlistCityClient,
 };

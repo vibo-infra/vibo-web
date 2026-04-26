@@ -11,33 +11,18 @@ export const siteConfig = {
   ogImage: "/og-image.png",
 } as const;
 
-/**
- * When `true`, the home page shows the pricing section (`#price`).
- * When `false`, shows waitlist privileges instead (`#waitlist-perks`).
- */
-export const SHOW_PRICING_SECTION = false;
-
 export const homeSectionLinks = {
   around: "/#around",
   waitlist: "/#wl",
-  howItWorks: "/#how",
-  features: "/#feat",
-  pricing: "/#price",
-  waitlistPerks: "/#waitlist-perks",
+  hostFirst: "/#host-first",
 } as const;
 
-const navPricingOrPerks = SHOW_PRICING_SECTION
-  ? ({ label: "Pricing", href: homeSectionLinks.pricing } as const)
-  : ({
-      label: "Waitlist Perks",
-      href: homeSectionLinks.waitlistPerks,
-    } as const);
-
 export const navLinks = [
-  { label: "Around you", href: homeSectionLinks.around },
-  { label: "How it works", href: homeSectionLinks.howItWorks },
-  { label: "Features", href: homeSectionLinks.features },
-  navPricingOrPerks,
+  { label: "Events", href: "/events" },
+  { label: "Host", href: "/host" },
+  { label: "Preview", href: homeSectionLinks.around },
+  { label: "Waitlist", href: homeSectionLinks.waitlist },
+  { label: "Benefits", href: "/benefits" },
   { label: "Terms", href: "/tnc" },
 ] as const;
 
@@ -145,21 +130,21 @@ export const featureFootnotes = [
 export const steps = [
   {
     num: 1,
-    title: "Open VIBO. See what's around you.",
+    title: "Open the website. See what's nearby.",
     description:
-      "Runs, rides, courts, workshops — what’s live near you, with who’s going.",
+      "This is an early glimpse of VIBO: real events around you, shown before the app arrives.",
   },
   {
     num: 2,
-    title: "Tap once. You're in.",
+    title: "Pick a plan. Apply to attend.",
     description:
-      "No long thread. Join, see the group, get a reminder before kickoff.",
+      "Read the details, log in, and ask to join. Simple enough to try on your phone.",
   },
   {
     num: 3,
-    title: "Show up. That's the whole plan.",
+    title: "Or host one and see who finds it.",
     description:
-      "The fun isn’t in the app — we just get you to the door.",
+      "Post a walk, game, jam, workshop, or tiny meetup. We want to see what people actually like.",
   },
 ] as const;
 

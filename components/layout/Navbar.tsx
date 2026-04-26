@@ -9,9 +9,11 @@ import { SectionHashLink } from "@/components/ui/SectionHashLink";
 import { MobileMenu } from "./MobileMenu";
 import { fetchWaitlistCountClient } from "@/lib/api/services/webApi";
 import { useWaitlistSpot } from "@/context/WaitlistSpotContext";
+import { useAuth } from "@/context/AuthContext";
 
 export function Navbar() {
   const { userPosition } = useWaitlistSpot();
+  const { session } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [lineCount, setLineCount] = useState<number | null>(null);
@@ -94,6 +96,14 @@ export function Navbar() {
               )}
             </span>
             <ThemeToggle />
+            {!session ? (
+              <Link
+                href="/auth"
+                className="hidden rounded-full border border-line-strong px-4 py-2 text-[13px] font-extrabold text-heading no-underline transition-all hover:border-accent hover:text-accent md:inline-flex"
+              >
+                Login
+              </Link>
+            ) : null}
             <SectionHashLink
               href={homeSectionLinks.waitlist}
               className="inline-flex items-center gap-1.5 rounded-full bg-heading px-5 py-2.5 font-body text-[13px] font-extrabold text-page no-underline transition-all hover:opacity-90 hover:-translate-y-px max-md:hidden"

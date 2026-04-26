@@ -1,7 +1,5 @@
 "use client";
 
-/** Renders when `SHOW_PRICING_SECTION` is `true` in `@/lib/constants`. */
-
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
@@ -159,10 +157,7 @@ export function Pricing() {
         {loadState === "error" ? (
           <FadeIn delay={0.15}>
             <p className="mt-14 text-sm font-light leading-relaxed text-muted">
-              We couldn&apos;t load pricing. Check that the API is running and{" "}
-              <code className="text-xs">NEXT_PUBLIC_API_URL</code> is set, and
-              that the pricing section is published in{" "}
-              <code className="text-xs">product_content</code>.
+              We couldn&apos;t load pricing. Please check your connection or try again later.
             </p>
           </FadeIn>
         ) : (

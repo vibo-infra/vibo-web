@@ -85,6 +85,33 @@ body {
   overflow-x: hidden;
 }
 
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 4.5rem;
+  }
+}
+
+.vibo-input {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.vibo-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px var(--orange-dim);
+}
+
+.vibo-input::placeholder {
+  color: var(--text-3);
+}
+
 /* Smooth theme transitions */
 html.theme-transitioning,
 html.theme-transitioning *,
