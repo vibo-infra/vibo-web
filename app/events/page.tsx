@@ -2,10 +2,25 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { EventExplorer } from "@/components/events/EventExplorer";
 import { Container } from "@/components/ui/Container";
+import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Events",
-  description: "Browse VIBO events, apply to attend, or host your own.",
+  title: "Browse Local Events in Mumbai",
+  description:
+    "Browse nearby VIBO events, apply to attend, and try the web preview of the upcoming VIBO app.",
+  alternates: { canonical: `${siteConfig.url}/events` },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Browse Local Events in Mumbai | VIBO",
+    description:
+      "Find nearby events, apply to attend, and preview the VIBO experience on web.",
+    url: `${siteConfig.url}/events`,
+    type: "website",
+    images: [siteConfig.ogImage],
+  },
 };
 
 export default function EventsPage() {

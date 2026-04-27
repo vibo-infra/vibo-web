@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
 import { HostEventForm } from "@/components/events/HostEventForm";
 import { Container } from "@/components/ui/Container";
+import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Host an Event",
-  description: "Create a simple VIBO event and let nearby people find it.",
+  title: "Host a Local Event",
+  description:
+    "Create a simple local event on VIBO and let nearby people discover, apply, and show up.",
+  alternates: { canonical: `${siteConfig.url}/host` },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Host a Local Event | VIBO",
+    description:
+      "Publish a local plan on VIBO and see if nearby people want to join.",
+    url: `${siteConfig.url}/host`,
+    type: "website",
+    images: [siteConfig.ogImage],
+  },
 };
 
 export default function HostPage() {

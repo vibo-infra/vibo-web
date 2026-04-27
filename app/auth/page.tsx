@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
 import { AuthPanel } from "@/components/auth/AuthPanel";
 import { Container } from "@/components/ui/Container";
+import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Login or Join",
-  description: "Create a VIBO account to join events or host your own.",
+  title: "Join VIBO",
+  description:
+    "Create a VIBO account to apply for nearby events, host your own plan, and try the web preview before the app launches.",
+  alternates: { canonical: `${siteConfig.url}/auth` },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Join VIBO | Local Events Near You",
+    description:
+      "Sign up to attend or host local events through the VIBO web preview.",
+    url: `${siteConfig.url}/auth`,
+    type: "website",
+    images: [siteConfig.ogImage],
+  },
 };
 
 export default function AuthPage() {
