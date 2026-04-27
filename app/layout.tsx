@@ -99,24 +99,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
   },
-  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
-  process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
-    ? {
-        verification: {
-          ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-            ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
-            : {}),
-          ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
-            ? {
-                other: {
-                  "msvalidate.01":
-                    process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
-                },
-              }
-            : {}),
-        },
-      }
-    : {}),
+  verification: {
+    google: "eJVJ1GSQ8dXj4WpHszrw_6hwE8dMDXZ1YIanOh5uPQI",
+  },
 };
 
 export default function RootLayout({
